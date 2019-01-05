@@ -1,0 +1,3 @@
+rootProject.name = 'halaAppFront'
+
+include ':app'
