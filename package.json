@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
-    "test": "jest node_modules/.bin/jest __test__/**/*.spec.js"
+    "test": "jest"
   },
   "dependencies": {
     "react": "16.6.3",
@@ -21,7 +21,8 @@
     "react-test-renderer": "^16.7.0"
   },
   "jest": {
-    "preset": "react-native"
+    "preset": "react-native",
+    "testRegex": "__test__/.*\\.(js|jsx)$"
   },
   "detox": {
     "configurations": {
