@@ -1,4 +1,4 @@
-describe('View Navigation tab', () => {
+describe.only('View Navigation tab', () => {
     it('display all tabs when app started', async () => {
         await expect(element(by.id('homeTab'))).toBeVisible();
         await expect(element(by.id('addTab'))).toBeVisible();
@@ -8,7 +8,7 @@ describe('View Navigation tab', () => {
     
 });
 
-describe('Navigate to other screens', () => {
+describe.only('Navigate to other screens', () => {
     it('display Home screen when home tab is press', async () => {
         await element(by.id('homeTab')).tap();
         await expect(element(by.id('homeScreen'))).toBeVisible();

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 
 import RestaurantList from '../components/Restaurantlist';
 
@@ -10,10 +10,9 @@ export default class HomeScreen extends Component {
   
     render() {
       return (
-        <View testID="homeScreen" style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <View testID="homeScreen" style={{ flex: 1, justifyContent: 'center' }}>
           <RestaurantList />
         </View>
       );
     }
   }
-
