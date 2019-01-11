@@ -24,5 +24,12 @@ describe('<NewRestaurantForm />', () => {
     
     it('calls the onAdd handler with the entered data', () => {
         expect(handleAdd).toHaveBeenCalledWith(item);
+        
+    })
+
+    it('clears the input text when data is submited', () => {
+        expect(restaurantNameInput.props.value).toEqual('');
+        expect(restaurantLocationInput.props.value).toEqual('');
+        expect(restaurantCategoryInput.props.value).toEqual('');
     })
 })

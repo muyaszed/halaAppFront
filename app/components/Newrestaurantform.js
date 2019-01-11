@@ -23,6 +23,11 @@ export default class NewRestaurantForm extends Component {
             category: category
         }
         onAdd(data);
+        this.setState({
+            name: '',
+            location: '',
+            category: ''
+        })
     }
     
 
