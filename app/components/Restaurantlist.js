@@ -4,45 +4,17 @@ import { View, StyleSheet, FlatList, Text } from 'react-native';
 import RestaurantItem from './Restaurantitem';
 
 export default class RestaurantList extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            data: []
-        };
-    }
-    componentDidMount() {
-        this.setState({
-            data: [
-                {key: '1',
-                 name: 'Sushi Toyyiba',
-                 location: 'Johor Bahru',
-                 category: 'Japanese' 
-                },
-                {key: '2',
-                name: 'Nasi Lemak Mak Timah',
-                location: 'Ampang',
-                category: 'Malaysian'
-                },
-                {key: '3',
-                name: 'Burgermbira',
-                location: 'Melaka',
-                category: 'Western'
-                },
-                {key: '4',
-                name: 'Ikan Bakar rebus',
-                location: 'Shah Alam',
-                category: 'Malaysian'
-                },
-               
-            ]
-        })
-    }
+    
+   
+
     render () {
+
+        const { data } = this.props;
         return (
             <View style={styles.container}>
             <FlatList
               testID="restaurantList"
-              data={this.state.data}
+              data={data}
               keyExtractor={(item, index) => item.key}
               renderItem={
                   ({item, index}) => 

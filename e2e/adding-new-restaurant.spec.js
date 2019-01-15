@@ -20,7 +20,7 @@ describe("User visit add screen", () => {
         await element(by.id('addNewRestaurantButton')).tap();
         await expect(element(by.id('homeScreen'))).toBeVisible();
         await expect(element(by.id('addScreen'))).toBeNotVisible();
-        
+        await expect(element(by.label('Tumes Cafe'))).toBeVisible();
         
     })
 })

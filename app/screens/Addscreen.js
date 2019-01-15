@@ -9,7 +9,20 @@ export default class AddScreen extends Component {
     };
 
     handleAdd = (data) => {
-      this.props.navigation.navigate('Home');
+      
+      return fetch('http://localhost:3000/restaurants', {
+        method: "POST",
+        mode: "cors",
+        cache: "no-cache",
+        credentials: "same-origin",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(data)
+      }).then(res => {
+        this.props.navigation.navigate('Home');
+      }).catch(error => {
+        console.log(error);
+      })
+      
     }
   
     render() {

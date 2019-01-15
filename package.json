@@ -36,7 +36,7 @@
         "binaryPath": "ios/build/Build/Products/Debug-iphonesimulator/halaAppFront.app",
         "build": "xcodebuild -project ios/halaAppFront.xcodeproj -scheme halaAppFront -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build",
         "type": "ios.simulator",
-        "name": "iPhone 7"
+        "name": "iPhone X"
       }
     },
     "test-runner": "jest"
