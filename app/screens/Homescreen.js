@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { withNavigation } from 'react-navigation';
+import { connect } from 'react-redux';
 
+import { getRestaurants } from '../actions/restaurant';
 import RestaurantList from '../components/Restaurantlist';
+
 
 class HomeScreen extends Component {
     constructor(props) {
@@ -16,26 +19,36 @@ class HomeScreen extends Component {
     };
 
     componentDidMount() {
-      const {navigation} = this.props;
+      const {navigation, getData} = this.props;
       this.focusListener = navigation.addListener('didFocus', () => {
-        return fetch('http://localhost:3000/restaurants')
-        .then(response => response.json())
-        .then(resJson => {
-          this.setState({
-            data: resJson
-          })
-        });
+        getData()
       });
       
     }
   
     render() {
+      const { restaurants } = this.props;
       return (
         <View testID="homeScreen" style={{ flex: 1, justifyContent: 'center' }}>
-          <RestaurantList data={this.state.data }/>
+          <RestaurantList data={ restaurants.data }/>
         </View>
       );
     }
   }
 
-  export default withNavigation(HomeScreen);
+  const mapDispatchToProps = dispatch => {
+    return {
+      getData: () => dispatch(getRestaurants())
+    }
+  }
+
+  const mapStateToProps = state => {
+    return {
+      restaurants: state.restaurants
+    }
+  }
+
+  export default withNavigation(connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(HomeScreen));

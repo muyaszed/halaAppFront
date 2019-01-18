@@ -7,7 +7,7 @@ export default class RestaurantItem extends Component {
         return (
             <Card elevation={30} style={styles.card}>
                 <Card.Content>
-                    <Title testID="restaurantTitle">{this.props.item.name}</Title>
+                    <Title testID="restaurantTitle#{this.props.item.id}">{this.props.item.name}</Title>
                     <Text>{this.props.item.location}</Text>
                     <Text>{this.props.item.category}</Text>
                 </Card.Content>

@@ -15,10 +15,10 @@ export default class RestaurantList extends Component {
             <FlatList
               testID="restaurantList"
               data={data}
-              keyExtractor={(item, index) => item.key}
+              keyExtractor={(item) => item.id.toString()}
               renderItem={
-                  ({item, index}) => 
-                <RestaurantItem item={item} index={index}/>
+                  ({item}) => 
+                <RestaurantItem item={item}/>
               }
             />
           </View> 
