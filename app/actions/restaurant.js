@@ -6,6 +6,10 @@ import { ADDING_RESTAURANT,
          GET_RESTAURANTS_FAILURE
         } from './types';
 
+import NavigationService from '../../NavigationService';
+import Api from '../../api';
+import App from '../App';
+
 const addingRestaurant = () => {
     return {
         type: ADDING_RESTAURANT,
@@ -31,15 +35,9 @@ export const addRestaurant = restaurantData => {
 
     return (dispatch) => {
         dispatch(addingRestaurant());
-        return fetch('http://localhost:3000/restaurants', {
-            method: "POST",
-            mode: "cors",
-            cache: "no-cache",
-            credentials: "same-origin",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify(restaurantData)
-        }).then(res => {
+        Api.post.restaurants(restaurantData).then(res => {
             dispatch(addingRestaurantSuccess(res.json()));
+            NavigationService.navigate('Home');
         }).catch(error => {
             dispatch(addingRestaurantFailure(error));
         })
@@ -70,8 +68,7 @@ const getRestaurantsFailure = error => {
 export const getRestaurants = () => {
     return (dispatch) => {
         dispatch(gettingRestaurants());
-        return fetch('http://localhost:3000/restaurants')
-            .then(response => response.json())
+        Api.get.restaurants()
             .then(resJson => {
                 dispatch(getRestrauntsSucces(resJson));
             }).catch(error => {
