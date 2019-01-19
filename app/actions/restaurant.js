@@ -16,10 +16,10 @@ const addingRestaurant = () => {
     }
 }
 
-const addingRestaurantSuccess = (res) => {
+const addingRestaurantSuccess = () => {
     return {
         type: ADD_RESTAURANT_SUCCESS,
-        res
+        
     }
 }
 
@@ -36,12 +36,24 @@ export const addRestaurant = restaurantData => {
     return (dispatch) => {
         dispatch(addingRestaurant());
         Api.post.restaurants(restaurantData).then(res => {
-            dispatch(addingRestaurantSuccess(res.json()));
+            dispatch(addingRestaurantSuccess());
             NavigationService.navigate('Home');
         }).catch(error => {
             dispatch(addingRestaurantFailure(error));
         })
     }
+    //alternative way by using async
+    // return async (dispatch) => {
+    //     dispatch(addingRestaurant());
+    
+    //     try {
+    //         await Api.post.restaurants(restaurantData)
+    //     } catch(error) {
+    //         dispatch(addingRestaurantFailure(error));
+    //     }
+    //     dispatch(addingRestaurantSuccess());
+    //     NavigationService.navigate('Home');
+    // }
     
 }
 
@@ -75,4 +87,18 @@ export const getRestaurants = () => {
                 dispatch(getRestaurantsFailure(error));
             });
     }
+    //alternative ny using async
+    // return async (dispatch) => {
+    //     dispatch(gettingRestaurants());
+    //     let apiCall;
+
+    //     try {
+    //         apiCall = await Api.get.restaurants()
+    //     } catch(error) {
+    //         dispatch(getRestaurantsFailure(error));
+    //     }
+        
+    //     dispatch(getRestrauntsSucces(apiCall));
+           
+    // }
 }
