@@ -1,8 +1,18 @@
 export default {
     get: {
         restaurants: () => {
-            return fetch('http://localhost:3000/restaurants')
-                   .then(response => response.json())
+            console.log('you are in real api');
+            const myHeaders = new Headers({
+                "Authorization": "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyLCJleHAiOjE1NDg0MTI4MDh9.xKWIq824BWmNkJC2wkEgG0U3GSvTshMfbOXKNOLwwA0"
+            });
+            return fetch('http://localhost:3000/restaurants', {
+                        method: 'GET',
+                        mode: 'cors',
+                        headers: myHeaders
+                    }).then(res => {
+                        return res.json();
+                    })
+                   
         },
         //Async version
         // restaurants: async () => {

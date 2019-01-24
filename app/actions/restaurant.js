@@ -7,8 +7,8 @@ import { ADDING_RESTAURANT,
         } from './types';
 
 import NavigationService from '../../NavigationService';
-import Api from '../../api';
-import App from '../App';
+import Api from '../api';
+// import App from '../App';
 
 const addingRestaurant = () => {
     return {
@@ -77,15 +77,18 @@ const getRestaurantsFailure = error => {
     }
 }
 
+                
 export const getRestaurants = () => {
     return (dispatch) => {
         dispatch(gettingRestaurants());
         Api.get.restaurants()
             .then(resJson => {
+                console.log('get response', resJson);
                 dispatch(getRestrauntsSucces(resJson));
             }).catch(error => {
+                console.log('response error', error)
                 dispatch(getRestaurantsFailure(error));
-            });
+            })
     }
     //alternative ny using async
     // return async (dispatch) => {

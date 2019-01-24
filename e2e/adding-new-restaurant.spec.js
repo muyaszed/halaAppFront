@@ -6,12 +6,13 @@ describe("User visit add screen", () => {
         await expect(element(by.id('restaurantCategoryInputText'))).toExist();
     });
 
-    it.only('can add new restaurant', async () => {
+    it('can add new restaurant', async () => {
         const data = {
-            key: 1,
+            id: 1,
             name: 'Tumes Cafe',
             location: 'London',
-            category: 'Asian' 
+            category: 'Asian',
+            user_id: 1 
         };
         await element(by.id('addTab')).tap();
         await element(by.id('restaurantNameInputText')).typeText(data.name);
