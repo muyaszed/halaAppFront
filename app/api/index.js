@@ -1,12 +1,15 @@
-import Config from 'react-native-config';
+import {API} from 'react-native-dotenv';
 import realApi from './api';
-import fakeApi from './fakeapi';
+import fakeApi from './api.e2e';
 
 let api;
-// if(env.API_FAKE === 'fake') {
+// console.log(API_FAKE);
+if(API === 'fake') {
    api = fakeApi;
-// }else {
-//    api = realApi;
-// }
+}else {
+   api = realApi;
+}
 
 export default api;
+
+// export default realApi;

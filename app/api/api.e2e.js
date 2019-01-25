@@ -1,7 +1,8 @@
 export default {
     get: {
         restaurants: () => {
-            console.log('you are in fake api');
+            // console.log('you are in fake api');
+            
             return new Promise((resolve, reject) => {
                 resolve( [
                     {
