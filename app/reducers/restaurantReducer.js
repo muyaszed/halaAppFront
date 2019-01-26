@@ -10,7 +10,7 @@ const initialState = {
     data: [],
     dataAdded: false,
     isAdding: false,
-    error: false
+    error: []
 }
 
 const restaurantReducer = (state = initialState, action) => {
@@ -21,14 +21,15 @@ const restaurantReducer = (state = initialState, action) => {
                 data: [],
                 isAdding: true,
                 dataAdded: false,
-                error: false
+                error: []
             }
         case ADD_RESTAURANT_SUCCESS:
             return {
                 ...state,
                 data: [],
                 isAdding: false,
-                dataAdded: true
+                dataAdded: true,
+                error: []
             }
         case ADD_RESTAURANT_FAILED:
             return {
@@ -44,7 +45,7 @@ const restaurantReducer = (state = initialState, action) => {
                 data: [],
                 isAdding: true,
                 dataAdded: false,
-                error: false
+                error: []
             }
         case GET_RESTAURANTS_SUCCESS:
             return {
@@ -52,7 +53,7 @@ const restaurantReducer = (state = initialState, action) => {
                 data: action.data,
                 isAdding:false,
                 dataAdded: true,
-                error: false
+                error: []
             }
         case GET_RESTAURANTS_FAILURE:
             return {
