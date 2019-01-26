@@ -20,6 +20,7 @@ export default class SignInForm extends Component {
             email: email,
             password: password,
         }
+        console.log(credentials);
         onAuth(credentials);
         this.setState({
             email: '',

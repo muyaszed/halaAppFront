@@ -6,6 +6,7 @@ import {
 } from './types'
 
 import Api from '../api';
+import NavigationService from '../../NavigationService';
 
 const authenticatingUser = () => {
     return {
@@ -26,22 +27,27 @@ const authenticationFailure = (error) => {
     }
 }
 
-export const authUSer = (credentials) => {
+const storeToken = async (token) => {
+    await AsyncStorage.setItem('userToken', token);
+};
+
+
+export const authUser = (credentials) => {
     return (dispatch) => {
+        console.log('in action', credentials)
         dispatch(authenticatingUser());
         Api.post.authentication(credentials)
         .then(resJson => {
-            _storeData = async () => {
-                try {
-                    await AsyncStorage.setItem('userToken', resJson.auth-token)
-                    dispatch(authenticationSuccess());
-                } catch (error) {
-                    dispatch(authenticationFailure(error));
-                }
-            }
-            dispatch(authenticationSuccess(resJson));
+            console.log('token response', resJson)
+            storeToken(resJson.auth_token);
+            console.log('after store token');
+            dispatch(authenticationSuccess());
+            console.log('after dispatch')
+            NavigationService.navigate('App');
         }).catch(error => {
+            console.log('error login', error)
             dispatch(authenticationFailure(error));
+            NavigationService.navigate('Auth');
         }) 
     }
 }

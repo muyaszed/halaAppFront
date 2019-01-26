@@ -35,8 +35,10 @@ export const addRestaurant = restaurantData => {
 
     return (dispatch) => {
         dispatch(addingRestaurant());
-        Api.post.restaurants(restaurantData).then(res => {
+        Api.post.restaurants(restaurantData).then(() => {
+            console.log('before dispatch');
             dispatch(addingRestaurantSuccess());
+            console.log('after dispatch');
             NavigationService.navigate('Home');
         }).catch(error => {
             dispatch(addingRestaurantFailure(error));

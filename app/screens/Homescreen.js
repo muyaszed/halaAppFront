@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View } from 'react-native';
 import { withNavigation } from 'react-navigation';
 import { connect } from 'react-redux';
 
@@ -13,6 +13,7 @@ class HomeScreen extends Component {
         this.state = {
             data: []
         };
+        
     }
     static navigationOptions = {
       tabBarTestID: 'homeTab'
@@ -25,7 +26,9 @@ class HomeScreen extends Component {
       });
       
     }
-  
+    
+    
+
     render() {
       const { restaurants } = this.props;
       return (

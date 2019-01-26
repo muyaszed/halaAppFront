@@ -1,11 +1,13 @@
 import React, { Component } from "react";
-import { View } from 'react-native';
+import { View, AsyncStorage } from 'react-native';
 import { connect } from 'react-redux';
 import { authUser } from '../actions/authentication';
 import SignInForm from '../components/Signinform'
 
 
 class SignInScreen extends Component {
+    
+
     static navigationOptions = {
         title: 'Please sign in'
     }
@@ -14,8 +16,12 @@ class SignInScreen extends Component {
         this.props.auth(credentials); 
         
       }
+    
+      
 
+     
     render() {
+        
         return (
             <View testId="signinScreen" style={{ flex: 1, justifyContent: 'center'}}>
                 <SignInForm onAuth={this.handleAuth}/>

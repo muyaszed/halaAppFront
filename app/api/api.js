@@ -32,7 +32,7 @@ export default {
                         headers: {"Content-Type": "application/json"},
                         body: JSON.stringify(data)
                     })
-        }
+        },
         //Async version
         // restaurants: async (data) => {
         //     const post = await fetch('http://localhost:3000/restaurants', {
@@ -45,5 +45,17 @@ export default {
         //             });
         //     return await post;
         // }
+        authentication: (credentials) => {
+            return fetch('http://localhost:3000/auth/login', {
+                        method: "POST",
+                        mode: "cors",
+                        cache: "no-cache",
+                        credentials: "same-origin",
+                        headers: {"Content-Type": "application/json"},
+                        body: JSON.stringify(data)
+            })
+        }
+
+        
     }
 }
