@@ -3,7 +3,7 @@ import realApi from './api';
 import fakeApi from './api.e2e';
 
 let api;
-// console.log(API_FAKE);
+console.log("status", API);
 if(API === 'fake') {
    api = fakeApi;
 }else {

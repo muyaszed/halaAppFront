@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, AsyncStorage } from 'react-native';
 import { withNavigation } from 'react-navigation';
 import { connect } from 'react-redux';
 
@@ -14,15 +14,21 @@ class HomeScreen extends Component {
             data: []
         };
         
+        
     }
     static navigationOptions = {
       tabBarTestID: 'homeTab'
     };
 
+    
+
     componentDidMount() {
       const {navigation, getData} = this.props;
       this.focusListener = navigation.addListener('didFocus', () => {
-        getData()
+        AsyncStorage.getItem('userToken').then(token => {
+          getData(token);
+        })
+        
       });
       
     }
@@ -41,7 +47,7 @@ class HomeScreen extends Component {
 
   const mapDispatchToProps = dispatch => {
     return {
-      getData: () => dispatch(getRestaurants())
+      getData: (token) => dispatch(getRestaurants(token))
     }
   }
 

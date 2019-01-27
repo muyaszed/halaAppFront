@@ -80,10 +80,10 @@ const getRestaurantsFailure = error => {
 }
 
                 
-export const getRestaurants = () => {
+export const getRestaurants = (token) => {
     return (dispatch) => {
         dispatch(gettingRestaurants());
-        Api.get.restaurants()
+        Api.get.restaurants(token)
             .then(resJson => {
                 console.log('get response', resJson);
                 dispatch(getRestrauntsSucces(resJson));

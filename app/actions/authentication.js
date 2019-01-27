@@ -28,26 +28,41 @@ const authenticationFailure = (error) => {
 }
 
 const storeToken = async (token) => {
-    await AsyncStorage.setItem('userToken', token);
+    try {
+        const userToken = await AsyncStorage.setItem('userToken', token)
+        return userToken;
+    } catch(error) {
+        throw Error(error);
+        
+    }
+
+
 };
 
 
 export const authUser = (credentials) => {
     return (dispatch) => {
-        console.log('in action', credentials)
+        
         dispatch(authenticatingUser());
         Api.post.authentication(credentials)
         .then(resJson => {
-            console.log('token response', resJson)
-            storeToken(resJson.auth_token);
-            console.log('after store token');
-            dispatch(authenticationSuccess());
-            console.log('after dispatch')
-            NavigationService.navigate('App');
+            console.log('this is a res',resJson);
+            storeToken(resJson.auth_token).then((res) => {
+                
+                dispatch(authenticationSuccess());
+            
+                NavigationService.navigate('Home');
+            }).catch(error => {
+                console.log('this is an Asyncstorage error', error);
+                dispatch(authenticationFailure(error));
+                NavigationService.navigate('Auth');
+            })
+            
+            
         }).catch(error => {
-            console.log('error login', error)
+            console.log('this is an error', error);
             dispatch(authenticationFailure(error));
             NavigationService.navigate('Auth');
-        }) 
+        })
     }
 }

@@ -1,16 +1,26 @@
+import { AsyncStorage } from 'react-native';
+
+
 export default {
     get: {
-        restaurants: () => {
-            console.log('you are in real api');
+        restaurants: (token) => {
+            
             const myHeaders = new Headers({
-                "Authorization": "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyLCJleHAiOjE1NDg0MTI4MDh9.xKWIq824BWmNkJC2wkEgG0U3GSvTshMfbOXKNOLwwA0"
+                "Authorization": token
             });
             return fetch('http://localhost:3000/restaurants', {
                         method: 'GET',
                         mode: 'cors',
                         headers: myHeaders
                     }).then(res => {
-                        return res.json();
+                        if (!res.ok) {
+                            return res.text().then(text => {
+                                throw Error(text);
+                            });
+                        }else {
+                            return res.json();
+                        }
+                        
                     })
                    
         },
@@ -31,6 +41,14 @@ export default {
                         credentials: "same-origin",
                         headers: {"Content-Type": "application/json"},
                         body: JSON.stringify(data)
+                    }).then(res => {
+                        if(!res.ok) {
+                            return res.text().then(text => {
+                                throw Error(text);
+                            })
+                        }else {
+                            return res
+                        }
                     })
         },
         //Async version
@@ -52,7 +70,18 @@ export default {
                         cache: "no-cache",
                         credentials: "same-origin",
                         headers: {"Content-Type": "application/json"},
-                        body: JSON.stringify(data)
+                        body: JSON.stringify(credentials)
+            }).then(res => {
+                console.log('imidiate res', res);
+                if(!res.ok) {
+                    return res.text().then(text => {
+                        throw Error(text);
+                    });
+                }else {
+                    return res.json()
+                }
+                
+                
             })
         }
 
