@@ -14,7 +14,7 @@ const store = configureStore();
 export default function Main() {
     return (
       <StoreProvider store={store}>
-        <PaperProvider theme={DarkTheme}>
+        <PaperProvider>
           <App />
         </PaperProvider>
       </StoreProvider>

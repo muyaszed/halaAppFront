@@ -1,3 +1,5 @@
+import {AsyncStorage} from 'react-native';
+
 let restaurantList = [
     {
         id: 1,
@@ -21,17 +23,29 @@ export default {
     },
     post: {
         restaurants: (data) => {
-            const newData = {
-                id: restaurantList.length+1,
-                name: data.name,
-                location: data.location,
-                category: data.category,
-                user_id: 1
+            return new Promise(async (resolve, reject) => {
+                const newData = {
+                    id: restaurantList.length+1,
+                    name: data.name,
+                    location: data.location,
+                    category: data.category,
+                    user_id: 1
+    
+                }
 
-            }
-            restaurantList.push(newData);
-            return new Promise((resolve, reject) => {
-                resolve('')
+                const userToken = await AsyncStorage.getItem('userToken');
+                if (userToken) {
+                    if(data.name != "") {
+                        restaurantList.push(newData);
+                        resolve('')
+                    }else {
+                       reject(Error('Name cannot be empty'));
+                    }
+                    
+                }else {
+                    reject(Error('User Token required'));
+                }
+                
             });
         },
         authentication: (credentials) => {

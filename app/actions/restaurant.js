@@ -8,7 +8,7 @@ import { ADDING_RESTAURANT,
 
 import NavigationService from '../../NavigationService';
 import Api from '../api';
-// import App from '../App';
+import { openErrDialog } from './dialog';
 
 const addingRestaurant = () => {
     return {
@@ -35,13 +35,15 @@ export const addRestaurant = restaurantData => {
 
     return (dispatch) => {
         dispatch(addingRestaurant());
-        Api.post.restaurants(restaurantData).then(() => {
-            console.log('before dispatch');
+        Api.post.restaurants(restaurantData).then((res) => {
+            console.log(res);
             dispatch(addingRestaurantSuccess());
             console.log('after dispatch');
             NavigationService.navigate('Home');
         }).catch(error => {
+            console.log(error);
             dispatch(addingRestaurantFailure(error));
+            dispatch(openErrDialog());
         })
     }
     //alternative way by using async

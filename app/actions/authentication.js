@@ -2,11 +2,14 @@ import { AsyncStorage } from 'react-native';
 import {
     AUTHENTICATING,
     AUTHENTICATION_SUCCESS,
-    AUTEHTICATION_FAILURE
+    AUTEHTICATION_FAILURE,
+    ERROR_DIALOG_CLOSED,
+   
 } from './types'
 
 import Api from '../api';
 import NavigationService from '../../NavigationService';
+import { openErrDialog } from './dialog';
 
 const authenticatingUser = () => {
     return {
@@ -51,18 +54,22 @@ export const authUser = (credentials) => {
                 
                 dispatch(authenticationSuccess());
             
-                NavigationService.navigate('Home');
+                NavigationService.navigate('AuthLoading');
             }).catch(error => {
                 console.log('this is an Asyncstorage error', error);
                 dispatch(authenticationFailure(error));
-                NavigationService.navigate('Auth');
+                NavigationService.navigate('AuthLoading');
             })
             
             
         }).catch(error => {
             console.log('this is an error', error);
             dispatch(authenticationFailure(error));
-            NavigationService.navigate('Auth');
+            dispatch(openErrDialog());
+            NavigationService.navigate('AuthLoading');
         })
     }
 }
+
+
+

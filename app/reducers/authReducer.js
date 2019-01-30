@@ -1,13 +1,14 @@
 import {
     AUTHENTICATING,
     AUTHENTICATION_SUCCESS,
-    AUTEHTICATION_FAILURE
+    AUTEHTICATION_FAILURE,
+    
 } from '../actions/types'
 
 const initialState = {
-    userAuhtneticated: false,
+    userAuthenticated: false,
     authenticating: false,
-    error: []
+    errors: {}
 }
 
 const authReducer = (state = initialState, action) => {
@@ -16,24 +17,24 @@ const authReducer = (state = initialState, action) => {
             return {
                 ...state,
                 authenticating: true,
-                userAuhtneticated:false,
-                error: []
+                userAuthenticated:false,
+                errors: {}
             }
 
         case AUTHENTICATION_SUCCESS:
             return {
                 ...state,
                 authenticating: false,
-                userAuhtneticated: true,
-                error: []
+                userAuthenticated: true,
+                errors: {}
             }
 
         case AUTEHTICATION_FAILURE:
             return {
                 ...state,
                 authenticating: false,
-                userAuhtneticated: false,
-                error: action.error
+                userAuthenticated: false,
+                errors: action.error
             }
         
         default:

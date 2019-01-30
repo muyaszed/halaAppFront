@@ -10,7 +10,10 @@ const initialState = {
     data: [],
     dataAdded: false,
     isAdding: false,
-    error: []
+    errorFlag: false,
+    errors: {
+
+    }
 }
 
 const restaurantReducer = (state = initialState, action) => {
@@ -21,7 +24,8 @@ const restaurantReducer = (state = initialState, action) => {
                 data: [],
                 isAdding: true,
                 dataAdded: false,
-                error: []
+                errorFlag: false,
+                errors: {}
             }
         case ADD_RESTAURANT_SUCCESS:
             return {
@@ -29,7 +33,8 @@ const restaurantReducer = (state = initialState, action) => {
                 data: [],
                 isAdding: false,
                 dataAdded: true,
-                error: []
+                errorFlag: false,
+                errors: {}
             }
         case ADD_RESTAURANT_FAILED:
             return {
@@ -37,7 +42,8 @@ const restaurantReducer = (state = initialState, action) => {
                 data: [],
                 isAdding: false,
                 dataAdded: false,
-                error: action.error
+                errorFlag: true,
+                errors: action.error
             }
         case GETTING_RESTAURANTS:
             return {
@@ -45,7 +51,8 @@ const restaurantReducer = (state = initialState, action) => {
                 data: [],
                 isAdding: true,
                 dataAdded: false,
-                error: []
+                errorFlag: false,
+                errors: {}
             }
         case GET_RESTAURANTS_SUCCESS:
             return {
@@ -53,7 +60,8 @@ const restaurantReducer = (state = initialState, action) => {
                 data: action.data,
                 isAdding:false,
                 dataAdded: true,
-                error: []
+                errorFlag: false,
+                errors: {}
             }
         case GET_RESTAURANTS_FAILURE:
             return {
@@ -61,7 +69,8 @@ const restaurantReducer = (state = initialState, action) => {
                 data: [],
                 isAdding: false,
                 dataAdded: false,
-                error: action.error
+                errorFlag: true,
+                errors: action.error
             }
         
         default:

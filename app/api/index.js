@@ -1,6 +1,6 @@
 import {API} from 'react-native-dotenv';
-import realApi from './api';
-import fakeApi from './api.e2e';
+import realApi from './realAPI';
+import fakeApi from './fakeAPI';
 
 let api;
 console.log("status", API);

@@ -1,30 +1,37 @@
 import React, { Component } from "react";
-import { View, AsyncStorage } from 'react-native';
+import { View } from 'react-native';
 import { connect } from 'react-redux';
 import { authUser } from '../actions/authentication';
-import SignInForm from '../components/Signinform'
+import { closeErrDialog } from '../actions/dialog';
+import SignInForm from '../components/Signinform';
+import ErrorDialog from "../components/ErrorDialog";
 
 
 class SignInScreen extends Component {
-    
-
+   
     static navigationOptions = {
         title: 'Please sign in'
     }
 
     handleAuth = (credentials) => {
-        this.props.auth(credentials); 
+        this.props.getAuth(credentials); 
         
       }
     
-      
+    handleClose = () => {
+        console.log('inside handle close')
+        this.props.closeErrDialog();
+    }  
 
      
     render() {
-        
+        const { auth, dialog } = this.props;
         return (
             <View testId="signinScreen" style={{ flex: 1, justifyContent: 'center'}}>
+                
+                <ErrorDialog errMessage={auth} dialog={dialog} onClose={this.handleClose}/>
                 <SignInForm onAuth={this.handleAuth}/>
+                
             </View>
         )
     }
@@ -32,10 +39,20 @@ class SignInScreen extends Component {
 
 const mapDispatchToProps = dispatch => {
     return {
-      auth: (credentials) => {
+      getAuth: (credentials) => {
         dispatch(authUser(credentials))
+      },
+      closeErrDialog: () => {
+          dispatch(closeErrDialog())
       }
     }
   }
 
-export default connect(undefined, mapDispatchToProps)(SignInScreen);
+const mapStateToProps = state => {
+    return {
+        auth: state.authentication,
+        dialog: state.dialog
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignInScreen);
