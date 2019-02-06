@@ -4,13 +4,21 @@ import { createAppContainer, createStackNavigator, createSwitchNavigator } from 
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 import NavigationService from '../NavigationService';
 import HomeScreen from './screens/Homescreen';
+import RestaurantScreen from './screens/Restaurantscreen';
 import AddScreen from './screens/Addscreen';
 import ProfileScreen from './screens/Profilescreen'; 
 import SignInScreen from './screens/Signinscreen';
 import AuthLoadingScreen from './screens/Authloadingscreen'
 
+const RestaurantStack = createStackNavigator({
+  List: HomeScreen,
+  Item: RestaurantScreen
+}, {
+  initialRouteName: 'List'
+});
+
 const TabNavigator = createMaterialBottomTabNavigator({
-  Home: HomeScreen,
+  Home: RestaurantStack,
   Add: AddScreen,
   Profile: ProfileScreen 
 }, {

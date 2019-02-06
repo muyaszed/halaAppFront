@@ -6,8 +6,17 @@ let restaurantList = [
         name: 'Test Shop',
         location: 'Johore',
         category: 'Johore',
+        desc: 'Very well known for its johor and singapore dishes',
         user_id: 1
-    }
+    },
+    {
+        id: 2,
+        name: 'Test Halal',
+        location: 'London',
+        category: 'Steak',
+        desc: 'No so bad compared to the others',
+        user_id: 1
+    },
 ]
 
 export default {
@@ -29,6 +38,7 @@ export default {
                     name: data.name,
                     location: data.location,
                     category: data.category,
+                    desc: data.desc,
                     user_id: 1
     
                 }

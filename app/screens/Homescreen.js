@@ -10,10 +10,6 @@ import RestaurantList from '../components/Restaurantlist';
 class HomeScreen extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            data: []
-        };
-        
         
     }
     static navigationOptions = {
@@ -30,6 +26,11 @@ class HomeScreen extends Component {
       });
       
     }
+
+    handlePressItem = (item) => {
+      
+      this.props.navigation.navigate('Item', {PressedItem: item});
+    }
     
     
 
@@ -37,7 +38,7 @@ class HomeScreen extends Component {
       const { restaurants } = this.props;
       return (
         <View testID="homeScreen" style={{ flex: 1, justifyContent: 'center' }}>
-          <RestaurantList data={ restaurants.data }/>
+          <RestaurantList data={ restaurants.data } pressItem={this.handlePressItem}/>
         </View>
       );
     }

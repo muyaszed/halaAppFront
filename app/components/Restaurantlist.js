@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, FlatList, Text } from 'react-native';
+import { View, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 
 import RestaurantItem from './Restaurantitem';
 
 export default class RestaurantList extends Component {
     
-   
+    handlePressItem = (item) => {
+      this.props.pressItem(item);
+    }
 
     render () {
 
@@ -18,7 +20,9 @@ export default class RestaurantList extends Component {
               keyExtractor={(item) => item.id.toString()}
               renderItem={
                   ({item}) => 
-                <RestaurantItem item={item}/>
+                    
+                      <RestaurantItem item={item} pressItem={this.handlePressItem}/>
+                    
               }
             />
           </View> 
