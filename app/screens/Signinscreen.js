@@ -26,6 +26,7 @@ class SignInScreen extends Component {
      
     render() {
         const { auth, dialog } = this.props;
+        console.log('this is auth', auth)
         return (
             <View testId="signinScreen" style={{ flex: 1, justifyContent: 'center'}}>
                 

@@ -14,9 +14,10 @@ export default {
                         headers: myHeaders
                     }).then(res => {
                         if (!res.ok) {
-                            return res.text().then(text => {
-                                throw Error(text);
-                            });
+                            return res.json().then(err => {
+                                console.log(err)
+                                throw new Error(err.message);
+                            })
                         }else {
                             return res.json();
                         }
@@ -33,21 +34,25 @@ export default {
     },
 
     post: {
-        restaurants: (data) => {
+        restaurants: (data, token) => {
+            const myHeaders = new Headers({
+                "Content-Type": "application/json",
+                "Authorization": token
+            });
             return fetch('http://localhost:3000/restaurants', {
                         method: "POST",
                         mode: "cors",
                         cache: "no-cache",
                         credentials: "same-origin",
-                        headers: {"Content-Type": "application/json"},
+                        headers: myHeaders,
                         body: JSON.stringify(data)
                     }).then(res => {
+                        
                         if(!res.ok) {
-                            return res.text().then(text => {
-                                throw Error(text);
+                            return res.json().then(err => {
+                                console.log(err)
+                                throw new Error(err.message);
                             })
-                        }else {
-                            return res
                         }
                     })
         },
@@ -74,9 +79,10 @@ export default {
             }).then(res => {
                 console.log('imidiate res', res);
                 if(!res.ok) {
-                    return res.text().then(text => {
-                        throw Error(text);
-                    });
+                    return res.json().then(err => {
+                        console.log(err)
+                        throw new Error(err.message);
+                    })
                 }else {
                     return res.json()
                 }

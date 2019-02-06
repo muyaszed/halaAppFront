@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import { View, Text, AsyncStorage, Button } from 'react-native';
+import { connect } from 'react-redux';
+
+import { unAuthUser } from '../actions/authentication';
 
 class ProfileScreen extends Component {
     static navigationOptions = {
@@ -7,11 +10,7 @@ class ProfileScreen extends Component {
     };
 
     handlePress = async () => {
-      const { navigation } = this.props;
-      await AsyncStorage.clear().then(() => {
-        navigation.navigate('AuthLoading');
-      })
-      
+      this.props.unAuthUser();
     }
 
     render() {
@@ -24,6 +23,12 @@ class ProfileScreen extends Component {
     }
   }
 
-  
+  const mapDispatchToProps = (dispatch) => {
+    return {
+      unAuthUser: () => {
+        dispatch(unAuthUser());
+      }
+    }
+  }
 
-  export default ProfileScreen;
+  export default connect(undefined, mapDispatchToProps)(ProfileScreen);

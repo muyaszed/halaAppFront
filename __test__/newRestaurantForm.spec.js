@@ -4,6 +4,7 @@ import { render, fireEvent } from 'react-native-testing-library';
 import NewRestaurantForm from '../app/components/Newrestaurantform';
 
 describe('<NewRestaurantForm />', () => {
+    jest.useFakeTimers();
     const handleAdd = jest.fn();
     const item = {
         name: 'Sushi Toyyiba',

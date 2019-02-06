@@ -33,8 +33,8 @@ class AddScreen extends Component {
 
   const mapDispatchToProps = dispatch => {
     return {
-      add: (data) => {
-        dispatch(addRestaurant(data))
+      add: (data, token) => {
+        dispatch(addRestaurant(data, token))
       },
       closeErrDialog: () => {
         dispatch(closeErrDialog())

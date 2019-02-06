@@ -1,7 +1,12 @@
 import React, { Component } from "react";
 import { Dialog, Portal, Paragraph, Button } from 'react-native-paper';
 
-export default class ErrorDialog extends Component {
+class ErrorDialog extends Component {
+    constructor(props) {
+        super(props);
+    
+    }
+
 
     handlePress = () => {
         console.log('insied dialog handle press');
@@ -12,15 +17,16 @@ export default class ErrorDialog extends Component {
     render() {
         const { errMessage, dialog } = this.props;
         return (
-                <Portal>
+                
+                <Portal testID="errorDialog">
                     <Dialog
-                        testId="errorDialog"
+                        
                         visible={dialog.errorFlag}
                     >
                         <Dialog.Title>Alert</Dialog.Title>
                         <Dialog.Content>
-                            {console.log(errMessage)}
-                        <Paragraph>{errMessage.errors.message}</Paragraph>
+                            {console.log(errMessage.errors)}
+                        <Paragraph testID='errorMessage'>{errMessage.errors.message}</Paragraph>
                         </Dialog.Content>
                         <Dialog.Actions>
                         <Button testID="errOkBtn" onPress={this.handlePress}>OK</Button>
@@ -28,6 +34,9 @@ export default class ErrorDialog extends Component {
 
                     </Dialog>
                 </Portal>
+                
         )
     }
 }
+
+export default ErrorDialog;

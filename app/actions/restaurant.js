@@ -1,3 +1,4 @@
+import { AsyncStorage } from 'react-native';
 import { ADDING_RESTAURANT, 
          ADD_RESTAURANT_SUCCESS, 
          ADD_RESTAURANT_FAILED,
@@ -9,6 +10,12 @@ import { ADDING_RESTAURANT,
 import NavigationService from '../../NavigationService';
 import Api from '../api';
 import { openErrDialog } from './dialog';
+
+const getToken = async () => {
+    return await AsyncStorage.getItem('userToken');
+}
+
+
 
 const addingRestaurant = () => {
     return {
@@ -33,15 +40,16 @@ const addingRestaurantFailure = (error) => {
 
 export const addRestaurant = restaurantData => {
 
-    return (dispatch) => {
+    return async (dispatch) => {
         dispatch(addingRestaurant());
-        Api.post.restaurants(restaurantData).then((res) => {
+        const token = await getToken();
+        Api.post.restaurants(restaurantData, token).then((res) => {
             console.log(res);
             dispatch(addingRestaurantSuccess());
             console.log('after dispatch');
             NavigationService.navigate('Home');
         }).catch(error => {
-            console.log(error);
+            console.log(error.Error);
             dispatch(addingRestaurantFailure(error));
             dispatch(openErrDialog());
         })
@@ -82,9 +90,12 @@ const getRestaurantsFailure = error => {
 }
 
                 
-export const getRestaurants = (token) => {
-    return (dispatch) => {
+export const getRestaurants = () => {
+
+    return async (dispatch) => {
         dispatch(gettingRestaurants());
+       const token = await getToken();
+       console.log(token);
         Api.get.restaurants(token)
             .then(resJson => {
                 console.log('get response', resJson);

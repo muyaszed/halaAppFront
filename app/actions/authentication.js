@@ -2,8 +2,8 @@ import { AsyncStorage } from 'react-native';
 import {
     AUTHENTICATING,
     AUTHENTICATION_SUCCESS,
-    AUTEHTICATION_FAILURE,
-    ERROR_DIALOG_CLOSED,
+    AUTHENTICATION_FAILURE,
+    UNAUTHENTICATION,
    
 } from './types'
 
@@ -25,15 +25,20 @@ const authenticationSuccess = () => {
 
 const authenticationFailure = (error) => {
     return {
-        type: AUTEHTICATION_FAILURE,
+        type: AUTHENTICATION_FAILURE,
         error
+    }
+}
+
+const unauthenticationUser = () => {
+    return {
+        type: UNAUTHENTICATION
     }
 }
 
 const storeToken = async (token) => {
     try {
-        const userToken = await AsyncStorage.setItem('userToken', token)
-        return userToken;
+        await AsyncStorage.setItem('userToken', token)
     } catch(error) {
         throw Error(error);
         
@@ -42,24 +47,22 @@ const storeToken = async (token) => {
 
 };
 
+const removeUserToken = async () => {
+    await AsyncStorage.removeItem('userToken');
+}
+
 
 export const authUser = (credentials) => {
     return (dispatch) => {
         
         dispatch(authenticatingUser());
         Api.post.authentication(credentials)
-        .then(resJson => {
+        .then(async(resJson) => {
             console.log('this is a res',resJson);
-            storeToken(resJson.auth_token).then((res) => {
-                
-                dispatch(authenticationSuccess());
+            await storeToken(resJson.auth_token)
+            dispatch(authenticationSuccess());
+            NavigationService.navigate('AuthLoading');
             
-                NavigationService.navigate('AuthLoading');
-            }).catch(error => {
-                console.log('this is an Asyncstorage error', error);
-                dispatch(authenticationFailure(error));
-                NavigationService.navigate('AuthLoading');
-            })
             
             
         }).catch(error => {
@@ -68,6 +71,14 @@ export const authUser = (credentials) => {
             dispatch(openErrDialog());
             NavigationService.navigate('AuthLoading');
         })
+    }
+}
+
+export const unAuthUser = () => {
+    return async (dispatch) => {
+        await removeUserToken();
+        dispatch(unauthenticationUser());
+        NavigationService.navigate('AuthLoading');
     }
 }
 

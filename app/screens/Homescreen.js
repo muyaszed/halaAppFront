@@ -25,9 +25,7 @@ class HomeScreen extends Component {
     componentDidMount() {
       const {navigation, getData} = this.props;
       this.focusListener = navigation.addListener('didFocus', () => {
-        AsyncStorage.getItem('userToken').then(token => {
-          getData(token);
-        })
+        getData();
         
       });
       
@@ -47,7 +45,7 @@ class HomeScreen extends Component {
 
   const mapDispatchToProps = dispatch => {
     return {
-      getData: (token) => dispatch(getRestaurants(token))
+      getData: () => dispatch(getRestaurants())
     }
   }
 

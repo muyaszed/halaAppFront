@@ -1,7 +1,8 @@
 import {
     AUTHENTICATING,
     AUTHENTICATION_SUCCESS,
-    AUTEHTICATION_FAILURE,
+    AUTHENTICATION_FAILURE,
+    UNAUTHENTICATION
     
 } from '../actions/types'
 
@@ -29,12 +30,20 @@ const authReducer = (state = initialState, action) => {
                 errors: {}
             }
 
-        case AUTEHTICATION_FAILURE:
+        case AUTHENTICATION_FAILURE:
             return {
                 ...state,
                 authenticating: false,
                 userAuthenticated: false,
                 errors: action.error
+            }
+
+        case UNAUTHENTICATION:
+            return {
+                ...state,
+                authenticating: false,
+                userAuthenticated: false,
+                errors: {}
             }
         
         default:

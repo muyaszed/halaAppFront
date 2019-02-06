@@ -4,7 +4,7 @@ import { render, fireEvent } from 'react-native-testing-library';
 import SignInForm from '../app/components/Signinform';
 
 describe('<SignInForm />', () => {
-
+    jest.useFakeTimers();
     const handleAuth = jest.fn();
     const credentials = {
         email: 'test@email.com',
