@@ -1,15 +1,7 @@
-import {API} from 'react-native-dotenv';
-import realApi from './realAPI';
-import fakeApi from './fakeAPI';
+import { API } from 'react-native-dotenv';
+import realApi from './api';
+import fakeApi from './fakeApi';
 
-let api;
-console.log("status", API);
-if(API === 'fake') {
-   api = fakeApi;
-}else {
-   api = realApi;
-}
+const api = API === 'fake' ? fakeApi : realApi;
 
 export default api;
-
-// export default realApi;

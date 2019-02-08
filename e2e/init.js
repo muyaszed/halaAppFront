@@ -1,6 +1,7 @@
+/* eslint-disable import/no-extraneous-dependencies */
 const detox = require('detox');
-const config = require('../package.json').detox;
 const adapter = require('detox/runners/jest/adapter');
+const config = require('../package.json').detox;
 
 jest.setTimeout(120000);
 jasmine.getEnv().addReporter(adapter);

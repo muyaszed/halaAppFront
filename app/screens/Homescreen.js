@@ -1,62 +1,60 @@
 import React, { Component } from 'react';
-import { View, AsyncStorage } from 'react-native';
+import { View } from 'react-native';
 import { withNavigation } from 'react-navigation';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 import { getRestaurants } from '../actions/restaurant';
 import RestaurantList from '../components/Restaurantlist';
 
-
 class HomeScreen extends Component {
-    constructor(props) {
-        super(props);
-        
-    }
-    static navigationOptions = {
-      tabBarTestID: 'homeTab'
-    };
+  static navigationOptions = {
+    tabBarTestID: 'homeTab',
+  };
 
-    
-
-    componentDidMount() {
-      const {navigation, getData} = this.props;
-      this.focusListener = navigation.addListener('didFocus', () => {
-        getData();
-        
-      });
-      
-    }
-
-    handlePressItem = (item) => {
-      
-      this.props.navigation.navigate('Item', {PressedItem: item});
-    }
-    
-    
-
-    render() {
-      const { restaurants } = this.props;
-      return (
-        <View testID="homeScreen" style={{ flex: 1, justifyContent: 'center' }}>
-          <RestaurantList data={ restaurants.data } pressItem={this.handlePressItem}/>
-        </View>
-      );
-    }
+  componentDidMount() {
+    const { navigation, getData } = this.props;
+    this.focusListener = navigation.addListener('didFocus', () => {
+      getData();
+    });
   }
 
-  const mapDispatchToProps = dispatch => {
-    return {
-      getData: () => dispatch(getRestaurants())
-    }
-  }
+  handlePressItem = (item) => {
+    const { navigation } = this.props;
+    navigation.navigate('Item', { PressedItem: item });
+  };
 
-  const mapStateToProps = state => {
-    return {
-      restaurants: state.restaurants
-    }
+  render() {
+    const { restaurants } = this.props;
+    return (
+      <View testID="homeScreen" style={{ flex: 1, justifyContent: 'center' }}>
+        <RestaurantList
+          data={restaurants.data}
+          pressItem={this.handlePressItem}
+        />
+      </View>
+    );
   }
+}
 
-  export default withNavigation(connect(
+const mapDispatchToProps = dispatch => ({
+  getData: () => dispatch(getRestaurants()),
+});
+
+const mapStateToProps = state => ({
+  restaurants: state.restaurants,
+});
+
+export default withNavigation(
+  connect(
     mapStateToProps,
-    mapDispatchToProps
-  )(HomeScreen));
+    mapDispatchToProps,
+  )(HomeScreen),
+);
+
+HomeScreen.propTypes = {
+  getData: PropTypes.func.isRequired,
+  restaurants: PropTypes.objectOf(
+    PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+  ).isRequired,
+};

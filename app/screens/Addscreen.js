@@ -1,52 +1,66 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { addRestaurant } from '../actions/restaurant';
 import { closeErrDialog } from '../actions/dialog';
 import NewRestaurantForm from '../components/Newrestaurantform';
 import ErrorDialog from '../components/ErrorDialog';
 
 class AddScreen extends Component {
-    static navigationOptions = {
-      tabBarTestID: 'addTab'
-    };
-
-    handleAdd = (data) => {
-      this.props.add(data);
-      
-    }
-
-    handleClose = () => {
-      this.props.closeErrDialog();
-    }
-  
-    render() {
-      const { restaurant, dialog } = this.props;
-      return (
-        <View testID="addScreen" style={{ flex: 1, justifyContent: 'center'}}>
-          <ErrorDialog errMessage={restaurant} dialog={dialog} onClose={this.handleClose}/>
-          <NewRestaurantForm onAdd={this.handleAdd}/>
-        </View> 
-      );
-    }
+  static navigationOptions = {
+    tabBarTestID: 'addTab',
   };
 
-  const mapDispatchToProps = dispatch => {
-    return {
-      add: (data, token) => {
-        dispatch(addRestaurant(data, token))
-      },
-      closeErrDialog: () => {
-        dispatch(closeErrDialog())
-      }
-    }
-  }
+  handleAdd = (data) => {
+    const { add } = this.props;
+    add(data);
+  };
 
-  const mapStateToProps = state => {
-    return {
-        restaurant: state.restaurants,
-        dialog: state.dialog
-    }
+  handleClose = () => {
+    const { errDialog } = this.props;
+    errDialog();
+  };
+
+  render() {
+    const { restaurant, dialog } = this.props;
+    return (
+      <View testID="addScreen" style={{ flex: 1, justifyContent: 'center' }}>
+        <ErrorDialog
+          errMessage={restaurant.errors}
+          errFlag={dialog.errorFlag}
+          onClose={this.handleClose}
+        />
+        <NewRestaurantForm onAdd={this.handleAdd} />
+      </View>
+    );
+  }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddScreen);
+const mapDispatchToProps = dispatch => ({
+  add: (data, token) => {
+    dispatch(addRestaurant(data, token));
+  },
+  errDialog: () => {
+    dispatch(closeErrDialog());
+  },
+});
+
+const mapStateToProps = state => ({
+  restaurant: state.restaurants,
+  dialog: state.dialog,
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(AddScreen);
+
+AddScreen.propTypes = {
+  add: PropTypes.func.isRequired,
+  errDialog: PropTypes.func.isRequired,
+  restaurant: PropTypes.objectOf(
+    PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
+  ).isRequired,
+  dialog: PropTypes.objectOf(PropTypes.bool).isRequired,
+};
