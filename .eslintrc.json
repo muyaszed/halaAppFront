@@ -1,0 +1,22 @@
+{
+    "extends": "airbnb",
+    "env": {
+        "jest": true,
+        "jasmine": true
+    },
+    "rules": {
+        "react/jsx-filename-extension": [
+            2,
+            {
+                "extensions": [".js", ".jsx"]
+            }
+        ],
+        "react/prop-types": ["error", { "ignore": ["navigation"] }]
+    },
+    "plugins": ["detox"],
+    "parser": "babel-eslint",
+    "globals": {
+        "fetch": true
+    }
+    
+}
