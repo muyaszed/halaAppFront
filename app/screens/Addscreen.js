@@ -10,6 +10,7 @@ import ErrorDialog from '../components/ErrorDialog';
 class AddScreen extends Component {
   static navigationOptions = {
     tabBarTestID: 'addTab',
+    
   };
 
   handleAdd = (data) => {
@@ -38,8 +39,8 @@ class AddScreen extends Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-  add: (data, token) => {
-    dispatch(addRestaurant(data, token));
+  add: (data) => {
+    dispatch(addRestaurant(data));
   },
   errDialog: () => {
     dispatch(closeErrDialog());
@@ -59,8 +60,6 @@ export default connect(
 AddScreen.propTypes = {
   add: PropTypes.func.isRequired,
   errDialog: PropTypes.func.isRequired,
-  restaurant: PropTypes.objectOf(
-    PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
-  ).isRequired,
+  restaurant: PropTypes.instanceOf(Object).isRequired,
   dialog: PropTypes.objectOf(PropTypes.bool).isRequired,
 };

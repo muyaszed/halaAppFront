@@ -24,7 +24,6 @@ describe('Visiting home screen', () => {
       await element(by.id('signinButton')).tap();
 
       await expect(element(by.id('restaurantList'))).toBeVisible();
-      await expect(element(by.id('homeTab'))).toBeVisible();
       await expect(element(by.id('addTab'))).toBeVisible();
       await expect(element(by.id('profileTab'))).toBeVisible();
     });
@@ -43,6 +42,15 @@ describe('Visiting home screen', () => {
       await expect(element(by.id('homeScreen'))).toBeNotVisible();
     });
 
+    it('display Home screen when home tab is press', async () => {
+      await element(by.id('profileTab')).tap();
+      await element(by.id('homeTab')).tap();
+      await expect(element(by.id('profileScreen'))).toBeNotVisible();
+      await expect(element(by.id('addScreen'))).toBeNotVisible();
+      await expect(element(by.id('homeScreen'))).toBeVisible();
+    });
+
+
     it('user able to logout', async () => {
       await element(by.id('profileTab')).tap();
       await element(by.id('logoutButton')).tap();
@@ -50,7 +58,7 @@ describe('Visiting home screen', () => {
     });
   });
 
-  describe.only('User logging in with invalid credentials', () => {
+  describe('User logging in with invalid credentials', () => {
     const credentials = {
       email: 'test@test.com',
       password: 'wrongpassword',

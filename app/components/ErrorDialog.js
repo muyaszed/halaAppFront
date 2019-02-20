@@ -11,8 +11,13 @@ class ErrorDialog extends Component {
     onClose();
   };
 
+  handleDelete = () => {
+    const { onDelete } = this.props;
+    onDelete();
+  }
+
   render() {
-    const { errMessage, errFlag } = this.props;
+    const { errMessage, errFlag, deleteReview } = this.props;
     return (
       <Portal testID="errorDialog">
         <Dialog visible={errFlag}>
@@ -21,7 +26,7 @@ class ErrorDialog extends Component {
             <Paragraph testID="errorMessage">{errMessage}</Paragraph>
           </Dialog.Content>
           <Dialog.Actions>
-            <Button testID="errOkBtn" onPress={this.handlePress}>
+            <Button testID="errOkBtn" onPress={deleteReview ? this.handleDelete : this.handlePress}>
               OK
             </Button>
           </Dialog.Actions>
@@ -36,5 +41,13 @@ export default ErrorDialog;
 ErrorDialog.propTypes = {
   errMessage: PropTypes.string.isRequired,
   errFlag: PropTypes.bool.isRequired,
-  onClose: PropTypes.func.isRequired,
+  onClose: PropTypes.func,
+  onDelete: PropTypes.func,
+  deleteReview: PropTypes.bool,
+};
+
+ErrorDialog.defaultProps = {
+  deleteReview: false,
+  onClose: () => {},
+  onDelete: () => {},
 };

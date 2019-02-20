@@ -27,9 +27,10 @@ const unauthenticationUser = () => ({
   type: UNAUTHENTICATION,
 });
 
-const storeToken = async (token) => {
+const storeToken = async (token, user) => {
   try {
     await AsyncStorage.setItem('userToken', token);
+    await AsyncStorage.setItem('currentUser', JSON.stringify(user));
   } catch (error) {
     throw Error(error);
   }
@@ -37,6 +38,7 @@ const storeToken = async (token) => {
 
 const removeUserToken = async () => {
   await AsyncStorage.removeItem('userToken');
+  await AsyncStorage.removeItem('currentUser');
 };
 
 export const authUser = credentials => (dispatch) => {
@@ -44,7 +46,7 @@ export const authUser = credentials => (dispatch) => {
   Api.post
     .authentication(credentials)
     .then(async (resJson) => {
-      await storeToken(resJson.auth_token);
+      await storeToken(resJson.auth_token, resJson.user);
       dispatch(authenticationSuccess());
       NavigationService.navigate('AuthLoading');
     })

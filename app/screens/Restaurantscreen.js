@@ -1,68 +1,67 @@
-import React, { Component } from 'react';
-import { View, Text } from 'react-native';
-import { Button } from 'react-native-paper';
-// import PropTypes from 'prop-types';
+import React from 'react';
+import { View, Text, StyleSheet, Image } from 'react-native';
+import { Card, Title, Paragraph, Divider } from 'react-native-paper';
 
-class RestaurantScreen extends Component {
-  static navigationOptions = ({ navigation }) => {
-    const { PressedItem } = navigation.state.params;
+const styles = StyleSheet.create({
+  card: {
+    marginLeft: 10,
+    marginRight: 10,
+    marginTop: -30,
+    height: 200,
+    borderRadius: 10,
+  },
+  container: {
+    flex: 1,
+    flexDirection: 'column',
+  },
+  header: {
+    height: 300,
+  },
+  bgImage: {
+    flex: 1,
+    resizeMode: 'cover',
+  },
+  divider: {
+    backgroundColor: 'black',
+    marginTop: 5,
+    marginBottom: 5,
+    marginLeft: 10,
+    marginRight: 10,
+    height: 2,
+  }
+});
+
+class RestaurantScreen extends React.Component {
+  static navigationOptions = ({navigationOptions}) => {
     return {
-      title: PressedItem.name,
-    };
-  };
+      tabBarTestID: 'detailTab'
+    }
+  }
 
   render() {
     const { navigation } = this.props;
+    const PressedItem = navigation.getParam('PressedItem');
     return (
-      <View
-        style={{
-          flex: 1,
-          flexDirection: 'row',
-          justifyContent: 'space-around',
-          alignItems: 'flex-start',
-        }}
-      >
-        <Text>Menu</Text>
-        <Button
-          onPress={() => {
-            navigation.navigate('Menu');
-          }}
-          style={{ width: '33.33%' }}
-          mode="text"
-        >
-          Menu
-        </Button>
-        <Button
-          onPress={() => {
-            navigation.navigate('Review');
-          }}
-          style={{ width: '33.33%' }}
-          mode="text"
-        >
-          Review
-        </Button>
-        <Button
-          onPress={() => {
-            navigation.navigate('Map');
-          }}
-          style={{ width: '33.33%' }}
-          mode="text"
-        >
-          Map
-        </Button>
-
-        <View />
+      <View testID="restaurantScreen" style={styles.container}>
+        <View style={styles.header}>
+          <Image
+            style={styles.bgImage}
+            source={{ uri: 'https://loremflickr.com/320/240/restaurant,cafe/all' }}
+          />
+        </View>
+        <Card elevation={30} style={styles.card}>
+          <Card.Content style={styles.content}>
+            <Title testID="restaurantDesc">{PressedItem.name}</Title>
+            <Paragraph>{PressedItem.desc}</Paragraph>
+            <Divider style={styles.divider} inset={true}/>
+            <Title testID="restaurantLocation">Location</Title>
+            <Paragraph>{PressedItem.location}</Paragraph>
+            <Divider style={styles.divider} inset={true}/>
+          </Card.Content>
+        </Card>
       </View>
     );
   }
 }
 
 export default RestaurantScreen;
-
-// RestaurantScreen.propTypes = {
-//   navigation: PropTypes.objectOf(
-//     PropTypes.oneOfType([
-//       PropTypes.func
-//     ])
-//   ).isRequired,
-// };

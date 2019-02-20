@@ -10,27 +10,30 @@ export default class NewRestaurantForm extends Component {
       name: '',
       location: '',
       category: '',
+      desc: ''
     };
   }
 
   handlePress = () => {
-    const { name, location, category } = this.state;
+    const { name, location, category, desc } = this.state;
     const { onAdd } = this.props;
     const data = {
       name,
       location,
       category,
+      desc,
     };
     onAdd(data);
     this.setState({
       name: '',
       location: '',
       category: '',
+      desc: ''
     });
   };
 
   render() {
-    const { name, location, category } = this.state;
+    const { name, location, category, desc } = this.state;
     return (
       <View style={{ flex: 1 }}>
         <TextInput
@@ -57,6 +60,16 @@ export default class NewRestaurantForm extends Component {
           label="Category"
           value={category}
           onChangeText={inputCategory => this.setState({ category: inputCategory })
+          }
+        />
+        <TextInput
+          mode="outlined"
+          testID="restaurantDescInputText"
+          label="Description"
+          value={desc}
+          multiline={true}
+          numberOfLines={10}
+          onChangeText={inputDesc => this.setState({ desc: inputDesc })
           }
         />
         <Button

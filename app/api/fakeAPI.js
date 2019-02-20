@@ -19,16 +19,43 @@ const restaurantList = [
   },
 ];
 
+const reviewsList = [
+  {
+    id: 1,
+    user: {
+      first_name: 'Yazed',
+      last_name: 'Jamal',
+    },
+    comment: 'Very nice restaurant',
+    user_id: 1,
+  },
+  {
+    id: 2,
+    user: {
+      first_name: 'Sarah',
+      last_name: 'Malek',
+    },
+    comment: 'Awsome environment, and the food is great',
+    user_id: 2,
+  },
+];
+
 const userToken = AsyncStorage.getItem('userToken');
 
 export default {
   get: {
-    restaurants: () => Promise((resolve) => {
+    restaurants: () => new Promise((resolve) => {
       resolve(restaurantList);
+    }),
+    reviews: id => new Promise((resolve) => {
+      
+      if (id) {
+        resolve(reviewsList);
+      }
     }),
   },
   post: {
-    restaurants: data => Promise((resolve, reject) => {
+    restaurants: data => new Promise((resolve, reject) => {
       const newData = {
         id: restaurantList.length + 1,
         name: data.name,
@@ -48,7 +75,7 @@ export default {
         reject(Error('Token is required'));
       }
     }),
-    authentication: credentials => Promise((resolve, reject) => {
+    authentication: credentials => new Promise((resolve, reject) => {
       const user = {
         email: 'test@test.com',
         password: '123456',

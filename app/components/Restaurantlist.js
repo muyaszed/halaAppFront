@@ -22,6 +22,8 @@ export default class RestaurantList extends Component {
     pressItem(item);
   };
 
+  itemKey = item => JSON.stringify(item.id);
+
   render() {
     const { data } = this.props;
     return (
@@ -29,10 +31,8 @@ export default class RestaurantList extends Component {
         <FlatList
           testID="restaurantList"
           data={data}
-          keyExtractor={item => item.id.toString()}
-          renderItem={({ item }) => (
-            <RestaurantItem item={item} pressItem={this.handlePressItem} />
-          )}
+          keyExtractor={this.itemKey}
+          renderItem={({ item }) => <RestaurantItem item={item} pressItem={this.handlePressItem} />}
         />
       </View>
     );
@@ -41,5 +41,5 @@ export default class RestaurantList extends Component {
 
 RestaurantList.propTypes = {
   pressItem: PropTypes.func.isRequired,
-  data: PropTypes.objectOf(PropTypes.string).isRequired,
+  data: PropTypes.instanceOf(Object).isRequired,
 };

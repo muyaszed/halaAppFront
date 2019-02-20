@@ -2,6 +2,7 @@ import {
   createAppContainer,
   createStackNavigator,
   createSwitchNavigator,
+  createMaterialTopTabNavigator,
 } from 'react-navigation';
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 import HomeScreen from '../screens/Homescreen';
@@ -17,8 +18,8 @@ const RestaurantStack = createStackNavigator({
   List: HomeScreen,
 });
 
-const DetailStack = createStackNavigator({
-  Menu: RestaurantScreen,
+const DetailTab = createMaterialTopTabNavigator({
+  Detail: RestaurantScreen,
   Review: ReviewScreen,
   Map: MapScreen,
 });
@@ -29,21 +30,23 @@ const TabNavigator = createMaterialBottomTabNavigator(
     Add: AddScreen,
     Profile: ProfileScreen,
   },
-  {
-    initialRouteName: 'Home',
-    activeTintColor: '#FFFFFF',
-  },
 );
 
 TabNavigator.navigationOptions = {
   // Hide the header from AppNavigator stack
-  header: null,
+  // header: null,
 };
+
+
 
 const HomeStack = createStackNavigator({
   Tab: TabNavigator,
-  Item: DetailStack,
+  Item: DetailTab,
 });
+
+HomeStack.navigationOptions = {
+  title: "Home Stack"
+}
 
 const AuthStack = createStackNavigator({
   SignIn: SignInScreen,

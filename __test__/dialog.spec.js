@@ -7,11 +7,7 @@ describe('<ErrorDialog />', () => {
   jest.useFakeTimers();
   const handleClose = jest.fn();
   const { getByTestId } = render(
-    <ErrorDialog
-      onClose={handleClose}
-      dialog={{ errorFlag: true }}
-      errMessage={{ errors: { message: 'This is an error' } }}
-    />,
+    <ErrorDialog onClose={handleClose} errFlag errMessage="This is an error" />,
   );
   const dialog = getByTestId('errorDialog');
   it('renders error correcttly', () => {
@@ -21,7 +17,7 @@ describe('<ErrorDialog />', () => {
     expect(message).toBe('This is an error');
   });
 
-  it('calls the handle function correctly when ok button nis pressed', () => {
+  it('calls the handle function correctly when ok button is pressed', () => {
     const okBtn = dialog.props.children.props.children[2].props.children;
     fireEvent.press(okBtn);
     expect(handleClose).toBeCalled();

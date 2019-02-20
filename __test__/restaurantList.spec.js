@@ -1,23 +1,17 @@
 import React from 'react';
-import { render } from 'react-native-testing-library';
+import { render, fireEvent } from 'react-native-testing-library';
 
 import RestaurantList from '../app/components/Restaurantlist';
 
 describe('RestaurantList', () => {
-  // test componentDidMount cycle
-  // it('componentDidMount fetch data', () => {
+  const data = {
+    name: 'Tumes',
+    location: 'Johor',
+  };
 
-  //     const spy = jest.spyOn(RestaurantList.prototype, 'componentDidMount');
-  //     render(<RestaurantList />);
-  //     expect(spy).toHaveBeenCalledTimes(1);
-  // })
+  const { getByTestId } = render(<RestaurantList data={data} pressItem={() => {}} />);
 
   it('passed in the correct data from prop', () => {
-    const data = {
-      name: 'Tumes',
-      location: 'Johor',
-    };
-    const { getByTestId } = render(<RestaurantList data={data} />);
     const list = getByTestId('restaurantList');
     expect(list.props.data).toEqual(data);
   });

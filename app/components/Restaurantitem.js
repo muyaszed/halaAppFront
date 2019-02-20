@@ -1,37 +1,47 @@
 import React, { Component } from 'react';
-import { Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 import { Card, Title } from 'react-native-paper';
 import PropTypes from 'prop-types';
 
 const styles = StyleSheet.create({
   card: {
-    marginBottom: 10,
+    marginBottom: 60,
     marginLeft: 10,
     marginRight: 10,
+    height: 200,
+  },
+  content: {
+    backgroundColor: 'grey',
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+  },
+  background: {
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius: 10,
   },
 });
 
 export default class RestaurantItem extends Component {
   constructor(props) {
     super(props);
-    this.handleOnPress = this.handleClick.bind(this);
+    this.handlePress = this.handlePress.bind(this);
   }
 
-  handleOnPress = (item) => {
+  handlePress = (item) => {
     const { pressItem } = this.props;
     pressItem(item);
   };
 
   render() {
     const { item } = this.props;
+    const picUrl = 'https://loremflickr.com/320/240/restaurant,cafe/all?random=';
     return (
-      <TouchableOpacity onPress={this.handleOnPress(item)}>
+      <TouchableOpacity onPress={() => this.handlePress(item)}>
         <Card elevation={30} style={styles.card}>
-          <Card.Content>
+          <Card.Content style={styles.content}>
             <Title testID="restaurantTitle">{item.name}</Title>
-            <Text>{item.location}</Text>
-            <Text>{item.category}</Text>
           </Card.Content>
+          <Card.Cover source={{ uri: picUrl + item.id }} style={styles.background} />
         </Card>
       </TouchableOpacity>
     );
@@ -40,5 +50,5 @@ export default class RestaurantItem extends Component {
 
 RestaurantItem.propTypes = {
   pressItem: PropTypes.func.isRequired,
-  item: PropTypes.objectOf(PropTypes.string).isRequired,
+  item: PropTypes.instanceOf(Object).isRequired,
 };

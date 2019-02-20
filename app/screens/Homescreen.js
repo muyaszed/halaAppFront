@@ -19,7 +19,7 @@ class HomeScreen extends Component {
     });
   }
 
-  handlePressItem = (item) => {
+  handleItem = (item) => {
     const { navigation } = this.props;
     navigation.navigate('Item', { PressedItem: item });
   };
@@ -28,10 +28,7 @@ class HomeScreen extends Component {
     const { restaurants } = this.props;
     return (
       <View testID="homeScreen" style={{ flex: 1, justifyContent: 'center' }}>
-        <RestaurantList
-          data={restaurants.data}
-          pressItem={this.handlePressItem}
-        />
+        <RestaurantList data={restaurants.data} pressItem={this.handleItem} />
       </View>
     );
   }
@@ -55,6 +52,6 @@ export default withNavigation(
 HomeScreen.propTypes = {
   getData: PropTypes.func.isRequired,
   restaurants: PropTypes.objectOf(
-    PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+    PropTypes.oneOfType([PropTypes.string, PropTypes.bool, PropTypes.array]),
   ).isRequired,
 };

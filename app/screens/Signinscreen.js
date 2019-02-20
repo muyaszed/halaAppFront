@@ -61,8 +61,6 @@ export default connect(
 SignInScreen.propTypes = {
   getAuth: PropsTypes.func.isRequired,
   errDialog: PropsTypes.func.isRequired,
-  auth: PropsTypes.objectOf(
-    PropsTypes.oneOfType([PropsTypes.bool, PropsTypes.string]),
-  ).isRequired,
+  auth: PropsTypes.instanceOf(Object).isRequired,
   dialog: PropsTypes.objectOf(PropsTypes.bool).isRequired,
 };
