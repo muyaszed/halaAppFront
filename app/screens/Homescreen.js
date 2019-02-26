@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, Text } from 'react-native';
 import { withNavigation } from 'react-navigation';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -26,6 +26,7 @@ class HomeScreen extends Component {
 
   render() {
     const { restaurants } = this.props;
+    console.log(restaurants);
     return (
       <View testID="homeScreen" style={{ flex: 1, justifyContent: 'center' }}>
         <RestaurantList data={restaurants.data} pressItem={this.handleItem} />
@@ -42,12 +43,10 @@ const mapStateToProps = state => ({
   restaurants: state.restaurants,
 });
 
-export default withNavigation(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
-  )(HomeScreen),
-);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(HomeScreen);
 
 HomeScreen.propTypes = {
   getData: PropTypes.func.isRequired,

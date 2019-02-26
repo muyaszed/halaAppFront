@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+
 import { addRestaurant } from '../actions/restaurant';
 import { closeErrDialog } from '../actions/dialog';
 import NewRestaurantForm from '../components/Newrestaurantform';
@@ -10,7 +11,6 @@ import ErrorDialog from '../components/ErrorDialog';
 class AddScreen extends Component {
   static navigationOptions = {
     tabBarTestID: 'addTab',
-    
   };
 
   handleAdd = (data) => {

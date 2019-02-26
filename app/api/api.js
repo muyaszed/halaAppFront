@@ -35,6 +35,22 @@ export default {
       }
       return res.json();
     }),
+    user: (token, id) => fetch(`http://localhost:3000/users/${id}`, {
+      method: 'GET',
+      mode: 'cors',
+      headers: {
+        Accept: 'application/vnd.halaldir.v1+json',
+        'Content-Type': 'application/json',
+        Authorization: token,
+      },
+    }).then((res) => {
+      if (!res.ok) {
+        return res.json().then((err) => {
+          throw new Error(err.message);
+        });
+      }
+      return res.json();
+    }),
   },
 
   post: {
@@ -116,7 +132,28 @@ export default {
         });
       }
     }),
+    profile: (token, data, id) => fetch(`http://localhost:3000/profiles/${id}`, {
+      method: 'PUT',
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      headers: {
+        Accept: 'application/vnd.halaldir.v1+json',
+        'Content-Type': 'application/json',
+        Authorization: token,
+      },
+      body: JSON.stringify(data),
+    }).then((res) => {
+      console.log('Check ok', res);
+      if (!res.ok) {
+        return res.json().then((err) => {
+          console.log(err);
+          throw new Error(err.message);
+        });
+      }
+    }),
   },
+
   delete: {
     review: (token, restaurantId, id) => fetch(`http://localhost:3000/restaurants/${restaurantId}/reviews/${id}`, {
       method: 'DELETE',

@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-boolean-value */
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import { TextInput, Button } from 'react-native-paper';
@@ -45,16 +46,12 @@ export default class SignInForm extends Component {
           mode="outlined"
           testID="passwordInput"
           label="Password"
+          secureTextEntry={true}
           value={password}
-          onChangeText={passwordInput => this.setState({ password: passwordInput })
-          }
+          onChangeText={passwordInput => this.setState({ password: passwordInput })}
         />
 
-        <Button
-          testID="signinButton"
-          mode="outlined"
-          onPress={this.handlePress}
-        >
+        <Button testID="signinButton" mode="outlined" onPress={this.handlePress}>
           Sign in
         </Button>
       </View>

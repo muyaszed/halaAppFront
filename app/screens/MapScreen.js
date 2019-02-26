@@ -5,18 +5,16 @@ import { View, Text } from 'react-native';
 
 class MapScreen extends React.Component {
   static navigationOptions = {
-    tabBarTestID: 'mapTab'
-  }
+    tabBarTestID: 'mapTab',
+  };
 
   render() {
     return (
       <View>
-    <Text>This is Map</Text>
-  </View>
-    )
+        <Text>This is Map</Text>
+      </View>
+    );
   }
 }
-  
-
 
 export default MapScreen;

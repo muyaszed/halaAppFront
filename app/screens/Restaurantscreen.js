@@ -1,6 +1,10 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
-import { Card, Title, Paragraph, Divider } from 'react-native-paper';
+import {
+  View, Text, StyleSheet, Image,
+} from 'react-native';
+import {
+  Card, Title, Paragraph, Divider,
+} from 'react-native-paper';
 
 const styles = StyleSheet.create({
   card: {
@@ -28,15 +32,13 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginRight: 10,
     height: 2,
-  }
+  },
 });
 
 class RestaurantScreen extends React.Component {
-  static navigationOptions = ({navigationOptions}) => {
-    return {
-      tabBarTestID: 'detailTab'
-    }
-  }
+  static navigationOptions = ({ navigationOptions }) => ({
+    tabBarTestID: 'detailTab',
+  });
 
   render() {
     const { navigation } = this.props;
@@ -51,12 +53,11 @@ class RestaurantScreen extends React.Component {
         </View>
         <Card elevation={30} style={styles.card}>
           <Card.Content style={styles.content}>
-            <Title testID="restaurantDesc">{PressedItem.name}</Title>
             <Paragraph>{PressedItem.desc}</Paragraph>
-            <Divider style={styles.divider} inset={true}/>
+            <Divider style={styles.divider} inset />
             <Title testID="restaurantLocation">Location</Title>
             <Paragraph>{PressedItem.location}</Paragraph>
-            <Divider style={styles.divider} inset={true}/>
+            <Divider style={styles.divider} inset />
           </Card.Content>
         </Card>
       </View>

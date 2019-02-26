@@ -18,26 +18,34 @@ const RestaurantStack = createStackNavigator({
   List: HomeScreen,
 });
 
-const DetailTab = createMaterialTopTabNavigator({
-  Detail: RestaurantScreen,
-  Review: ReviewScreen,
-  Map: MapScreen,
-});
-
-const TabNavigator = createMaterialBottomTabNavigator(
+const DetailTab = createMaterialTopTabNavigator(
   {
-    Home: RestaurantStack,
-    Add: AddScreen,
-    Profile: ProfileScreen,
+    Detail: RestaurantScreen,
+    Review: ReviewScreen,
+    Map: MapScreen,
   },
+  {},
 );
+
+DetailTab.navigationOptions = ({ navigation }) => {
+  const item = navigation.getParam('PressedItem');
+  const headerTitle = item.name;
+
+  return {
+    headerTitle,
+  };
+};
+
+const TabNavigator = createMaterialBottomTabNavigator({
+  Home: RestaurantStack,
+  Add: AddScreen,
+  Profile: ProfileScreen,
+});
 
 TabNavigator.navigationOptions = {
   // Hide the header from AppNavigator stack
-  // header: null,
+  header: null,
 };
-
-
 
 const HomeStack = createStackNavigator({
   Tab: TabNavigator,
@@ -45,8 +53,8 @@ const HomeStack = createStackNavigator({
 });
 
 HomeStack.navigationOptions = {
-  title: "Home Stack"
-}
+  title: 'Home Stack',
+};
 
 const AuthStack = createStackNavigator({
   SignIn: SignInScreen,

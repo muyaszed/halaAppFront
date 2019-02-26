@@ -5,7 +5,6 @@ import {
 } from 'react-native-paper';
 import PropTypes from 'prop-types';
 
-
 const styles = StyleSheet.create({
   card: {
     marginBottom: 10,
@@ -20,7 +19,7 @@ const styles = StyleSheet.create({
 
 export default class ReviewItem extends Component {
   getInitial = (user) => {
-    const initital = user.first_name.split('')[0] + user.last_name.split('')[0];
+    const initital = user.profile.first_name.split('')[0] + user.profile.last_name.split('')[0];
 
     return initital;
   };
@@ -32,7 +31,7 @@ export default class ReviewItem extends Component {
 
   render() {
     const { item, currentUser } = this.props;
-    console.log(currentUser, item.user);
+
     return (
       <Card testID="reviewItem" elevation={30} style={styles.card}>
         <Card.Title

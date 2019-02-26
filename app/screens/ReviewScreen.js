@@ -28,9 +28,9 @@ class ReviewScreen extends React.Component {
   async componentDidMount() {
     const user = await AsyncStorage.getItem('currentUser');
     this.setState({ currentUser: JSON.parse(user) });
-    const { navigation, getUserReviews } = this.props;
+    const { navigation, getRestReviews } = this.props;
     const restaurantId = navigation.getParam('PressedItem').id;
-    getUserReviews(restaurantId);
+    getRestReviews(restaurantId);
   }
 
   showModal = () => this.setState({ modalVisible: true });
@@ -84,9 +84,10 @@ class ReviewScreen extends React.Component {
   }
 
   render() {
+    console.log('inside review');
     const { reviews, dialog } = this.props;
     const {
-      modalVisible, modalEdit, btnOpen, currentUser, deleteConfirm
+      modalVisible, modalEdit, btnOpen, currentUser, deleteConfirm,
     } = this.state;
     return (
       <View testID="reviewScreen" style={{ flex: 1, justifyContent: 'space-evenly' }}>
@@ -153,7 +154,7 @@ class ReviewScreen extends React.Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-  getUserReviews: id => dispatch(getReviews(id)),
+  getRestReviews: id => dispatch(getReviews(id)),
   postUserComment: (comment, id) => dispatch(postReview(comment, id)),
   editUserComment: (comment, restaurantId, id) => dispatch(editReview(comment, restaurantId, id)),
   deleteUserComment: (restaurantId, id) => dispatch(deleteReview(restaurantId, id)),
@@ -162,7 +163,6 @@ const mapDispatchToProps = dispatch => ({
 
 const mapStateToProps = state => ({
   reviews: state.reviews,
-  auth: state.authentication,
   dialog: state.dialog,
 });
 
@@ -173,7 +173,7 @@ export default connect(
 
 ReviewScreen.propTypes = {
   errDialog: PropTypes.func.isRequired,
-  getUserReviews: PropTypes.func.isRequired,
+  getRestReviews: PropTypes.func.isRequired,
   reviews: PropTypes.instanceOf(Object).isRequired,
   postUserComment: PropTypes.func.isRequired,
   editUserComment: PropTypes.func.isRequired,

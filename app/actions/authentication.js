@@ -9,6 +9,7 @@ import {
 import Api from '../api';
 import NavigationService from '../../NavigationService';
 import { openErrDialog } from './dialog';
+import { setItemToAsyncStore, removeItemFromAsyncStore } from '../config/helpers';
 
 const authenticatingUser = () => ({
   type: AUTHENTICATING,
@@ -27,26 +28,14 @@ const unauthenticationUser = () => ({
   type: UNAUTHENTICATION,
 });
 
-const storeToken = async (token, user) => {
-  try {
-    await AsyncStorage.setItem('userToken', token);
-    await AsyncStorage.setItem('currentUser', JSON.stringify(user));
-  } catch (error) {
-    throw Error(error);
-  }
-};
-
-const removeUserToken = async () => {
-  await AsyncStorage.removeItem('userToken');
-  await AsyncStorage.removeItem('currentUser');
-};
-
 export const authUser = credentials => (dispatch) => {
   dispatch(authenticatingUser());
   Api.post
     .authentication(credentials)
     .then(async (resJson) => {
-      await storeToken(resJson.auth_token, resJson.user);
+      console.log(resJson.user);
+      await setItemToAsyncStore('userToken', resJson.auth_token);
+      await setItemToAsyncStore('currentUser', JSON.stringify(resJson.user));
       dispatch(authenticationSuccess());
       NavigationService.navigate('AuthLoading');
     })
@@ -58,7 +47,8 @@ export const authUser = credentials => (dispatch) => {
 };
 
 export const unAuthUser = () => async (dispatch) => {
-  await removeUserToken();
+  await removeItemFromAsyncStore('currentUser');
+  await removeItemFromAsyncStore('userToken');
   dispatch(unauthenticationUser());
   NavigationService.navigate('AuthLoading');
 };
