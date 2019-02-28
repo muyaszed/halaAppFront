@@ -9,11 +9,17 @@
 
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
+#import <GoogleMaps/GoogleMaps.h>
+#import <ReactNativeConfig/ReactNativeConfig.h>
+
+
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  NSString *apiUrl = [ReactNativeConfig envFor:@"GOOGLE_MAP_API"];
+  [GMSServices provideAPIKey:apiUrl];
   NSURL *jsCodeLocation;
 
   #ifdef DEBUG
@@ -34,6 +40,8 @@
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
   return YES;
+
+  
 }
 
 @end

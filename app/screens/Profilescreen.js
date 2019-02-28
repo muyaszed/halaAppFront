@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  View, AsyncStorage, Text, TouchableOpacity,
+  View, AsyncStorage, Text, TouchableOpacity, Button as NativeButton
 } from 'react-native';
 import { Avatar, Button, Portal, Modal } from 'react-native-paper';
 import { connect } from 'react-redux';
@@ -106,7 +106,18 @@ class ProfileScreen extends Component {
             size={204}
             source={{ uri: avatarUri }}
           />
-          <TouchableOpacity onPress={() => this.handleEditAvatar(userId, profileId)}>
+          <TouchableOpacity 
+            onPress={() => this.handleEditAvatar(userId, profileId)}
+            style={{
+              width: 35,
+              height: 35,
+              borderRadius: 35 / 2,
+              position: 'relative',
+                left: 100,
+                bottom: 15,
+              
+            }}
+          >
             <View
               style={{
                 width: 35,
@@ -115,9 +126,8 @@ class ProfileScreen extends Component {
                 backgroundColor: 'white',
                 justifyContent: 'center',
                 alignItems: 'center',
-                position: 'relative',
-                left: 85,
-                bottom: 180,
+                
+
               }}
             >
               <Text>

@@ -3,8 +3,10 @@ package com.halaappfront;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
-import com.imagepicker.ImagePickerPackage;
+import uk.co.workingedge.RNLaunchNavigator.RNLaunchNavigatorPackage;
 import com.lugg.ReactNativeConfig.ReactNativeConfigPackage;
+import com.airbnb.android.react.maps.MapsPackage;
+import com.imagepicker.ImagePickerPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.facebook.react.ReactNativeHost;
@@ -27,8 +29,10 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-            new ImagePickerPackage(),
+            new RNLaunchNavigatorPackage(),
             new ReactNativeConfigPackage(),
+            new MapsPackage(),
+            new ImagePickerPackage(),
             new VectorIconsPackage(),
             new RNGestureHandlerPackage()
       );

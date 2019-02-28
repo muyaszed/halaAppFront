@@ -80,21 +80,27 @@ class ProfileDetailsScreen extends React.Component {
       <ScrollView>
         <Card elevation={30} style={styles.card}>
           <TouchableOpacity
-            styel={{ width: 35,
-            height: 35,
-            borderRadius: 35 / 2, 
-}} onPress={() => this.setState({ editModalVisible: true, userFirstName: firstName, userLastName: lastName })}>
+            style={
+              {
+                width: 35,
+                height: 35,
+                borderRadius: 35 / 2,
+                position: 'relative',
+                left: 320,
+                top: 20, 
+              }
+            }       
+            onPress={() => this.setState({ editModalVisible: true, userFirstName: firstName, userLastName: lastName })}
+          >
+            
             <View
               style={{
                 width: 35,
                 height: 35,
                 borderRadius: 35 / 2,
-                backgroundColor: 'blue',
                 justifyContent: 'center',
                 alignItems: 'center',
-                // position: 'relative',
-                // left: 320,
-                // top: 20,
+                
               }}
             >
               <Text>

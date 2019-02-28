@@ -3,6 +3,7 @@ import { View, Text } from 'react-native';
 import { withNavigation } from 'react-navigation';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import Config from 'react-native-config'
 
 import { getRestaurants } from '../actions/restaurant';
 import RestaurantList from '../components/Restaurantlist';
@@ -26,7 +27,7 @@ class HomeScreen extends Component {
 
   render() {
     const { restaurants } = this.props;
-    console.log(restaurants);
+    console.log(Config.API);
     return (
       <View testID="homeScreen" style={{ flex: 1, justifyContent: 'center' }}>
         <RestaurantList data={restaurants.data} pressItem={this.handleItem} />
