@@ -36,9 +36,9 @@ const styles = StyleSheet.create({
 });
 
 class RestaurantScreen extends React.Component {
-  static navigationOptions = ({ navigationOptions }) => ({
+  static navigationOptions = {
     tabBarTestID: 'detailTab',
-  });
+  };
 
   render() {
     const { navigation } = this.props;

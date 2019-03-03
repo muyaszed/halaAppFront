@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -24,29 +25,22 @@ const styles = StyleSheet.create({
 class AddScreen extends Component {
   static navigationOptions = {
     tabBarTestID: 'addTab',
+    tabBarLabel: '',
     title: 'Add a new Halal place',
-    headerStyle: {
-      backgroundColor: '#21c393',
-    },
-  };
 
-  state = {
-    clearForm: false,
+    headerStyle: {
+      backgroundColor: '#009165',
+    },
   };
 
   handleAdd = (data) => {
     const { add } = this.props;
-    add(data);
+    return add(data);
   };
 
   handleClose = () => {
     const { errDialog } = this.props;
     errDialog();
-  };
-
-  handleNavigateToCategory = () => {
-    const { navigation } = this.props;
-    navigation.navigate('Category');
   };
 
   render() {
@@ -61,9 +55,8 @@ class AddScreen extends Component {
         />
         <NewRestaurantForm
           onAdd={this.handleAdd}
-          handleNavigateToCategory={this.handleNavigateToCategory}
           navigation={navigation}
-          clearForm={dialog.errorFlag}
+          clearForm={!dialog.errorFlag}
         />
       </SafeAreaView>
     );
@@ -76,15 +69,6 @@ const mapDispatchToProps = dispatch => ({
     dispatch(closeErrDialog());
   },
 });
-
-// const mapDispatchToProps = dispatch => ({
-//   add: (data) => {
-//     dispatch(addRestaurant(data));
-//   },
-//   errDialog: () => {
-//     dispatch(closeErrDialog());
-//   },
-// });
 
 const mapStateToProps = state => ({
   restaurant: state.restaurants,

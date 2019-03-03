@@ -63,49 +63,56 @@ export default class NewRestaurantForm extends Component {
       end,
       desc,
     };
-    console.log(data);
-    onAdd(data);
+    
+    onAdd(data).then((res) => {
+      const { navigation } = this.props;
+      console.log('Im here', res);
+      if (!res) {
+        console.log('Im in');
+        this.setState({
+          name: '',
+          address: '',
+          city: '',
+          postcode: '',
+          country: '',
+          category: '',
+          cuisine: '',
+          web: '',
+          start: '',
+          end: '',
+          desc: '',
+        });
+        navigation.setParams({
+          Category: '',
+          Cuisine: '',
+          StartTime: '',
+          EndTime: '',
+        });
+      }
+    });
   };
-
-  // navigateToCategory = () => {
-  //   const { handleNavigateToCategory } = this.props;
-  //   handleNavigateToCategory();
-  // };
 
   render() {
     const {
       name, address, city, postcode, country, category, cuisine, web, desc, start, end, displayAddress, disabledEndTime,
     } = this.state;
-    const { navigation, clearForm } = this.props;
-    const inputStartTime = this.startInputText && Object.keys(this.startInputText).length !== 0 ? this.startInputText.props.value : '';
-    console.log(this.startInputText);
+    const { navigation } = this.props;
     return (
-      <KeyboardAwareScrollView style={styles.container}>
+      <KeyboardAwareScrollView 
+        style={styles.container}
+        extraScrollHeight={100}
+      >
+
         <NavigationEvents 
           onDidFocus={() => { 
             
-            if(clearForm) {
-              this.setState({
-                name: '',
-                address: '',
-                city: '',
-                postcode: '',
-                country: '',
-                category: '',
-                cuisine: '',
-                start: '',
-                end: '',
-                web: '',
-                desc: '',
-              });
-            } else {
+            
               this.setState({ 
                 category: navigation.getParam('Category'),
                 cuisine: navigation.getParam('Cuisine'),
                 start: navigation.getParam('StartTime'),
               });
-              console.log('endtime', disabledEndTime)
-              console.log(navigation.getParam('StartTime'));
+              
               if (navigation.getParam('StartTime') !== '24 hours' && navigation.getParam('StartTime') !== undefined) {
                 console.log('inside if');
                 this.setState({
@@ -118,11 +125,11 @@ export default class NewRestaurantForm extends Component {
                   end: '',
                 });
               };
-              console.log('endtime', disabledEndTime)
+              
             }
             
-
-          }}
+          }
+          
         />
         <TextInput
           underlineColor="#21c393"
@@ -190,8 +197,7 @@ export default class NewRestaurantForm extends Component {
         <TextInput
           mode="outlined"
           testID="restaurantStartInputText"
-          ref={component => this.startInputText = component}
-          label="Operating time - Start "
+          label="Select Operating time - Start &#62;"
           value={start}
           onChangeText={inputStart => this.setState({ start: inputStart })}
           onFocus={() => navigation.navigate('StartTime')}
@@ -200,7 +206,7 @@ export default class NewRestaurantForm extends Component {
           mode="outlined"
           disabled={disabledEndTime}
           testID="restaurantEndInputText"
-          label="Operating time - End "
+          label="Select Operating time - End &#62;"
           value={end}
           onChangeText={inputEnd => this.setState({ end: inputEnd })}
           onFocus={() => navigation.navigate('EndTime')}
@@ -229,6 +235,5 @@ export default class NewRestaurantForm extends Component {
 
 NewRestaurantForm.propTypes = {
   onAdd: PropTypes.func.isRequired,
-  handleNavigateToCategory: PropTypes.func.isRequired,
   clearForm: PropTypes.bool.isRequired,
 };

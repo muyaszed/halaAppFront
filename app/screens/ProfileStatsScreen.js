@@ -10,17 +10,20 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'space-evenly',
     marginTop: 20,
     marginLeft: 40,
     marginRight: 40,
   },
   wrapper: {
     alignItems: 'center',
+    paddingLeft: 35,
+    paddingRight: 35,
   },
   avatar: {
     backgroundColor: 'transparent',
-    borderWidth: 3,
+    borderWidth: 4,
+    borderColor: '#009165',
   },
 });
 
@@ -38,17 +41,27 @@ class ProfileStatsScreen extends React.Component {
       <ScrollView>
         <View style={styles.container}>
           <View style={styles.wrapper}>
-            <Avatar.Icon size={57} icon="restaurant" color="blue" style={styles.avatar} />
+            <Avatar.Icon size={57} icon="restaurant" color="#009165" style={styles.avatar} />
             <Text>Restaurants</Text>
             <Text>{restaurantsQty}</Text>
           </View>
           <View style={styles.wrapper}>
-            <Avatar.Icon size={57} icon="edit" color="blue" style={styles.avatar} />
+            <Avatar.Icon size={57} icon="edit" color="#009165" style={styles.avatar} />
             <Text>Reviews</Text>
             <Text>{reviewsQty}</Text>
           </View>
           <View style={styles.wrapper}>
-            <Avatar.Icon size={57} icon="folder" color="blue" style={styles.avatar} />
+            <Avatar.Icon size={57} icon="restaurant" color="#009165" style={styles.avatar} />
+            <Text>Check-ins</Text>
+            <Text>{restaurantsQty}</Text>
+          </View>
+          <View style={styles.wrapper}>
+            <Avatar.Icon size={57} icon="edit" color="#009165" style={styles.avatar} />
+            <Text>Bookmark</Text>
+            <Text>{reviewsQty}</Text>
+          </View>
+          <View style={styles.wrapper}>
+            <Avatar.Icon size={57} icon="folder" color="#009165" style={styles.avatar} />
             <Text>Points</Text>
             <Text>100</Text>
           </View>

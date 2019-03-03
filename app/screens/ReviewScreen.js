@@ -3,6 +3,7 @@ import { View, Text, AsyncStorage } from 'react-native';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { FAB, Portal } from 'react-native-paper';
+import { NavigationEvents } from 'react-navigation';
 
 import ReviewList from '../components/Reviewlist';
 import { getReviews, postReview, editReview, deleteReview } from '../actions/review';
@@ -23,6 +24,7 @@ class ReviewScreen extends React.Component {
     comment: '',
     reviewId: undefined,
     deleteConfirm: false,
+    fabVisible: false,
   };
 
   async componentDidMount() {
@@ -87,10 +89,14 @@ class ReviewScreen extends React.Component {
     console.log('inside review');
     const { reviews, dialog } = this.props;
     const {
-      modalVisible, modalEdit, btnOpen, currentUser, deleteConfirm,
+      modalVisible, modalEdit, btnOpen, currentUser, deleteConfirm, fabVisible,
     } = this.state;
     return (
       <View testID="reviewScreen" style={{ flex: 1, justifyContent: 'space-evenly' }}>
+        <NavigationEvents
+          onWillFocus={() => this.setState({ fabVisible: true })}
+          onWillBlur={() => this.setState({ fabVisible: false })}
+        />
         {reviews.data.length > 0 ? (
           <ReviewList reviews={reviews.data} currentUser={currentUser} edit={this.handleEdit} />
         ) : (
@@ -98,6 +104,7 @@ class ReviewScreen extends React.Component {
         )}
         <Portal>
           <FAB.Group
+            visible={fabVisible}
             open={btnOpen}
             icon={btnOpen ? 'close' : 'add'}
             actions={[

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  View, AsyncStorage, Text, TouchableOpacity, Button as NativeButton
+  View, AsyncStorage, Text, TouchableOpacity, StyleSheet, Button as NativeButton
 } from 'react-native';
 import { Avatar, Button, Portal, Modal } from 'react-native-paper';
 import { connect } from 'react-redux';
@@ -15,9 +15,66 @@ import ProfileDetailScreen from './ProfileDetailsScreen';
 import ProfileStatsScreen from './ProfileStatsScreen';
 // import { updateCurrentUser } from '../config/helpers';
 
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  backgroundAvatar: {
+    height: 300,
+    backgroundColor: '#21c393',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  avatarBackLayer: {
+    width: 220,
+    height: 220,
+    borderRadius: 220 / 2,
+    backgroundColor: 'black',
+    position: 'relative',
+    top: 20,
+  },
+  avatar: {
+    marginTop: -212, 
+    position: 'relative', 
+    top: 20,
+  },
+  editAvatarBtnTouch: {
+    width: 35,
+    height: 35,
+    borderRadius: 35 / 2,
+    position: 'relative',
+    left: 80,
+    bottom: 15,
+  },
+  editAvatarBtn: {
+    width: 35,
+    height: 35,
+    borderRadius: 35 / 2,
+    backgroundColor: 'white',
+    justifyContent: 'center',
+    alignItems: 'center',
+  }
+});
+
 const ProfileNavigator = createMaterialTopTabNavigator({
   Profile: ProfileDetailScreen,
   ProfileStats: ProfileStatsScreen,
+}, {
+  tabBarOptions: {
+    activeTintColor: 'black',
+    inactiveTintColor: 'black',
+    indicatorStyle: {
+      backgroundColor: '#009165',
+    },
+    tabStyle: {
+      backgroundColor: '#66f7c3',
+     
+    },
+    style: {
+      backgroundColor: '#21c393',
+      
+    },
+  },
 });
 
 class ProfileScreen extends Component {
@@ -25,6 +82,10 @@ class ProfileScreen extends Component {
 
   static navigationOptions = {
     tabBarTestID: 'profileTab',
+    title: 'Your Profile',
+    headerStyle: {
+      backgroundColor: '#009165',
+    },
   };
 
 
@@ -82,53 +143,24 @@ class ProfileScreen extends Component {
    
     
     return (
-      <View testID="profileScreen" style={{ flex: 1 }}>
+      <View testID="profileScreen" style={styles.container}>
         <View
-          style={{
-            height: 300,
-            backgroundColor: 'powderblue',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
+          style={styles.backgroundAvatar}
         >
           <View
-            style={{
-              width: 220,
-              height: 220,
-              borderRadius: 220 / 2,
-              backgroundColor: 'black',
-              position: 'relative',
-              top: 20,
-            }}
+            style={styles.avatarBackLayer}
           />
           <Avatar.Image
-            style={{ marginTop: -212, position: 'relative', top: 20 }}
+            style={styles.avatar}
             size={204}
             source={{ uri: avatarUri }}
           />
           <TouchableOpacity 
             onPress={() => this.handleEditAvatar(userId, profileId)}
-            style={{
-              width: 35,
-              height: 35,
-              borderRadius: 35 / 2,
-              position: 'relative',
-                left: 100,
-                bottom: 15,
-              
-            }}
+            style={styles.editAvatarBtnTouch}
           >
             <View
-              style={{
-                width: 35,
-                height: 35,
-                borderRadius: 35 / 2,
-                backgroundColor: 'white',
-                justifyContent: 'center',
-                alignItems: 'center',
-                
-
-              }}
+              style={styles.editAvatarBtn}
             >
               <Text>
                 <Icon name="edit" size={25} color="#900" />

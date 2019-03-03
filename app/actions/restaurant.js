@@ -32,7 +32,6 @@ export const getRestaurants = () => async (dispatch) => {
   Api.get
     .restaurants(token)
     .then((resJson) => {
-      console.log(resJson);
       dispatch(getRestrauntsSucces(resJson));
     })
     .catch((error) => {
@@ -57,7 +56,7 @@ export const addRestaurant = restaurantData => async (dispatch) => {
   dispatch(addingRestaurant());
   const token = await getToken();
   console.log(restaurantData);
-  Api.post
+  return Api.post
     .restaurants(restaurantData, token)
     .then(() => {
       dispatch(addingRestaurantSuccess());
@@ -65,7 +64,9 @@ export const addRestaurant = restaurantData => async (dispatch) => {
       NavigationService.navigate('Home');
     })
     .catch((error) => {
+      console.log(error);
       dispatch(addingRestaurantFailure(error));
       dispatch(openErrDialog());
+      return { error };
     });
 };

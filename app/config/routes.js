@@ -1,10 +1,14 @@
+import React from 'react';
+import { Text } from 'react-native';
 import {
   createAppContainer,
   createStackNavigator,
   createSwitchNavigator,
   createMaterialTopTabNavigator,
+  createBottomTabNavigator,
 } from 'react-navigation';
-import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
+import Icon from 'react-native-vector-icons/FontAwesome';
+// import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 import HomeScreen from '../screens/Homescreen';
 import RestaurantScreen from '../screens/Restaurantscreen';
 import AddScreen from '../screens/Addscreen';
@@ -32,6 +36,14 @@ const AddStack = createStackNavigator({
   EndTime: EndTimeScreen,
 });
 
+AddStack.navigationOptions = {
+  // title: '',
+  tabBarIcon: ({ tintColor }) => (
+    <Icon name="plus" size={30} color={tintColor} style={{ paddingTop: 20 }} />
+  ),
+  tabBarLabel: () => <Text style={{ display: 'none' }}> Add </Text>,
+};
+
 const ProfileStack = createStackNavigator({
   Profile: ProfileScreen,
 });
@@ -42,7 +54,16 @@ const DetailTab = createMaterialTopTabNavigator(
     Review: ReviewScreen,
     Map: MapScreen,
   },
-  {},
+  {
+    tabBarOptions: {
+      style: {
+        backgroundColor: '#21c393',
+      },
+      indicatorStyle: {
+        backgroundColor: '#009165',
+      },
+    },
+  },
 );
 
 DetailTab.navigationOptions = ({ navigation }) => {
@@ -51,14 +72,34 @@ DetailTab.navigationOptions = ({ navigation }) => {
 
   return {
     headerTitle,
+    headerStyle: {
+      backgroundColor: '#009165',
+    },
+    headerBackTitleStyle: {
+      color: 'black',
+    },
+    headerTintColor: 'black',
   };
 };
 
-const TabNavigator = createMaterialBottomTabNavigator({
-  Home: RestaurantStack,
-  Add: AddStack,
-  Profile: ProfileStack,
-});
+const TabNavigator = createBottomTabNavigator(
+  {
+    Home: RestaurantStack,
+    Add: AddStack,
+    Profile: ProfileStack,
+  },
+  {
+    tabBarOptions: {
+      style: {
+        backgroundColor: '#21c393',
+      },
+      activeBackgroundColor: '#21c393',
+
+      activeTintColor: 'black',
+      inactiveTintColor: 'white',
+    },
+  },
+);
 
 TabNavigator.navigationOptions = {
   // Hide the header from AppNavigator stack
@@ -69,10 +110,6 @@ const HomeStack = createStackNavigator({
   Tab: TabNavigator,
   Item: DetailTab,
 });
-
-HomeStack.navigationOptions = {
-  title: 'Home Stack',
-};
 
 const AuthStack = createStackNavigator({
   Landing: LandingScreen,

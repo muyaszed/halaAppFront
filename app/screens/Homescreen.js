@@ -20,7 +20,7 @@ class HomeScreen extends Component {
     title: 'HalalApp',
     tabBarTestID: 'homeTab',
     headerStyle: {
-      backgroundColor: '#21c393',
+      backgroundColor: '#009165',
     },
   };
 

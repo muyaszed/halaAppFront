@@ -5,10 +5,10 @@ import PropTypes from 'prop-types';
 
 const styles = StyleSheet.create({
   card: {
-    marginBottom: 60,
+    marginBottom: 20,
     marginLeft: 10,
     marginRight: 10,
-    height: 200,
+
     borderTopLeftRadius: 15,
     borderTopRightRadius: 15,
   },
@@ -25,6 +25,7 @@ const styles = StyleSheet.create({
   background: {
     borderBottomLeftRadius: 10,
     borderBottomRightRadius: 10,
+    height: 150,
   },
 });
 
@@ -47,7 +48,7 @@ export default class RestaurantItem extends Component {
         <TouchableOpacity onPress={() => this.handlePress(item)}>
           <Card.Content style={styles.content}>
             <Text style={styles.contenTitle} testID="restaurantTitle">
-              {item.name}
+              {`${item.name} \u{003E}`}
             </Text>
           </Card.Content>
         </TouchableOpacity>

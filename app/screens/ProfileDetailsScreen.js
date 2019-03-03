@@ -23,6 +23,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginRight: 10,
     borderRadius: 10,
+    backgroundColor: '#F5F5F6',
   },
   container: {
     flex: 1,
@@ -36,11 +37,38 @@ const styles = StyleSheet.create({
     marginRight: 10,
     height: 2,
   },
+  editDetailBtnTouch: {
+    width: 50,
+    height: 50,
+    borderRadius: 50 / 2,
+    position: 'relative',
+    left: 300,
+    top: 20,
+  },
+  editDetailBtn: {
+    width: 35,
+    height: 35,
+    borderRadius: 35 / 2,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderColor: 'black',
+    borderWidth: 1,
+  },
+  portal: {
+    paddingLeft: 30,
+    paddingRight: 30,
+  },
+  input: {
+    marginBottom: 5,
+  },
+  button: {
+    marginBottom: 5,
+  }
 });
 
 class ProfileDetailsScreen extends React.Component {
   static navigationOptions = {
-    tabBarTestID: 'rofileDetailTab',
+    tabBarTestID: 'profileDetailTab',
     tabBarLabel: 'Detail',
   };
 
@@ -60,12 +88,9 @@ class ProfileDetailsScreen extends React.Component {
 
     editUserDetails(data, userId, profileId);
     this.hideModal();
-
-    
   };
 
   hideModal = () => this.setState({ editModalVisible: false });
-  
 
   render() {
     const { user } = this.props;
@@ -80,29 +105,15 @@ class ProfileDetailsScreen extends React.Component {
       <ScrollView>
         <Card elevation={30} style={styles.card}>
           <TouchableOpacity
-            style={
-              {
-                width: 35,
-                height: 35,
-                borderRadius: 35 / 2,
-                position: 'relative',
-                left: 320,
-                top: 20, 
-              }
-            }       
-            onPress={() => this.setState({ editModalVisible: true, userFirstName: firstName, userLastName: lastName })}
+            style={styles.editDetailBtnTouch}
+            onPress={() => this.setState({
+              editModalVisible: true,
+              userFirstName: firstName,
+              userLastName: lastName,
+            })
+            }
           >
-            
-            <View
-              style={{
-                width: 35,
-                height: 35,
-                borderRadius: 35 / 2,
-                justifyContent: 'center',
-                alignItems: 'center',
-                
-              }}
-            >
+            <View style={styles.editDetailBtn}>
               <Text>
                 <Icon name="edit" size={25} color="#900" />
               </Text>
@@ -110,37 +121,39 @@ class ProfileDetailsScreen extends React.Component {
           </TouchableOpacity>
 
           <Card.Content style={styles.content}>
-            <Title>First Name</Title>
+            <Text>First Name</Text>
             <Paragraph>{firstName}</Paragraph>
             <Divider style={styles.divider} inset />
-            <Title>Last Name</Title>
+            <Text>Last Name</Text>
             <Paragraph>{lastName}</Paragraph>
             <Divider style={styles.divider} inset />
-            <Title>Email</Title>
+            <Text>Email</Text>
             <Paragraph>{user.email}</Paragraph>
             <Divider style={styles.divider} inset />
           </Card.Content>
         </Card>
         <Portal>
-          <Modal visible={editModalVisible} onDismiss={this.hideModal} dismissable={false}>
+          <Modal contentContainerStyle={styles.portal} visible={editModalVisible} onDismiss={this.hideModal} dismissable={false}>
             <TextInput
+              style={styles.input}
+              mode='flat'
               label="First Name"
-              multiline
               value={userFirstName}
               onChangeText={userFirstName => this.setState({ userFirstName })}
             />
 
             <TextInput
+              style={styles.input}
+              mode='flat'
               label="Last Name"
-              multiline
               value={userLastName}
               onChangeText={userLastName => this.setState({ userLastName })}
             />
 
-            <Button mode="contained" onPress={() => this.handleEditUserDetails(userId, profileId)}>
+            <Button style={styles.button} mode="contained" onPress={() => this.handleEditUserDetails(userId, profileId)}>
               Update
             </Button>
-            <Button mode="contained" onPress={this.hideModal}>
+            <Button style={styles.button} mode="contained" onPress={this.hideModal}>
               Cancel
             </Button>
           </Modal>
@@ -156,9 +169,12 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   editUserDetails: (data, userId, id) => dispatch(editDetails(data, userId, id)),
-})
+});
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProfileDetailsScreen);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(ProfileDetailsScreen);
 
 ProfileDetailsScreen.propTypes = {
   user: PropTypes.instanceOf(Object).isRequired,
