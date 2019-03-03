@@ -13,9 +13,27 @@ import SignInScreen from '../screens/Signinscreen';
 import AuthLoadingScreen from '../screens/Authloadingscreen';
 import ReviewScreen from '../screens/ReviewScreen';
 import MapScreen from '../screens/MapScreen';
+import LandingScreen from '../screens/Landingscreen';
+import SignUpScreen from '../screens/Signupscreen';
+import CategoryScreen from '../screens/Categoryscreen';
+import CuisineScreen from '../screens/Cuisinescreen';
+import StartTimeScreen from '../screens/Starttimescreen';
+import EndTimeScreen from '../screens/Endtimescreen';
 
 const RestaurantStack = createStackNavigator({
   List: HomeScreen,
+});
+
+const AddStack = createStackNavigator({
+  Add: AddScreen,
+  Category: CategoryScreen,
+  Cuisine: CuisineScreen,
+  StartTime: StartTimeScreen,
+  EndTime: EndTimeScreen,
+});
+
+const ProfileStack = createStackNavigator({
+  Profile: ProfileScreen,
 });
 
 const DetailTab = createMaterialTopTabNavigator(
@@ -38,8 +56,8 @@ DetailTab.navigationOptions = ({ navigation }) => {
 
 const TabNavigator = createMaterialBottomTabNavigator({
   Home: RestaurantStack,
-  Add: AddScreen,
-  Profile: ProfileScreen,
+  Add: AddStack,
+  Profile: ProfileStack,
 });
 
 TabNavigator.navigationOptions = {
@@ -57,6 +75,8 @@ HomeStack.navigationOptions = {
 };
 
 const AuthStack = createStackNavigator({
+  Landing: LandingScreen,
+  SignUp: SignUpScreen,
   SignIn: SignInScreen,
 });
 

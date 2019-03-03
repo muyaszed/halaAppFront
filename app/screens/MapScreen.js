@@ -1,5 +1,7 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import {
+  View, Text, StyleSheet, Dimensions,
+} from 'react-native';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import openMap from 'react-native-open-maps';
 import LaunchNavigator from 'react-native-launch-navigator';
@@ -24,6 +26,12 @@ class MapScreen extends React.Component {
   render() {
     const { navigation } = this.props;
     const restaurant = navigation.getParam('PressedItem');
+
+    const { height, width } = Dimensions.get('window');
+    const LATITUDE = restaurant.latitude; // Korea Town, New York, NY 10001
+    const LONGITUDE = restaurant.longitude; // Korea Town, New York, NY 10001
+    const LATITUDE_DELTA = 0.008;
+    const LONGITUDE_DELTA = LATITUDE_DELTA * (width / height);
     return (
       <View style={styles.container}>
         <Text>This is Map</Text>
@@ -33,10 +41,10 @@ class MapScreen extends React.Component {
           onRegionChangeComplete={() => this.currentMarker.showCallout()}
           provider={PROVIDER_GOOGLE}
           initialRegion={{
-            latitude: restaurant.latitude,
-            longitude: restaurant.longitude,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
+            latitude: LATITUDE,
+            longitude: LONGITUDE,
+            latitudeDelta: LATITUDE_DELTA,
+            longitudeDelta: LONGITUDE_DELTA,
           }}
         >
           <MapView.Marker

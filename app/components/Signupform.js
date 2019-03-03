@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-boolean-value */
 import React, { Component } from 'react';
 import { View } from 'react-native';
-import { TextInput, Button } from 'react-native-paper';
+import { TextInput, Button, HelperText } from 'react-native-paper';
 import PropTypes from 'prop-types';
 
 export default class SignInForm extends Component {
@@ -10,32 +10,38 @@ export default class SignInForm extends Component {
     this.state = {
       email: '',
       password: '',
+      passwordRepeat: '',
+      comparePassword: false,
     };
   }
 
   handlePress = () => {
     const { email, password } = this.state;
-    const { onAuth } = this.props;
+    const { onSignUp } = this.props;
     const credentials = {
       email,
       password,
     };
     console.log(credentials);
-    onAuth(credentials);
+    onSignUp(credentials);
     this.setState({
       email: '',
       password: '',
+      passwordRepeat: '',
     });
   };
 
   render() {
-    const { email, password } = this.state;
+    const {
+      email, password, passwordRepeat, comparePassword,
+    } = this.state;
+    console.log(comparePassword);
     return (
       <View style={{ flex: 1 }}>
         <TextInput
           mode="outlined"
-          keyboardType="email-address"
           testID="emailInput"
+          keyboardType="email-address"
           label="Email"
           value={email}
           onChangeText={emailInput => this.setState({
@@ -51,9 +57,25 @@ export default class SignInForm extends Component {
           value={password}
           onChangeText={passwordInput => this.setState({ password: passwordInput })}
         />
+        <TextInput
+          mode="outlined"
+          testID="passwordRepeatInput"
+          label="Confirm Password"
+          secureTextEntry={true}
+          value={passwordRepeat}
+          onChangeText={passwordInput => this.setState({
+            passwordRepeat: passwordInput,
+            comparePassword: !(password === passwordInput),
+          })
+          }
+        />
 
-        <Button testID="signinButton" mode="outlined" onPress={this.handlePress}>
-          Sign in
+        <HelperText type="error" visible={comparePassword}>
+          Password is not equal. Please type in again.
+        </HelperText>
+
+        <Button testID="signupButton" mode="outlined" onPress={this.handlePress}>
+          Sign up
         </Button>
       </View>
     );
@@ -61,5 +83,5 @@ export default class SignInForm extends Component {
 }
 
 SignInForm.propTypes = {
-  onAuth: PropTypes.func.isRequired,
+  onSignUp: PropTypes.func.isRequired,
 };

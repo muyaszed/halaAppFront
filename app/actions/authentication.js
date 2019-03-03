@@ -4,6 +4,9 @@ import {
   AUTHENTICATION_SUCCESS,
   AUTHENTICATION_FAILURE,
   UNAUTHENTICATION,
+  SIGNING_IN,
+  SIGN_IN_SUCCESS,
+  SIGN_IN_FAILURE,
 } from './types';
 
 import Api from '../api';
@@ -51,4 +54,34 @@ export const unAuthUser = () => async (dispatch) => {
   await removeItemFromAsyncStore('userToken');
   dispatch(unauthenticationUser());
   NavigationService.navigate('AuthLoading');
+};
+
+const signingUp = () => ({
+  type: SIGNING_IN,
+});
+
+const signInSuccess = () => ({
+  type: SIGN_IN_SUCCESS,
+});
+
+const signInFailure = error => ({
+  type: SIGN_IN_FAILURE,
+  error,
+});
+
+export const signUpUser = credentials => (dispatch) => {
+  dispatch(signingUp());
+  Api.post
+    .user(credentials)
+    .then(async (resJson) => {
+      await setItemToAsyncStore('userToken', resJson.auth_token[0]);
+      await setItemToAsyncStore('currentUser', JSON.stringify(resJson.user));
+      dispatch(signInSuccess());
+      NavigationService.navigate('AuthLoading');
+    })
+    .catch((error) => {
+      dispatch(signInFailure(error));
+      dispatch(openErrDialog());
+      NavigationService.navigate('AuthLoading');
+    });
 };

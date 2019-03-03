@@ -54,6 +54,23 @@ export default {
   },
 
   post: {
+    user: credentials => fetch('http://localhost:3000/signup', {
+      method: 'POST',
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(credentials),
+    }).then((res) => {
+      if (!res.ok) {
+        return res.json().then((err) => {
+          throw new Error(err.message);
+        });
+      }
+      return res.json();
+    }),
     restaurants: (data, token) => fetch('http://localhost:3000/restaurants', {
       method: 'POST',
       mode: 'cors',
@@ -73,6 +90,7 @@ export default {
         });
       }
     }),
+
     authentication: credentials => fetch('http://localhost:3000/auth/login', {
       method: 'POST',
       mode: 'cors',
@@ -174,5 +192,5 @@ export default {
         });
       }
     }),
-  }
+  },
 };
