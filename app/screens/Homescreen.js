@@ -5,7 +5,9 @@ import PropTypes from 'prop-types';
 import Config from 'react-native-config';
 
 import { getRestaurants } from '../actions/restaurant';
+import { closeErrDialog } from '../actions/dialog';
 import RestaurantList from '../components/Restaurantlist';
+import ErrorDialog from '../components/ErrorDialog';
 
 const styles = StyleSheet.create({
   container: {
@@ -24,7 +26,6 @@ class HomeScreen extends Component {
     },
   };
 
-
   componentDidMount() {
     const { getData } = this.props;
     getData();
@@ -35,12 +36,22 @@ class HomeScreen extends Component {
     navigation.navigate('Item', { PressedItem: item });
   };
 
+  handleClose = () => {
+    const { errDialog } = this.props;
+    errDialog();
+  };
+
   render() {
-    const { restaurants } = this.props;
+    const { restaurants, dialog } = this.props;
     console.log(Config.API);
     return (
       <View testID="homeScreen" style={styles.container}>
         <RestaurantList data={restaurants.data} pressItem={this.handleItem} />
+        <ErrorDialog
+          errMessage={restaurants.errors}
+          errFlag={dialog.errorFlag}
+          onClose={this.handleClose}
+        />
       </View>
     );
   }
@@ -48,10 +59,14 @@ class HomeScreen extends Component {
 
 const mapDispatchToProps = dispatch => ({
   getData: () => dispatch(getRestaurants()),
+  errDialog: () => {
+    dispatch(closeErrDialog());
+  },
 });
 
 const mapStateToProps = state => ({
   restaurants: state.restaurants,
+  dialog: state.dialog,
 });
 
 export default connect(
@@ -64,4 +79,5 @@ HomeScreen.propTypes = {
   restaurants: PropTypes.objectOf(
     PropTypes.oneOfType([PropTypes.string, PropTypes.bool, PropTypes.array]),
   ).isRequired,
+  dialog: PropTypes.objectOf(PropTypes.bool).isRequired,
 };

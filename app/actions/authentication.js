@@ -45,7 +45,7 @@ export const authUser = credentials => (dispatch) => {
     .catch((error) => {
       dispatch(authenticationFailure(error));
       dispatch(openErrDialog());
-      NavigationService.navigate('AuthLoading');
+      
     });
 };
 

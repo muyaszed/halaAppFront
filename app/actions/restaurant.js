@@ -36,6 +36,7 @@ export const getRestaurants = () => async (dispatch) => {
     })
     .catch((error) => {
       dispatch(getRestaurantsFailure(error));
+      dispatch(openErrDialog());
     });
 };
 

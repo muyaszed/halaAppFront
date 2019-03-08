@@ -11,6 +11,7 @@ export default {
         Authorization: token,
       },
     }).then((res) => {
+      console.log(res);
       if (!res.ok) {
         return res.json().then((err) => {
           console.log(err);
