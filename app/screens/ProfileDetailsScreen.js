@@ -17,6 +17,8 @@ import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/Entypo';
 
 import { editDetails } from '../actions/profile';
+import { closeErrDialog } from '../actions/dialog';
+import ErrorDialog from '../components/ErrorDialog';
 
 const styles = StyleSheet.create({
   card: {
@@ -78,6 +80,11 @@ class ProfileDetailsScreen extends React.Component {
     userLastName: '',
   };
 
+  handleClose = () => {
+    const { errDialog } = this.props;
+    errDialog();
+  };
+
   handleEditUserDetails = (userId, profileId) => {
     const { userFirstName, userLastName } = this.state;
     const { editUserDetails } = this.props;
@@ -93,7 +100,7 @@ class ProfileDetailsScreen extends React.Component {
   hideModal = () => this.setState({ editModalVisible: false });
 
   render() {
-    const { user } = this.props;
+    const { user, dialog } = this.props;
     const { editModalVisible, userFirstName, userLastName } = this.state;
     console.log(user);
     const firstName = user && Object.keys(user).length !== 0 ? user.profile.first_name : '';
@@ -158,6 +165,11 @@ class ProfileDetailsScreen extends React.Component {
             </Button>
           </Modal>
         </Portal>
+        <ErrorDialog
+          errMessage={dialog.error}
+          errFlag={dialog.errorFlag}
+          onClose={this.handleClose}
+        />
       </ScrollView>
     );
   }
@@ -165,10 +177,12 @@ class ProfileDetailsScreen extends React.Component {
 
 const mapStateToProps = state => ({
   user: state.user.data,
+  dialog: state.dialog,
 });
 
 const mapDispatchToProps = dispatch => ({
   editUserDetails: (data, userId, id) => dispatch(editDetails(data, userId, id)),
+  errDialog: () => dispatch(closeErrDialog()),
 });
 
 export default connect(
@@ -179,4 +193,5 @@ export default connect(
 ProfileDetailsScreen.propTypes = {
   user: PropTypes.instanceOf(Object).isRequired,
   editUserDetails: PropTypes.func.isRequired,
+  dialog: PropTypes.instanceOf(Object).isRequired,
 };

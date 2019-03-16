@@ -25,3 +25,14 @@ export const removeItemFromAsyncStore = async (itemDesc) => {
     throw Error(error);
   }
 };
+
+export const imageToFormData = (name, image) => {
+  const form = new FormData();
+
+  form.append(name, {
+    name: image.fileName,
+    type: image.type,
+    uri: image.uri.replace('file://', ''),
+  });
+  return form;
+};

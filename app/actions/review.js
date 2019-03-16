@@ -1,3 +1,4 @@
+import { AsyncStorage } from 'react-native';
 import {
   GETTING_REVIEWS,
   GET_REVIEWS_SUCCESS,
@@ -15,6 +16,7 @@ import {
 import Api from '../api';
 import { getToken } from '../config/helpers';
 import { openErrDialog } from './dialog';
+import { getUser } from './user';
 
 const gettingReviews = () => ({
   type: GETTING_REVIEWS,
@@ -57,20 +59,28 @@ const postReviewFailure = error => ({
   error,
 });
 
+const getUserId = async () => {
+  const user = await AsyncStorage.getItem('currentUser');
+  return JSON.parse(user).id;
+};
+
 export const postReview = (comment, id) => async (dispatch) => {
   console.log(comment, id);
   dispatch(postingReview());
   const token = await getToken();
+  const userId = await getUserId();
+  console.log('user id', userId);
   Api.post
     .reviews(token, comment, id)
     .then(() => {
       dispatch(postReviewSuccess());
       dispatch(getReviews(id));
+      dispatch(getUser(userId));
     })
     .catch((err) => {
       console.log(err);
       dispatch(postReviewFailure(err));
-      dispatch(openErrDialog());
+      dispatch(openErrDialog(err));
     });
 };
 
@@ -100,7 +110,7 @@ export const editReview = (comment, restaurantId, id) => async (dispatch) => {
     .catch((err) => {
       console.log(err);
       dispatch(editReviewFailure(err));
-      dispatch(openErrDialog());
+      dispatch(openErrDialog(err));
     });
 };
 
@@ -120,11 +130,13 @@ const deleteReviewFailure = error => ({
 export const deleteReview = (restaurantId, id) => async (dispatch) => {
   dispatch(deletingReview());
   const token = await getToken();
+  const userId = await getUserId();
   Api.delete
     .review(token, restaurantId, id)
     .then(() => {
       dispatch(deleteReviewSuccess());
       dispatch(getReviews(restaurantId));
+      dispatch(getUser(userId));
     })
     .catch((err) => {
       dispatch(deleteReviewFailure(err));

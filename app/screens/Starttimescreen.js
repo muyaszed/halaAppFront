@@ -47,7 +47,7 @@ class StartTimeScreen extends React.Component {
           <View>
             <List.Item
               title={item.key}
-              onPress={() => navigation.navigate('Add', { StartTime: item.key })}
+              onPress={() => navigation.navigate('Add', { StartTime: item.key, PrevScreen: navigation.state.routeName })}
             />
             <Divider />
           </View>

@@ -5,6 +5,17 @@ import {
 import { Avatar } from 'react-native-paper';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import {
+  createStackNavigator,
+  createMaterialTopTabNavigator,
+  NavigationEvents,
+} from 'react-navigation';
+import RestaurantsCountScreen from './Restaurantscountscreen';
+import ReviewsCountScreen from './Reviewscountscreen';
+import CheckinsCountScreen from './Checkinscountscreen';
+import BookmarksCountScreen from './Bookmarkscountscreen';
+import PointsCountScreen from './Pointscountscreen';
+import AddScreen from './Addscreen';
 
 const styles = StyleSheet.create({
   container: {
@@ -27,46 +38,56 @@ const styles = StyleSheet.create({
   },
 });
 
+const StatsNavigator = createMaterialTopTabNavigator(
+  {
+    RestaurantsCount: RestaurantsCountScreen,
+    ReviewsCount: ReviewsCountScreen,
+    CheckinsCount: CheckinsCountScreen,
+    BookmarkCount: BookmarksCountScreen,
+    PointsCount: PointsCountScreen,
+  },
+  {
+    tabBarOptions: {
+      // showLabel: false,
+      showIcon: true,
+      style: {
+        // height: 100,
+        backgroundColor: 'transparent',
+      },
+      iconStyle: {
+        height: 50,
+      },
+      indicatorStyle: {
+        backgroundColor: '#009165',
+      },
+      labelStyle: {
+        color: 'black',
+      },
+    },
+  },
+);
+
+
 class ProfileStatsScreen extends React.Component {
+  static router = StatsNavigator.router;
+
   static navigationOptions = {
     tabBarTestID: 'profileStatsTab',
     tabBarLabel: 'Statistic',
   };
 
   render() {
-    const { user } = this.props;
+    const { navigation, user } = this.props;
     const reviewsQty = user && Object.keys(user).length !== 0 ? user.reviews.length : 0;
     const restaurantsQty = user && Object.keys(user).length !== 0 ? user.restaurants.length : 0;
+    console.log('totla reviews', reviewsQty);
     return (
-      <ScrollView>
-        <View style={styles.container}>
-          <View style={styles.wrapper}>
-            <Avatar.Icon size={57} icon="restaurant" color="#009165" style={styles.avatar} />
-            <Text>Restaurants</Text>
-            <Text>{restaurantsQty}</Text>
-          </View>
-          <View style={styles.wrapper}>
-            <Avatar.Icon size={57} icon="edit" color="#009165" style={styles.avatar} />
-            <Text>Reviews</Text>
-            <Text>{reviewsQty}</Text>
-          </View>
-          <View style={styles.wrapper}>
-            <Avatar.Icon size={57} icon="restaurant" color="#009165" style={styles.avatar} />
-            <Text>Check-ins</Text>
-            <Text>{restaurantsQty}</Text>
-          </View>
-          <View style={styles.wrapper}>
-            <Avatar.Icon size={57} icon="edit" color="#009165" style={styles.avatar} />
-            <Text>Bookmark</Text>
-            <Text>{reviewsQty}</Text>
-          </View>
-          <View style={styles.wrapper}>
-            <Avatar.Icon size={57} icon="folder" color="#009165" style={styles.avatar} />
-            <Text>Points</Text>
-            <Text>100</Text>
-          </View>
-        </View>
-      </ScrollView>
+      // <View>
+      // {/* <NavigationEvents onWillFocus={payload => console.log('will focus', payload)} /> */}
+      <StatsNavigator navigation={navigation} screenProps={{ restaurantsQty, reviewsQty }} />
+      // <CountStack navigation={navigation} screenProps={{ restaurantsQty, reviewsQty }} />
+      // {/* <OtherStatsStack navigation={navigation} /> */}
+      // </View>
     );
   }
 }

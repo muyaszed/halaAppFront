@@ -13,6 +13,7 @@ class CuisineScreen extends React.Component {
 
   render() {
     const { navigation } = this.props;
+    const prevScreen = navigation.getParam('PrevScreen');
 
     return (
       <FlatList
@@ -116,7 +117,7 @@ class CuisineScreen extends React.Component {
           <View>
             <List.Item
               title={item.key}
-              onPress={() => navigation.navigate('Add', { Cuisine: item.key })}
+              onPress={() => navigation.navigate(prevScreen, { Cuisine: item.key, PrevScreen: navigation.state.routeName })}
             />
             <Divider />
           </View>

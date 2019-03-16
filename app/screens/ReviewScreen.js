@@ -145,7 +145,7 @@ class ReviewScreen extends React.Component {
           
 
         <ErrorDialog
-          errMessage={reviews.errors}
+          errMessage={dialog.error}
           errFlag={dialog.errorFlag}
           onClose={this.handleClose}
         />
@@ -185,5 +185,5 @@ ReviewScreen.propTypes = {
   postUserComment: PropTypes.func.isRequired,
   editUserComment: PropTypes.func.isRequired,
   deleteUserComment: PropTypes.func.isRequired,
-  dialog: PropTypes.objectOf(PropTypes.bool).isRequired,
+  dialog: PropTypes.instanceOf(Object).isRequired,
 };

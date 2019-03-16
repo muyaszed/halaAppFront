@@ -13,6 +13,8 @@ class CategoryScreen extends React.Component {
 
   render() {
     const { navigation } = this.props;
+    const prevScreen = navigation.getParam('PrevScreen');
+    console.log(prevScreen);
     return (
       <FlatList
         data={[
@@ -25,7 +27,11 @@ class CategoryScreen extends React.Component {
           <View>
             <List.Item
               title={item.key}
-              onPress={() => navigation.navigate('Add', { Category: item.key })}
+              onPress={() => navigation.navigate(prevScreen, {
+                Category: item.key,
+                PrevScreen: navigation.state.routeName,
+              })
+              }
             />
             <Divider />
           </View>

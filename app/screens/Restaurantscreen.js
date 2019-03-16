@@ -46,10 +46,7 @@ class RestaurantScreen extends React.Component {
     return (
       <View testID="restaurantScreen" style={styles.container}>
         <View style={styles.header}>
-          <Image
-            style={styles.bgImage}
-            source={{ uri: 'https://loremflickr.com/320/240/restaurant,cafe/all' }}
-          />
+          <Image style={styles.bgImage} source={{ uri: PressedItem.cover_uri }} />
         </View>
         <Card elevation={30} style={styles.card}>
           <Card.Content style={styles.content}>

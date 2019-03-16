@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
   },
   bottom: {
     flex: 0.15,
-    backgroundColor: 'yellow',
+    backgroundColor: '#009165',
     paddingLeft: 10,
     paddingRight: 10,
   },
@@ -35,7 +35,7 @@ class LandingScreen extends React.Component {
     return (
       <View style={styles.container}>
         <View style={styles.main}>
-          <Icon name="bowl" size={80} color="#900" />
+          <Icon name="bowl" size={80} color="#21c393" />
           <Title>Welcome to Halalapp</Title>
         </View>
         <View style={styles.bottom}>

@@ -1,7 +1,8 @@
 import { ERROR_FLAG_ON, ERROR_FLAG_OFF } from './types';
 
-const errorFlagOn = () => ({
+const errorFlagOn = error => ({
   type: ERROR_FLAG_ON,
+  error,
 });
 
 const errorFlagOff = () => ({
@@ -12,6 +13,6 @@ export const closeErrDialog = () => (dispatch) => {
   dispatch(errorFlagOff());
 };
 
-export const openErrDialog = () => (dispatch) => {
-  dispatch(errorFlagOn());
+export const openErrDialog = error => (dispatch) => {
+  dispatch(errorFlagOn(error));
 };

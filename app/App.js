@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
+
+import { PropTypes } from 'prop-types';
 import NavigationService from '../NavigationService';
+
 
 import AppContainer from './config/routes';
 
-export default class App extends Component {
+class App extends Component {
+
   render() {
     return (
       <AppContainer
@@ -14,3 +18,8 @@ export default class App extends Component {
     );
   }
 }
+
+
+
+export default App;
+

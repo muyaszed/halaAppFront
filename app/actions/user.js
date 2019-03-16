@@ -4,6 +4,7 @@ import { GETTING_USER, GET_USER_SUCCESS, GET_USER_FAILURE } from './types';
 
 import Api from '../api';
 import { getToken } from '../config/helpers';
+import { openErrDialog } from './dialog';
 
 const gettingUser = () => ({
   type: GETTING_USER,
@@ -38,5 +39,6 @@ export const getUser = id => async (dispatch) => {
     })
     .catch((err) => {
       dispatch(getUserFailure(err));
+      dispatch(openErrDialog(err));
     });
 };

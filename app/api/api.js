@@ -79,10 +79,10 @@ export default {
       credentials: 'same-origin',
       headers: {
         Accept: 'application/vnd.halaldir.v1+json',
-        'Content-Type': 'application/json',
+        // 'Content-Type': 'application/json',
         Authorization: token,
       },
-      body: JSON.stringify(data),
+      body: data,
     }).then((res) => {
       if (!res.ok) {
         
@@ -143,6 +143,26 @@ export default {
         Authorization: token,
       },
       body: JSON.stringify(comment),
+    }).then((res) => {
+      console.log('Check ok', res);
+      if (!res.ok) {
+        return res.json().then((err) => {
+          console.log(err);
+          throw new Error(err.message);
+        });
+      }
+    }),
+    avatar: (token, data, id) => fetch(`http://localhost:3000/profiles/${id}`, {
+      method: 'PUT',
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      headers: {
+        Accept: 'application/vnd.halaldir.v1+json',
+        // 'Content-Type': 'application/json',
+        Authorization: token,
+      },
+      body: data,
     }).then((res) => {
       console.log('Check ok', res);
       if (!res.ok) {

@@ -2,6 +2,7 @@ import { ERROR_FLAG_ON, ERROR_FLAG_OFF } from '../actions/types';
 
 const initialState = {
   errorFlag: false,
+  error: '',
 };
 
 const dialogReducer = (state = initialState, action) => {
@@ -11,6 +12,7 @@ const dialogReducer = (state = initialState, action) => {
       return {
         ...state,
         errorFlag: true,
+        error: action.error.message,
       };
 
     case ERROR_FLAG_OFF:

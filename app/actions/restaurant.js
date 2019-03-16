@@ -36,7 +36,7 @@ export const getRestaurants = () => async (dispatch) => {
     })
     .catch((error) => {
       dispatch(getRestaurantsFailure(error));
-      dispatch(openErrDialog());
+      dispatch(openErrDialog(error));
     });
 };
 
@@ -67,7 +67,7 @@ export const addRestaurant = restaurantData => async (dispatch) => {
     .catch((error) => {
       console.log(error);
       dispatch(addingRestaurantFailure(error));
-      dispatch(openErrDialog());
+      dispatch(openErrDialog(error));
       return { error };
     });
 };

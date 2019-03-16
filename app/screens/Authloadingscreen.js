@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import {
   ActivityIndicator,
   AsyncStorage,
@@ -6,8 +7,12 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
+import jwt from 'jwt-lite';
 import { withNavigation } from 'react-navigation';
-// import PropTypes from 'prop-types';
+
+import PropTypes from 'prop-types';
+
+import { unAuthUser } from '../actions/authentication';
 
 const styles = StyleSheet.create({
   container: {
@@ -23,12 +28,29 @@ const styles = StyleSheet.create({
 
 class AuthLoadingScreen extends Component {
   componentDidMount() {
-    const { navigation } = this.props;
+    const { navigation, dialog, signOut } = this.props;
     this.focusListener = navigation.addListener('didFocus', async () => {
+      console.log("here first");
       const userToken = await AsyncStorage.getItem('userToken');
-      setTimeout(() => {
-        navigation.navigate(userToken ? 'App' : 'Auth');
-      }, 1000);
+      console.log(userToken);
+      if (userToken) {
+        const payload  = jwt.decode(userToken);
+        const { exp } = payload.claimsSet;
+        console.log(Date.now()/1000 > exp);
+        if ( Date.now()/1000 > exp ) {
+          signOut()
+          navigation.navigate('Auth');
+        } else {
+          navigation.navigate('App');
+        }
+        
+        
+      }else {
+        navigation.navigate('Auth');
+      }
+      // setTimeout(() => {
+      //   navigation.navigate(userToken ? 'App' : 'Auth');
+      // }, 1000);
     });
   }
 
@@ -42,13 +64,19 @@ class AuthLoadingScreen extends Component {
   }
 }
 
-export default withNavigation(AuthLoadingScreen);
+const mapStateToProps = state => ({
+  dialog: state.dialog,
+});
 
-// AuthLoadingScreen.propTypes = {
-//   navigation: PropTypes.objectOf(
-//     PropTypes.oneOfType([
-//       PropTypes.func,
-//       PropTypes.string,
-//     ])
-//   ).isRequired,
-// };
+const mapDispatchToProps = dispatch => ({
+  signOut: () => dispatch(unAuthUser()),
+  getUserInfo: (id) => dispatch(getUser(id)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(AuthLoadingScreen);
+
+AuthLoadingScreen.propTypes = {
+  signOut: PropTypes.func.isRequired,
+  dialog: PropTypes.instanceOf(Object).isRequired,
+};
+

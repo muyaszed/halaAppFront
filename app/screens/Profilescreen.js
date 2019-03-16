@@ -1,8 +1,16 @@
 import React, { Component } from 'react';
 import {
-  View, AsyncStorage, Text, TouchableOpacity, StyleSheet, Button as NativeButton
+  View,
+  AsyncStorage,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  ActivityIndicator,
+  Button as NativeButton,
 } from 'react-native';
-import { Avatar, Button, Portal, Modal } from 'react-native-paper';
+import {
+  Avatar, Button, Portal, Dialog,
+} from 'react-native-paper';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { createMaterialTopTabNavigator } from 'react-navigation';
@@ -10,17 +18,19 @@ import ImagePicker from 'react-native-image-picker';
 import Icon from 'react-native-vector-icons/Entypo';
 import { unAuthUser } from '../actions/authentication';
 import { getUser } from '../actions/user';
-import { editAvatar } from '../actions/profile'; 
+import { editAvatar } from '../actions/profile';
 import ProfileDetailScreen from './ProfileDetailsScreen';
 import ProfileStatsScreen from './ProfileStatsScreen';
-// import { updateCurrentUser } from '../config/helpers';
+import { closeErrDialog } from '../actions/dialog';
+import ErrorDialog from '../components/ErrorDialog';
+import { imageToFormData } from '../config/helpers';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
   backgroundAvatar: {
-    height: 300,
+    height: 250,
     backgroundColor: '#21c393',
     justifyContent: 'center',
     alignItems: 'center',
@@ -31,12 +41,12 @@ const styles = StyleSheet.create({
     borderRadius: 220 / 2,
     backgroundColor: 'black',
     position: 'relative',
-    top: 20,
+    top: 10,
   },
   avatar: {
-    marginTop: -212, 
-    position: 'relative', 
-    top: 20,
+    marginTop: -212,
+    position: 'relative',
+    top: 10,
   },
   editAvatarBtnTouch: {
     width: 35,
@@ -53,29 +63,30 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     justifyContent: 'center',
     alignItems: 'center',
-  }
-});
-
-const ProfileNavigator = createMaterialTopTabNavigator({
-  Profile: ProfileDetailScreen,
-  ProfileStats: ProfileStatsScreen,
-}, {
-  tabBarOptions: {
-    activeTintColor: 'black',
-    inactiveTintColor: 'black',
-    indicatorStyle: {
-      backgroundColor: '#009165',
-    },
-    tabStyle: {
-      backgroundColor: '#66f7c3',
-     
-    },
-    style: {
-      backgroundColor: '#21c393',
-      
-    },
   },
 });
+
+const ProfileNavigator = createMaterialTopTabNavigator(
+  {
+    Profile: ProfileDetailScreen,
+    ProfileStats: ProfileStatsScreen,
+  },
+  {
+    tabBarOptions: {
+      activeTintColor: 'black',
+      inactiveTintColor: 'black',
+      indicatorStyle: {
+        backgroundColor: '#009165',
+      },
+      tabStyle: {
+        backgroundColor: '#66f7c3',
+      },
+      style: {
+        backgroundColor: '#21c393',
+      },
+    },
+  },
+);
 
 class ProfileScreen extends Component {
   static router = ProfileNavigator.router;
@@ -88,11 +99,14 @@ class ProfileScreen extends Component {
     },
   };
 
-
+  state = {
+    avatarLoading: false,
+  };
 
   async componentDidMount() {
     const { getUserInfo } = this.props;
     const user = await AsyncStorage.getItem('currentUser');
+    console.log('user-id', JSON.parse(user).id);
     getUserInfo(JSON.parse(user).id);
   }
 
@@ -102,9 +116,9 @@ class ProfileScreen extends Component {
   };
 
   handleEditAvatar = (userId, id) => {
+   
     const options = {
       title: 'Select Avatar',
-      customButtons: [{ name: 'fb', title: 'Choose Photo from Facebook' }],
       storageOptions: {
         skipBackup: true,
         path: 'images',
@@ -116,52 +130,64 @@ class ProfileScreen extends Component {
       console.log(id);
       if (response.didCancel) {
         console.log('User cancelled image picker');
+        
       } else if (response.error) {
         console.log('ImagePicker Error: ', response.error);
-      } else if (response.customButton) {
-        console.log('User tapped custom button: ', response.customButton);
       } else {
-        const source = { avatar: response.uri };
+        const avatar = imageToFormData('avatar', response);
         const { editUserAvatar } = this.props;
-       
-        editUserAvatar(source, userId, id);
-  
+        this.setState({ avatarLoading: true });
+        editUserAvatar(avatar, userId, id).then(() => {
+          this.setState({ avatarLoading: false });
+        });
       }
     });
   };
 
- 
+  handleClose = () => {
+    const { errDialog } = this.props;
+    errDialog();
+  };
+
+  hideAvatarLoading = () => this.setState({ avatarLoading: false });
 
   render() {
-    
-    const { navigation, user } = this.props;
-    const avatar = user && Object.keys(user).length !== 0 ? user.profile.avatar : '';
+    const { navigation, user, dialog } = this.props;
+    const { avatarLoading } = this.state;
+    const avatar = user && Object.keys(user).length !== 0 ? user.profile.avatar_uri : '';
     const avatarUri = avatar || 'https://robohash.org/cafe?set=set1';
     const profileId = user && Object.keys(user).length !== 0 ? user.profile.id : '';
     const userId = user && Object.keys(user).length !== 0 ? user.id : '';
-    
-   
-    
+
     return (
       <View testID="profileScreen" style={styles.container}>
-        <View
-          style={styles.backgroundAvatar}
-        >
-          <View
-            style={styles.avatarBackLayer}
-          />
-          <Avatar.Image
-            style={styles.avatar}
-            size={204}
-            source={{ uri: avatarUri }}
-          />
-          <TouchableOpacity 
+        <Portal>
+          <Dialog
+            visible={avatarLoading}
+            onDismiss={this.hideAvatarLoading}
+            style={{ backgroundColor: 'transparent' }}
+          >
+            <ActivityIndicator
+              size="large"
+              color="#0000ff"
+              style={{ backgroundColor: 'transparent' }}
+            />
+          </Dialog>
+        </Portal>
+
+        <ErrorDialog
+          errMessage="Sorry, there is a problem uploading your avatar. Please try again later."
+          errFlag={dialog.errorFlag}
+          onClose={this.handleClose}
+        />
+        <View style={styles.backgroundAvatar}>
+          <View style={styles.avatarBackLayer} />
+          <Avatar.Image style={styles.avatar} size={204} source={{ uri: avatarUri }} />
+          <TouchableOpacity
             onPress={() => this.handleEditAvatar(userId, profileId)}
             style={styles.editAvatarBtnTouch}
           >
-            <View
-              style={styles.editAvatarBtn}
-            >
+            <View style={styles.editAvatarBtn}>
               <Text>
                 <Icon name="edit" size={25} color="#900" />
               </Text>
@@ -185,12 +211,16 @@ class ProfileScreen extends Component {
 }
 const mapStateToProps = state => ({
   user: state.user.data,
+  dialog: state.dialog,
 });
 
 const mapDispatchToProps = dispatch => ({
   unAuth: () => dispatch(unAuthUser()),
   getUserInfo: id => dispatch(getUser(id)),
   editUserAvatar: (uri, userId, id) => dispatch(editAvatar(uri, userId, id)),
+  errDialog: () => {
+    dispatch(closeErrDialog());
+  },
 });
 
 export default connect(
@@ -203,4 +233,6 @@ ProfileScreen.propTypes = {
   getUserInfo: PropTypes.func.isRequired,
   editUserAvatar: PropTypes.func.isRequired,
   user: PropTypes.instanceOf(Object).isRequired,
+  errDialog: PropTypes.func.isRequired,
+  dialog: PropTypes.instanceOf(Object).isRequired,
 };

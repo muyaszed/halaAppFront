@@ -48,7 +48,7 @@ class HomeScreen extends Component {
       <View testID="homeScreen" style={styles.container}>
         <RestaurantList data={restaurants.data} pressItem={this.handleItem} />
         <ErrorDialog
-          errMessage={restaurants.errors}
+          errMessage={dialog.error}
           errFlag={dialog.errorFlag}
           onClose={this.handleClose}
         />
@@ -79,5 +79,5 @@ HomeScreen.propTypes = {
   restaurants: PropTypes.objectOf(
     PropTypes.oneOfType([PropTypes.string, PropTypes.bool, PropTypes.array]),
   ).isRequired,
-  dialog: PropTypes.objectOf(PropTypes.bool).isRequired,
+  dialog: PropTypes.instanceOf(Object).isRequired,
 };

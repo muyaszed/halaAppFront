@@ -11,6 +11,8 @@ const styles = StyleSheet.create({
 
     borderTopLeftRadius: 15,
     borderTopRightRadius: 15,
+    borderBottomLeftRadius: 15,
+    borderBottomRightRadius: 15,
   },
   content: {
     borderTopLeftRadius: 15,
@@ -23,8 +25,8 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   background: {
-    borderBottomLeftRadius: 10,
-    borderBottomRightRadius: 10,
+    borderBottomLeftRadius: 15,
+    borderBottomRightRadius: 15,
     height: 150,
   },
 });
@@ -42,7 +44,7 @@ export default class RestaurantItem extends Component {
 
   render() {
     const { item } = this.props;
-    const picUrl = 'https://loremflickr.com/320/240/restaurant,cafe/all?random=';
+    console.log(item);
     return (
       <Card elevation={30} style={styles.card}>
         <TouchableOpacity onPress={() => this.handlePress(item)}>
@@ -52,7 +54,7 @@ export default class RestaurantItem extends Component {
             </Text>
           </Card.Content>
         </TouchableOpacity>
-        <Card.Cover source={{ uri: picUrl + item.id }} style={styles.background} />
+        <Card.Cover source={{ uri: item.cover_uri }} style={styles.background} resizeMode="cover" />
       </Card>
     );
   }

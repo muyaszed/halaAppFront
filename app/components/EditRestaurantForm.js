@@ -4,40 +4,31 @@ import ImagePicker from 'react-native-image-picker';
 import PropTypes from 'prop-types';
 import { TextInput, Button } from 'react-native-paper';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { NavigationEvents } from 'react-navigation';
+
 
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+   paddingLeft: 20,
+   paddingRight: 20,
+  },
+  input: {
+      backgroundColor: 'white'
   },
   button: {
-    position: 'relative',
-    top: 20,
-    marginBottom: 20,
+   
   },
   addButton: {
-    marginBottom: 50,
-  },
-  hideLocation: {
-    display: 'none',
-  },
-  displayLocation: {
-    display: 'flex',
+   
   },
   photoWrapper: {
-    flex: 1,
-    alignItems: 'center',
+   
   },
   photo: {
-    width: 300,
-    height: 200,
-    position: 'relative',
-    top: 20,
-    marginBottom: 20,
+    
   }
 });
-export default class NewRestaurantForm extends Component {
+export default class EditRestaurantForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -53,90 +44,14 @@ export default class NewRestaurantForm extends Component {
       end: '',
       desc: '',
       photo: null,
-      displayAddress: false,
       disabledEndTime: true,
-      displayPhoto: false,
+      
     };
   }
 
   handlePress = () => {
-    const {
-      name,
-      address,
-      city,
-      postcode,
-      country,
-      category,
-      cuisine,
-      web,
-      start,
-      end,
-      desc,
-      photo,
-    } = this.state;
-    const { onAdd } = this.props;
-    // let location;
-    // if (address || city || postcode || country) {
-    //   location = `${address},${postcode},${city},${country}`;
-    // } else {
-    //   location = '';
-    // }
-
-    const form = new FormData();
-    const data = {
-      name,
-      address,
-      city,
-      postcode,
-      country,
-      category,
-      cuisine,
-      web,
-      start,
-      end,
-      desc,
-    };
-
-    if( photo ) {
-      form.append('cover', {
-        name: photo.fileName,
-        type: photo.type,
-        uri: photo.uri.replace('file://', ''),
-      });
-    }
-    
-
-    for (let key in data) {
-      form.append(key, data[key]);
-    }
-
-    onAdd(form).then((res) => {
-      const { navigation } = this.props;
-      console.log('Im here', res);
-      if (!res) {
-        console.log('Im in');
-        this.setState({
-          name: '',
-          address: '',
-          city: '',
-          postcode: '',
-          country: '',
-          category: '',
-          cuisine: '',
-          web: '',
-          start: '',
-          end: '',
-          desc: '',
-          photo: {},
-        });
-        navigation.setParams({
-          Category: '',
-          Cuisine: '',
-          StartTime: '',
-          EndTime: '',
-        });
-      }
-    });
+    const { onEdit } = this.props;
+    onEdit();
   };
 
   handleAddPicture = () => {
@@ -172,109 +87,54 @@ export default class NewRestaurantForm extends Component {
       photo,
       start,
       end,
-      displayAddress,
       disabledEndTime,
-      displayPhoto,
     } = this.state;
-    const { navigation } = this.props;
+
+    const { onCancel } = this.props;
+    
     return (
       <KeyboardAwareScrollView style={styles.container} extraScrollHeight={220}>
-        <NavigationEvents
-          onDidFocus={() => {
-            console.log('didFocus', navigation.getParam('PrevScreen'));
-            const item = navigation.getParam('pressedItem');
-            
-              if (navigation.getParam('PrevScreen') === 'Category') {
-                this.setState({
-                  category: navigation.getParam('Category'),
-                });
-              }
 
-              if (navigation.getParam('PrevScreen') === 'Cuisine') {
-                this.setState({
-                  cuisine: navigation.getParam('Cuisine'),
-                });
-              }
-
-              if (navigation.getParam('PrevScreen') === 'StartTime') {
-                this.setState({
-                  start: navigation.getParam('StartTime'),
-                });
-                
-                if (
-                  navigation.getParam('StartTime') !== '24 hours'
-                  && navigation.getParam('StartTime') !== undefined
-                ) {
-                  
-                  this.setState({
-                    disabledEndTime: false,
-                    end: navigation.getParam('EndTime'),
-                  });
-                } else if (navigation.getParam('StartTime') === '24 hours') {
-                  
-                  this.setState({
-                    disabledEndTime: true,
-                    end: '',
-                  });
-                }
-              }
-              if (navigation.getParam('PrevScreen') === 'EndTime') {
-                  this.setState({
-                    end: navigation.getParam('EndTime'),
-                  });
-              }
-                
-              
-              
-  
-             
-            
-
-            
-          }}
-        />
         <TextInput
+          style={styles.input}
           underlineColor="#21c393"
-          mode="outlined"
+          
           testID="restaurantNameInputText"
           label="Name"
           value={name}
           onChangeText={inputName => this.setState({
-            name: inputName,
-          })
+                name: inputName,
+            })
           }
         />
         <TextInput
-          mode="outlined"
+          style={styles.input}
           testID="restaurantLocationInputText"
-          label={displayAddress ? 'Address' : 'Location'}
+          label={'Address'}
           value={address}
           onChangeText={inputLocation => this.setState({ address: inputLocation })}
           onFocus={() => this.setState({ displayAddress: true })}
         />
         <TextInput
-          style={displayAddress ? styles.showLocation : styles.hideLocation}
-          mode="outlined"
+          style={styles.input}
           label="City"
           value={city}
           onChangeText={inputLocation => this.setState({ city: inputLocation })}
         />
         <TextInput
-          style={displayAddress ? styles.showLocation : styles.hideLocation}
-          mode="outlined"
+          style={styles.input}
           label="Postcode"
           value={postcode}
           onChangeText={inputLocation => this.setState({ postcode: inputLocation })}
         />
         <TextInput
-          style={displayAddress ? styles.showLocation : styles.hideLocation}
-          mode="outlined"
+          style={styles.input}
           label="Country"
           value={country}
           onChangeText={inputLocation => this.setState({ country: inputLocation })}
         />
         <TextInput
-          mode="outlined"
+          style={styles.input}
           testID="restaurantCategoryInputText"
           label="Select Category &#62;"
           value={category}
@@ -286,7 +146,7 @@ export default class NewRestaurantForm extends Component {
           }}
         />
         <TextInput
-          mode="outlined"
+          style={styles.input}
           testID="restaurantCuisineInputText"
           label="Select Cuisine &#62;"
           value={cuisine}
@@ -294,14 +154,14 @@ export default class NewRestaurantForm extends Component {
           onFocus={() => navigation.navigate('Cuisine', { PrevScreen: 'Add' })}
         />
         <TextInput
-          mode="outlined"
+          style={styles.input}
           testID="restaurantWebInputText"
           label="Website "
           value={web}
           onChangeText={inputWeb => this.setState({ web: inputWeb })}
         />
         <TextInput
-          mode="outlined"
+          style={styles.input}
           testID="restaurantStartInputText"
           label="Select Operating time - Start &#62;"
           value={start}
@@ -309,7 +169,7 @@ export default class NewRestaurantForm extends Component {
           onFocus={() => navigation.navigate('StartTime')}
         />
         <TextInput
-          mode="outlined"
+          style={styles.input}
           disabled={disabledEndTime}
           testID="restaurantEndInputText"
           label="Select Operating time - End &#62;"
@@ -318,7 +178,7 @@ export default class NewRestaurantForm extends Component {
           onFocus={() => navigation.navigate('EndTime')}
         />
         <TextInput
-          mode="outlined"
+          style={styles.input}
           testID="restaurantDescInputText"
           label="Description"
           value={desc}
@@ -329,7 +189,7 @@ export default class NewRestaurantForm extends Component {
         <View
           style={styles.photoWrapper}
         >
-          {displayPhoto && <Image style={styles.photo} source={{ uri: photo.uri }} />}
+          {photo && <Image style={styles.photo} source={{ uri: photo.uri }} />}
         </View>
         <Button
           style={styles.button}
@@ -340,21 +200,23 @@ export default class NewRestaurantForm extends Component {
         >
           Picture
         </Button>
+        <Button mode="contained" onPress={() => onCancel()}>
+            Cancel
+        </Button>
         <Button
           style={[styles.button, styles.addButton]}
           testID="addNewRestaurantButton"
           mode="contained"
           onPress={this.handlePress}
         >
-          Add
+          Edit
         </Button>
       </KeyboardAwareScrollView>
     );
   }
 }
 
-NewRestaurantForm.propTypes = {
-  onAdd: PropTypes.func,
-  onEdit: PropTypes.func,
+EditRestaurantForm.propTypes = {
+  onEdit: PropTypes.func.isRequired,
   clearForm: PropTypes.bool.isRequired,
 };

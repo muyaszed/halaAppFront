@@ -74,7 +74,7 @@ export default class SignInForm extends Component {
           Password is not equal. Please type in again.
         </HelperText>
 
-        <Button testID="signupButton" mode="outlined" onPress={this.handlePress}>
+        <Button testID="signupButton" mode="contained" onPress={this.handlePress}>
           Sign up
         </Button>
       </View>

@@ -44,7 +44,7 @@ export const authUser = credentials => (dispatch) => {
     })
     .catch((error) => {
       dispatch(authenticationFailure(error));
-      dispatch(openErrDialog());
+      dispatch(openErrDialog(error));
       
     });
 };
@@ -81,7 +81,7 @@ export const signUpUser = credentials => (dispatch) => {
     })
     .catch((error) => {
       dispatch(signInFailure(error));
-      dispatch(openErrDialog());
-      NavigationService.navigate('AuthLoading');
+      dispatch(openErrDialog(error));
+      // NavigationService.navigate('AuthLoading');
     });
 };

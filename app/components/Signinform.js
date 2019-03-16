@@ -1,8 +1,14 @@
 /* eslint-disable react/jsx-boolean-value */
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { TextInput, Button } from 'react-native-paper';
 import PropTypes from 'prop-types';
+
+const styles = StyleSheet.create({
+  button: {
+    marginTop: 20,
+  }
+})
 
 export default class SignInForm extends Component {
   constructor(props) {
@@ -52,7 +58,7 @@ export default class SignInForm extends Component {
           onChangeText={passwordInput => this.setState({ password: passwordInput })}
         />
 
-        <Button testID="signinButton" mode="outlined" onPress={this.handlePress}>
+        <Button testID="signinButton" mode="contained" onPress={this.handlePress} style={styles.button}>
           Sign in
         </Button>
       </View>

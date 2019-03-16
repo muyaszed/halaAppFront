@@ -23,14 +23,17 @@ const styles = StyleSheet.create({
 });
 
 class AddScreen extends Component {
-  static navigationOptions = {
-    tabBarTestID: 'addTab',
-    tabBarLabel: '',
-    title: 'Add a new Halal place',
-
-    headerStyle: {
-      backgroundColor: '#009165',
-    },
+  static navigationOptions = ({ navigation }) => {
+    const prevScreen = navigation.getParam('prevScreen');
+    console.log(prevScreen);
+    return {
+      tabBarTestID: prevScreen === 'RestaurantsCount' ? 'editRestaurant' : 'addTab',
+      tabBarLabel: '',
+      title: prevScreen === 'RestaurantsCount' ? 'Edit your restaurant' : 'Add new Restaurant',
+      headerStyle: {
+        backgroundColor: '#009165',
+      },
+    };
   };
 
   handleAdd = (data) => {
@@ -49,7 +52,7 @@ class AddScreen extends Component {
     return (
       <SafeAreaView testID="addScreen" style={styles.container}>
         <ErrorDialog
-          errMessage={restaurant.errors}
+          errMessage={dialog.error}
           errFlag={dialog.errorFlag}
           onClose={this.handleClose}
         />
@@ -84,5 +87,5 @@ AddScreen.propTypes = {
   add: PropTypes.func.isRequired,
   errDialog: PropTypes.func.isRequired,
   restaurant: PropTypes.instanceOf(Object).isRequired,
-  dialog: PropTypes.objectOf(PropTypes.bool).isRequired,
+  dialog: PropTypes.instanceOf(Object).isRequired,
 };
