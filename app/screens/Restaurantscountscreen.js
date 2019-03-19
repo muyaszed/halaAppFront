@@ -11,6 +11,8 @@ import PropTypes from 'prop-types';
 
 import RestaurantCountItem from '../components/Restaurantcountitem';
 import EditRestaurantForm from '../components/EditRestaurantForm';
+import { editRestaurant } from '../actions/restaurant';
+import { getCurrentUser } from '../config/helpers';
 
 const styles = StyleSheet.create({
   container: {
@@ -26,6 +28,11 @@ const styles = StyleSheet.create({
     borderWidth: 4,
     borderColor: '#009165',
   },
+  contentContainerStyle: {
+    paddingTop: 100, 
+    paddingBottom: 100,
+    backgroundColor: 'grey',
+  }
 });
 
 class RestaurantsCountScreen extends React.Component {
@@ -47,6 +54,7 @@ class RestaurantsCountScreen extends React.Component {
   };
 
   hideModal = () => this.setState({ showModal: false });
+
   showModal = () => this.setState({ showModal: true });
 
   handlePress = (item) => {
@@ -54,8 +62,13 @@ class RestaurantsCountScreen extends React.Component {
     this.setState({ pressedItem: item });
   };
 
-  handleEdit = () => {
-
+  handleEdit = async (item) => {
+    this.hideModal();
+    const currentUser = await getCurrentUser();
+    const userId = JSON.parse(currentUser).id;
+    const { editRestaurantData } = this.props;
+    const { pressedItem } = this.state;
+    editRestaurantData(item, pressedItem.id, userId);
   };
 
   itemKey = item => JSON.stringify(item.id);
@@ -74,15 +87,14 @@ class RestaurantsCountScreen extends React.Component {
           data={user.restaurants}
           keyExtractor={this.itemKey}
           renderItem={({ item }) => (
-            <RestaurantCountItem item={item} handlePress={this.handlePress} />
+            <RestaurantCountItem item={item} handlePress={this.handlePress} navigation={navigation} />
           )}
         />
         <Portal>
-          <Modal visible={showModal} onDismiss={this.hideModal} dismissable={false}>
+          <Modal contentContainerStyle={styles.contentContainerStyle} visible={showModal} onDismiss={this.hideModal} dismissable={false}>
           
           <EditRestaurantForm 
              item={pressedItem}
-             clearForm={!dialog.errorFlag}
              onEdit={this.handleEdit}
              onCancel={this.hideModal}
            />
@@ -99,9 +111,14 @@ const mapStateToProps = state => ({
   dialog: state.dialog,
 });
 
-export default connect(mapStateToProps)(RestaurantsCountScreen);
+const mapDispatchToProps = dispatch => ({
+  editRestaurantData: (data, id, userId) => dispatch(editRestaurant(data, id, userId)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(RestaurantsCountScreen);
 
 RestaurantsCountScreen.propTypes = {
   user: PropTypes.instanceOf(Object).isRequired,
   dialog: PropTypes.instanceOf(Object).isRequired,
+  editRestaurantData: PropTypes.func.isRequired,
 };

@@ -5,12 +5,17 @@ import {
   GETTING_RESTAURANTS,
   GET_RESTAURANTS_SUCCESS,
   GET_RESTAURANTS_FAILURE,
+  EDITING_RESTAURANTS,
+  EDIT_RESTAURANTS_SUCCESS,
+  EDIT_RESTAURANTS_FAILURE,
 } from '../actions/types';
 
 const initialState = {
   data: [],
   dataAdded: false,
   isAdding: false,
+  dataEdited: false,
+  isEditing: false,
   errorFlag: false,
   errors: '',
 };
@@ -71,7 +76,22 @@ const restaurantReducer = (state = initialState, action) => {
         errorFlag: true,
         errors: action.error.message,
       };
-
+    case EDITING_RESTAURANTS:
+      return {
+        ...state,
+        isEdited: true,
+      };
+    case EDIT_RESTAURANTS_SUCCESS:
+      return {
+        ...state,
+        isEdited: false,
+        dataEdited: true,
+      };
+    case EDIT_RESTAURANTS_FAILURE:
+      return {
+        ...state,
+        error: action.error.message,
+      };
     default:
       return state;
   }

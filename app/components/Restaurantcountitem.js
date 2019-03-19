@@ -26,13 +26,19 @@ export default class RestaurantCountItem extends Component {
   };
 
   render() {
-    const { item } = this.props;
+    const { item, navigation } = this.props;
     console.log(item);
     return (
       <List.Item
         style={styles.list}
         title={item.name}
-        left={props => <Image style={{ width: 50, height: 40 }} source={{ uri: item.cover_uri }} />}
+        left={(props) => {
+          return (
+            <TouchableOpacity onPress={() => navigation.navigate('Item', { PressedItem: item })}>
+              <Image style={{ width: 50, height: 40 }} source={{ uri: item.cover_uri }} />
+            </TouchableOpacity>
+          );
+        }}
         right={props => (
           <Icon
             name="edit"

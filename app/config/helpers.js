@@ -2,6 +2,8 @@ import { AsyncStorage } from 'react-native';
 
 // eslint-disable-next-line import/prefer-default-export
 export const getToken = () => AsyncStorage.getItem('userToken');
+
+export const getCurrentUser = () => AsyncStorage.getItem('currentUser');
 // export const updateCurrentUser = async () => {
 //   try {
 //     const user = await AsyncStorage.getItem('currentUser');

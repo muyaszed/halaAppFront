@@ -13,3 +13,4 @@ This app using React native
 7. Fix backend json serializer usage n+1 queries (active-storage) -done
 8. update dialog redux to accept and serve error message. -done
 9. Apply loading state wherever applicable.
+10. Re-factor expired token strategy.

@@ -75,13 +75,6 @@ export default class NewRestaurantForm extends Component {
       photo,
     } = this.state;
     const { onAdd } = this.props;
-    // let location;
-    // if (address || city || postcode || country) {
-    //   location = `${address},${postcode},${city},${country}`;
-    // } else {
-    //   location = '';
-    // }
-
     const form = new FormData();
     const data = {
       name,
