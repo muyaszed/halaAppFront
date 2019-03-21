@@ -84,7 +84,7 @@ class ProfileStatsScreen extends React.Component {
     return (
       // <View>
       // {/* <NavigationEvents onWillFocus={payload => console.log('will focus', payload)} /> */}
-      <StatsNavigator navigation={navigation} screenProps={{ restaurantsQty, reviewsQty }} />
+      <StatsNavigator navigation={navigation} screenProps={{ user, restaurantsQty, reviewsQty }} />
       // <CountStack navigation={navigation} screenProps={{ restaurantsQty, reviewsQty }} />
       // {/* <OtherStatsStack navigation={navigation} /> */}
       // </View>

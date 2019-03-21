@@ -11,8 +11,10 @@ import PropTypes from 'prop-types';
 
 import RestaurantCountItem from '../components/Restaurantcountitem';
 import EditRestaurantForm from '../components/EditRestaurantForm';
+import ErrorDialog from '../components/ErrorDialog';
 import { editRestaurant } from '../actions/restaurant';
 import { getCurrentUser } from '../config/helpers';
+import { closeErrDialog } from '../actions/dialog';
 
 const styles = StyleSheet.create({
   container: {
@@ -63,28 +65,44 @@ class RestaurantsCountScreen extends React.Component {
   };
 
   handleEdit = async (item) => {
-    this.hideModal();
+    
     const currentUser = await getCurrentUser();
     const userId = JSON.parse(currentUser).id;
     const { editRestaurantData } = this.props;
     const { pressedItem } = this.state;
-    editRestaurantData(item, pressedItem.id, userId);
+    editRestaurantData(item, pressedItem.id, userId).then((res) => {
+      console.log(res);
+      if (!res) {
+       
+        this.hideModal();
+      } 
+    });
+  };
+
+  handleClose = () => {
+    const { errDialog } = this.props;
+    errDialog();
   };
 
   itemKey = item => JSON.stringify(item.id);
 
   render() {
-    const { user, navigation, dialog } = this.props;
+    const { navigation, screenProps, dialog } = this.props;
     const { showModal, pressedItem } = this.state;
+    const name = screenProps.user && Object.keys(screenProps.user).length !== 0 ? screenProps.user.profile.first_name : '';
+    const { restaurants } = screenProps.user;
     return (
       <ScrollView style={styles.container}>
         <View style={styles.titleWrapper}>
-          <Title>Your Restaurant list</Title>
+          <Title>
+            { name }
+            &lsquo;s Restaurant List
+          </Title>
         </View>
 
         <FlatList
           testID="restaurantCountList"
-          data={user.restaurants}
+          data={restaurants}
           keyExtractor={this.itemKey}
           renderItem={({ item }) => (
             <RestaurantCountItem item={item} handlePress={this.handlePress} navigation={navigation} />
@@ -100,6 +118,11 @@ class RestaurantsCountScreen extends React.Component {
            />
           </Modal>
         </Portal>
+        <ErrorDialog
+          errMessage={dialog.error}
+          errFlag={dialog.errorFlag}
+          onClose={this.handleClose}
+        />
 
       </ScrollView>
     );
@@ -107,18 +130,21 @@ class RestaurantsCountScreen extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  user: state.user.data,
   dialog: state.dialog,
 });
 
 const mapDispatchToProps = dispatch => ({
   editRestaurantData: (data, id, userId) => dispatch(editRestaurant(data, id, userId)),
+  errDialog: () => {
+    dispatch(closeErrDialog());
+  },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(RestaurantsCountScreen);
 
 RestaurantsCountScreen.propTypes = {
-  user: PropTypes.instanceOf(Object).isRequired,
   dialog: PropTypes.instanceOf(Object).isRequired,
   editRestaurantData: PropTypes.func.isRequired,
+  errDialog: PropTypes.func.isRequired,
+  screenProps: PropTypes.instanceOf(Object).isRequired,
 };
