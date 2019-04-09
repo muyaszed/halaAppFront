@@ -192,7 +192,7 @@ export default class EditRestaurantForm extends Component {
       showCuisineModal,
       showStartModal,
       showEndModal,
-      modalButtonLabel
+      modalButtonLabel,
     } = this.state;
     
     return (

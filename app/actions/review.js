@@ -97,7 +97,7 @@ const editReviewFailure = error => ({
   error,
 });
 
-export const editReview = (comment, restaurantId, id) => async (dispatch) => {
+export const editReview = (comment, restaurantId, id, userId) => async (dispatch) => {
   dispatch(editingReview());
   const token = await getToken();
   console.log(id);
@@ -106,6 +106,7 @@ export const editReview = (comment, restaurantId, id) => async (dispatch) => {
     .then(() => {
       dispatch(editReviewSuccess());
       dispatch(getReviews(restaurantId));
+      dispatch(getUser(userId));
     })
     .catch((err) => {
       console.log(err);
