@@ -25,23 +25,27 @@ export default class RestaurantCountItem extends Component {
     handlePress(item);
   };
 
+  pressItem = (item) => {
+    const { handlePressItem } = this.props;
+    handlePressItem(item);
+  };
+
   render() {
-    const { item, navigation } = this.props;
+    const { item, navigation, icon } = this.props;
+    const coverImage = item.cover_uri || 'https://robohash.org/cafe?set=set1';
     console.log(item);
     return (
       <List.Item
         style={styles.list}
         title={item.name}
-        left={(props) => {
-          return (
-            <TouchableOpacity onPress={() => navigation.navigate('Item', { PressedItem: item })}>
-              <Image style={{ width: 50, height: 40 }} source={{ uri: item.cover_uri }} />
-            </TouchableOpacity>
-          );
-        }}
+        left={props => (
+          <TouchableOpacity onPress={() => this.pressItem(item)}>
+            <Image style={{ width: 50, height: 40 }} source={{ uri: coverImage }} />
+          </TouchableOpacity>
+        )}
         right={props => (
           <Icon
-            name="edit"
+            name={icon}
             size={30}
             color="#009165"
             style={styles.editIcon}
@@ -56,4 +60,6 @@ export default class RestaurantCountItem extends Component {
 RestaurantCountItem.propTypes = {
   item: PropTypes.instanceOf(Object).isRequired,
   handlePress: PropTypes.func.isRequired,
+  handlePressItem: PropTypes.func.isRequired,
+  icon: PropTypes.string.isRequired,
 };

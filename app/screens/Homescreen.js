@@ -32,6 +32,7 @@ class HomeScreen extends Component {
   }
 
   handleItem = (item) => {
+    console.log(item);
     const { navigation } = this.props;
     navigation.navigate('Item', { PressedItem: item });
   };
@@ -76,8 +77,6 @@ export default connect(
 
 HomeScreen.propTypes = {
   getData: PropTypes.func.isRequired,
-  restaurants: PropTypes.objectOf(
-    PropTypes.oneOfType([PropTypes.string, PropTypes.bool, PropTypes.array]),
-  ).isRequired,
+  restaurants: PropTypes.instanceOf(Object).isRequired,
   dialog: PropTypes.instanceOf(Object).isRequired,
 };

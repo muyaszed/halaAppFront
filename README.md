@@ -14,3 +14,4 @@ This app using React native
 8. update dialog redux to accept and serve error message. -done
 9. Apply loading state wherever applicable.
 10. Re-factor expired token strategy.
+11. Setup default images properly

@@ -1,10 +1,10 @@
 import React from 'react';
 import {
-  ScrollView, View, Text, StyleSheet, FlatList, Picker
+  ScrollView, View, Text, StyleSheet, FlatList, Picker,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {
-  Avatar, Title, Portal, Modal, TextInput
+  Avatar, Title, Portal, Modal, TextInput,
 } from 'react-native-paper';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -12,7 +12,7 @@ import PropTypes from 'prop-types';
 import RestaurantCountItem from '../components/Restaurantcountitem';
 import EditRestaurantForm from '../components/EditRestaurantForm';
 import ErrorDialog from '../components/ErrorDialog';
-import { editRestaurant } from '../actions/restaurant';
+import { editRestaurant, showRestaurant } from '../actions/restaurant';
 import { getCurrentUser } from '../config/helpers';
 import { closeErrDialog } from '../actions/dialog';
 
@@ -31,10 +31,10 @@ const styles = StyleSheet.create({
     borderColor: '#009165',
   },
   contentContainerStyle: {
-    paddingTop: 100, 
+    paddingTop: 100,
     paddingBottom: 100,
     backgroundColor: 'grey',
-  }
+  },
 });
 
 class RestaurantsCountScreen extends React.Component {
@@ -65,7 +65,6 @@ class RestaurantsCountScreen extends React.Component {
   };
 
   handleEdit = async (item) => {
-    
     const currentUser = await getCurrentUser();
     const userId = JSON.parse(currentUser).id;
     const { editRestaurantData } = this.props;
@@ -73,9 +72,8 @@ class RestaurantsCountScreen extends React.Component {
     editRestaurantData(item, pressedItem.id, userId).then((res) => {
       console.log(res);
       if (!res) {
-       
         this.hideModal();
-      } 
+      }
     });
   };
 
@@ -84,18 +82,33 @@ class RestaurantsCountScreen extends React.Component {
     errDialog();
   };
 
+  handlePressItem = (item) => {
+    const { pressedItem } = this.state;
+    const { navigation, showRestaurantDetail, restaurant } = this.props;
+    showRestaurantDetail(item.id).then((res) => {
+      console.log(res);
+      this.setState({ pressedItem: restaurant.singleData });
+      navigation.navigate('Item', { PressedItem: pressedItem });
+    });
+  };
+
   itemKey = item => JSON.stringify(item.id);
 
   render() {
-    const { navigation, screenProps, dialog } = this.props;
+    const {
+      navigation, screenProps, dialog, restaurant,
+    } = this.props;
     const { showModal, pressedItem } = this.state;
-    const name = screenProps.user && Object.keys(screenProps.user).length !== 0 ? screenProps.user.profile.first_name : '';
+    const name = screenProps.user && Object.keys(screenProps.user).length !== 0
+      ? screenProps.user.profile.first_name
+      : '';
     const { restaurants } = screenProps.user;
+    console.log(restaurant.singleData);
     return (
       <ScrollView style={styles.container}>
         <View style={styles.titleWrapper}>
           <Title>
-            { name }
+            {name}
             &lsquo;s Restaurant List
           </Title>
         </View>
@@ -105,17 +118,27 @@ class RestaurantsCountScreen extends React.Component {
           data={restaurants}
           keyExtractor={this.itemKey}
           renderItem={({ item }) => (
-            <RestaurantCountItem item={item} handlePress={this.handlePress} navigation={navigation} />
+            <RestaurantCountItem
+              icon="edit"
+              item={item}
+              handlePress={this.handlePress}
+              handlePressItem={this.handlePressItem}
+              navigation={navigation}
+            />
           )}
         />
         <Portal>
-          <Modal contentContainerStyle={styles.contentContainerStyle} visible={showModal} onDismiss={this.hideModal} dismissable={false}>
-          
-          <EditRestaurantForm 
-             item={pressedItem}
-             onEdit={this.handleEdit}
-             onCancel={this.hideModal}
-           />
+          <Modal
+            contentContainerStyle={styles.contentContainerStyle}
+            visible={showModal}
+            onDismiss={this.hideModal}
+            dismissable={false}
+          >
+            <EditRestaurantForm
+              item={pressedItem}
+              onEdit={this.handleEdit}
+              onCancel={this.hideModal}
+            />
           </Modal>
         </Portal>
         <ErrorDialog
@@ -123,7 +146,6 @@ class RestaurantsCountScreen extends React.Component {
           errFlag={dialog.errorFlag}
           onClose={this.handleClose}
         />
-
       </ScrollView>
     );
   }
@@ -131,6 +153,7 @@ class RestaurantsCountScreen extends React.Component {
 
 const mapStateToProps = state => ({
   dialog: state.dialog,
+  restaurant: state.restaurants,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -138,13 +161,19 @@ const mapDispatchToProps = dispatch => ({
   errDialog: () => {
     dispatch(closeErrDialog());
   },
+  showRestaurantDetail: restaurantId => dispatch(showRestaurant(restaurantId)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(RestaurantsCountScreen);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(RestaurantsCountScreen);
 
 RestaurantsCountScreen.propTypes = {
   dialog: PropTypes.instanceOf(Object).isRequired,
   editRestaurantData: PropTypes.func.isRequired,
+  showRestaurantDetail: PropTypes.func.isRequired,
   errDialog: PropTypes.func.isRequired,
   screenProps: PropTypes.instanceOf(Object).isRequired,
+  restaurant: PropTypes.instanceOf(Object).isRequired,
 };

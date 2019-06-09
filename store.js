@@ -5,6 +5,7 @@ import authReducer from './app/reducers/authReducer';
 import dialogReducer from './app/reducers/dialogReducer';
 import reviewsReducer from './app/reducers/reviewsReducer';
 import userReducer from './app/reducers/userReducer';
+import bookmarkReducer from './app/reducers/bookmarkReducer';
 
 const rootReducer = combineReducers({
   restaurants: restaurantReducer,
@@ -12,6 +13,7 @@ const rootReducer = combineReducers({
   dialog: dialogReducer,
   reviews: reviewsReducer,
   user: userReducer,
+  bookmark: bookmarkReducer,
 });
 
 const configureStore = () => createStore(rootReducer, applyMiddleware(thunk));

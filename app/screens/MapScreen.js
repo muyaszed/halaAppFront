@@ -5,8 +5,10 @@ import {
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import openMap from 'react-native-open-maps';
 import LaunchNavigator from 'react-native-launch-navigator';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 // import { Button } from 'react-native-paper';
-// import PropTypes from 'prop-types';
+
 const styles = StyleSheet.create({
   container: {
     ...StyleSheet.absoluteFillObject,
@@ -24,9 +26,11 @@ class MapScreen extends React.Component {
   };
 
   render() {
-    const { navigation } = this.props;
-    const restaurant = navigation.getParam('PressedItem');
-
+    const { navigation, singleRestaurant } = this.props;
+    let restaurant = navigation.getParam('PressedItem');
+    if (Object.keys(restaurant).length === 0) {
+      restaurant = singleRestaurant.singleData;
+    }
     const { height, width } = Dimensions.get('window');
     const LATITUDE = restaurant.latitude; // Korea Town, New York, NY 10001
     const LONGITUDE = restaurant.longitude; // Korea Town, New York, NY 10001
@@ -86,4 +90,12 @@ class MapScreen extends React.Component {
   }
 }
 
-export default MapScreen;
+const mapStateToProps = state => ({
+  singleRestaurant: state.restaurants,
+});
+
+export default connect(mapStateToProps)(MapScreen);
+
+MapScreen.propTypes = {
+  singleRestaurant: PropTypes.instanceOf(Object).isRequired,
+};

@@ -5,6 +5,9 @@ import {
   GETTING_RESTAURANTS,
   GET_RESTAURANTS_SUCCESS,
   GET_RESTAURANTS_FAILURE,
+  GETTING_RESTAURANT,
+  GET_RESTAURANT_SUCCESS,
+  GET_RESTAURANT_FAILURE,
   EDITING_RESTAURANTS,
   EDIT_RESTAURANTS_SUCCESS,
   EDIT_RESTAURANTS_FAILURE,
@@ -12,8 +15,13 @@ import {
 
 const initialState = {
   data: [],
+  singleData: {},
   dataAdded: false,
   isAdding: false,
+  dataRecieved: false,
+  isGetting: false,
+  isShowing: false,
+  restaurantShowed: false,
   dataEdited: false,
   isEditing: false,
   errorFlag: false,
@@ -25,55 +33,58 @@ const restaurantReducer = (state = initialState, action) => {
     case ADDING_RESTAURANT:
       return {
         ...state,
-        data: [],
         isAdding: true,
         dataAdded: false,
-        errorFlag: false,
-        errors: '',
       };
     case ADD_RESTAURANT_SUCCESS:
       return {
         ...state,
-        data: [],
         isAdding: false,
         dataAdded: true,
-        errorFlag: false,
-        errors: '',
       };
     case ADD_RESTAURANT_FAILED:
       return {
         ...state,
-        data: [],
         isAdding: false,
         dataAdded: false,
-        errorFlag: true,
         errors: action.error.message,
       };
     case GETTING_RESTAURANTS:
       return {
         ...state,
-        data: [],
-        isAdding: true,
-        dataAdded: false,
-        errorFlag: false,
-        errors: '',
+        isGetting: true,
+        dataRecieved: false,
       };
     case GET_RESTAURANTS_SUCCESS:
       return {
         ...state,
         data: action.data,
-        isAdding: false,
-        dataAdded: true,
-        errorFlag: false,
-        errors: '',
+        dataRecieved: true,
       };
     case GET_RESTAURANTS_FAILURE:
       return {
         ...state,
-        data: [],
-        isAdding: false,
-        dataAdded: false,
-        errorFlag: true,
+        isGetting: false,
+        dataRecieved: false,
+        errors: action.error.message,
+      };
+    case GETTING_RESTAURANT:
+      return {
+        ...state,
+        isShowing: true,
+        restaurantShowed: false,
+      };
+    case GET_RESTAURANT_SUCCESS:
+      return {
+        ...state,
+        singleData: action.data,
+        restaurantShowed: true,
+      };
+    case GET_RESTAURANT_FAILURE:
+      return {
+        ...state,
+        isShowing: false,
+        restaurantShowed: false,
         errors: action.error.message,
       };
     case EDITING_RESTAURANTS:

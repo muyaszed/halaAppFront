@@ -64,7 +64,7 @@
     "configurations": {
       "ios.sim.debug": {
         "binaryPath": "ios/build/Build/Products/Debug-iphonesimulator/halaAppFront.app",
-        "build": "RN_SRC_EXT=e2e.js xcodebuild -project ios/halaAppFront.xcodeproj -UseNewBuildSystem=NO -scheme halaAppFront -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build",
+        "build": "xcodebuild -project ios/halaAppFront.xcodeproj -UseNewBuildSystem=NO -scheme halaAppFront -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build",
         "type": "ios.simulator",
         "name": "iPhone 8"
       }

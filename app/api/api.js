@@ -20,6 +20,24 @@ export default {
       }
       return res.json();
     }),
+    restaurant: (token, restaurantId) => fetch(`http://localhost:3000/restaurants/${restaurantId}`, {
+      method: 'GET',
+      mode: 'cors',
+      headers: {
+        Accept: 'application/vnd.halaldir.v1+json',
+        'Content-Type': 'application/json',
+        Authorization: token,
+      },
+    }).then((res) => {
+      if (!res.ok) {
+        return res.json().then((err) => {
+          console.log(err);
+          throw new Error(err.message);
+        });
+      }
+      
+      return res.json();
+    }),
     reviews: (token, id) => fetch(`http://localhost:3000/restaurants/${id}/reviews`, {
       method: 'GET',
       mode: 'cors',
@@ -72,7 +90,7 @@ export default {
       }
       return res.json();
     }),
-    restaurants: (data, token) => fetch('http://localhost:3000/restaurants', {
+    restaurant: (data, token) => fetch('http://localhost:3000/restaurants', {
       method: 'POST',
       mode: 'cors',
       cache: 'no-cache',
@@ -85,6 +103,40 @@ export default {
     }).then((res) => {
       if (!res.ok) {
         
+        return res.json().then((err) => {
+          console.log(err);
+          throw err;
+        });
+      }
+    }),
+
+    bookmark: (token, restaurantId, userId) => fetch(`http://localhost:3000/restaurants/${restaurantId}/${userId}/bookmark_restaurant`, {
+      method: 'POST',
+      mode: 'cors',
+      headers: {
+        Accept: 'application/vnd.halaldir.v1+json',
+        'Content-Type': 'application/json',
+        Authorization: token,
+      },
+    }).then((res) => {
+      if (!res.ok) {
+        return res.json().then((err) => {
+          console.log(err);
+          throw err;
+        });
+      }
+    }),
+
+    unbookmark: (token, restaurantId, userId) => fetch(`http://localhost:3000/restaurants/${restaurantId}/${userId}/unbookmark_restaurant`, {
+      method: 'POST',
+      mode: 'cors',
+      headers: {
+        Accept: 'application/vnd.halaldir.v1+json',
+        'Content-Type': 'application/json',
+        Authorization: token,
+      },
+    }).then((res) => {
+      if (!res.ok) {
         return res.json().then((err) => {
           console.log(err);
           throw err;

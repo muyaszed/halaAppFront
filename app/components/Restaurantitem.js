@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, TouchableOpacity, Text } from 'react-native';
-import { Card, Title } from 'react-native-paper';
+import { Card, Title, Chip } from 'react-native-paper';
 import PropTypes from 'prop-types';
 
 const styles = StyleSheet.create({
@@ -18,8 +18,9 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 15,
     borderTopRightRadius: 15,
     backgroundColor: '#19647e',
-    height: 50,
-    justifyContent: 'center',
+    height: 60,
+    paddingRight: 10,
+    // justifyContent: 'center',
   },
   contenTitle: {
     color: 'white',
@@ -44,17 +45,19 @@ export default class RestaurantItem extends Component {
 
   render() {
     const { item } = this.props;
+    const coverImage = item.cover_uri || 'https://robohash.org/cafe?set=set1';
     console.log(item);
     return (
       <Card elevation={30} style={styles.card}>
         <TouchableOpacity onPress={() => this.handlePress(item)}>
-          <Card.Content style={styles.content}>
+        <Card.Title style={styles.content} titleStyle={styles.contenTitle} title={`${item.name} \u{003E}`}  right={(props) => <Chip icon="collections-bookmark" >{item.bookmarking_user.length}</Chip>} />
+          {/* <Card.Content style={styles.content}>
             <Text style={styles.contenTitle} testID="restaurantTitle">
               {`${item.name} \u{003E}`}
             </Text>
-          </Card.Content>
+          </Card.Content> */}
         </TouchableOpacity>
-        <Card.Cover source={{ uri: item.cover_uri }} style={styles.background} resizeMode="cover" />
+        <Card.Cover source={{ uri: coverImage }} style={styles.background} resizeMode="cover" />
       </Card>
     );
   }

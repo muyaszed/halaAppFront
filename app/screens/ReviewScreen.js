@@ -30,9 +30,13 @@ class ReviewScreen extends React.Component {
   async componentDidMount() {
     const user = await AsyncStorage.getItem('currentUser');
     this.setState({ currentUser: JSON.parse(user) });
-    const { navigation, getRestReviews } = this.props;
-    const restaurantId = navigation.getParam('PressedItem').id;
-    getRestReviews(restaurantId);
+    const { navigation, getRestReviews, restaurant } = this.props;
+    let singleRestaurant = navigation.getParam('PressedItem');
+    if (Object.keys(restaurant).length === 0) {
+      singleRestaurant = restaurant.singleData;
+    }
+    console.log(singleRestaurant);
+    getRestReviews(singleRestaurant.id);
   }
 
   showModal = () => this.setState({ modalVisible: true });
@@ -171,6 +175,7 @@ const mapDispatchToProps = dispatch => ({
 const mapStateToProps = state => ({
   reviews: state.reviews,
   dialog: state.dialog,
+  restaurant: state.restaurants,
 });
 
 export default connect(
@@ -186,4 +191,5 @@ ReviewScreen.propTypes = {
   editUserComment: PropTypes.func.isRequired,
   deleteUserComment: PropTypes.func.isRequired,
   dialog: PropTypes.instanceOf(Object).isRequired,
+  restaurant: PropTypes.instanceOf(Object).isRequired,
 };

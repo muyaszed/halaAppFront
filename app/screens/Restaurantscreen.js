@@ -1,10 +1,16 @@
 import React from 'react';
 import {
-  View, Text, StyleSheet, Image,
+  View, Text, StyleSheet, Image, AsyncStorage,
 } from 'react-native';
 import {
-  Card, Title, Paragraph, Divider,
+  Card, Title, Paragraph, Divider, Button,
 } from 'react-native-paper';
+import { connect } from 'react-redux';
+import { NavigationEvents } from 'react-navigation';
+import PropTypes from 'prop-types';
+
+import BookmarkButton from '../components/BookmarkButton';
+import { bookmarkRestaurant, unbookmarkRestaurant } from '../actions/restaurant';
 
 const styles = StyleSheet.create({
   card: {
@@ -40,13 +46,76 @@ class RestaurantScreen extends React.Component {
     tabBarTestID: 'detailTab',
   };
 
+  state = {
+    currentUser: {},
+    checkedByCurrentUser: false,
+    item: {},
+  };
+
+  checkCurrentUser = () => {
+    const { currentUser, item } = this.state;
+    console.log(item);
+    const bookmarks = item.bookmarking_user;
+    console.log('rs', currentUser);
+    const check = bookmarks.filter(bookmarks => bookmarks.id === currentUser.id);
+    console.log('arr', check.length);
+    if (check.length > 0) {
+      console.log('im true');
+      this.setState({ checkedByCurrentUser: true });
+    } else {
+      console.log('im false');
+      this.setState({ checkedByCurrentUser: false });
+    }
+  };
+
+  async componentDidMount() {
+    console.log('CDM');
+    const { navigation, restaurant } = this.props;
+    const user = await AsyncStorage.getItem('currentUser');
+    const PressedItem = navigation.getParam('PressedItem');
+    console.log('Press', PressedItem);
+    if (Object.keys(PressedItem).length === 0) {
+      this.setState({ currentUser: JSON.parse(user), item: restaurant.singleData });
+    } else {
+      this.setState({ currentUser: JSON.parse(user), item: PressedItem });
+    }
+    this.checkCurrentUser();
+  }
+
+  handleBookmark = (status) => {
+    const { bookmark, unbookmark, navigation } = this.props;
+    const { currentUser } = this.state;
+    const PressedItem = navigation.getParam('PressedItem');
+
+    if (status === 'bookmark') {
+      bookmark(PressedItem.id, currentUser.id).then(() => {
+        this.setState({ checkedByCurrentUser: true });
+      });
+    } else if (status === 'unbookmark') {
+      unbookmark(PressedItem.id, currentUser.id).then(() => {
+        this.setState({ checkedByCurrentUser: false });
+      });
+    }
+  };
+
   render() {
     const { navigation } = this.props;
-    const PressedItem = navigation.getParam('PressedItem');
+    const { item } = this.state;
+    const PressedItem = item;
+    const { checkedByCurrentUser } = this.state;
+    const coverImage = PressedItem.cover_uri || 'https://robohash.org/cafe?set=set1';
+
     return (
       <View testID="restaurantScreen" style={styles.container}>
+        <NavigationEvents onDidFocus={() => this.checkCurrentUser()} />
+        <View>
+          <BookmarkButton
+            checkedBy={checkedByCurrentUser}
+            handleBookmark={status => this.handleBookmark(status)}
+          />
+        </View>
         <View style={styles.header}>
-          <Image style={styles.bgImage} source={{ uri: PressedItem.cover_uri }} />
+          <Image style={styles.bgImage} source={{ uri: coverImage }} />
         </View>
         <Card elevation={30} style={styles.card}>
           <Card.Content style={styles.content}>
@@ -62,4 +131,20 @@ class RestaurantScreen extends React.Component {
   }
 }
 
-export default RestaurantScreen;
+const mapDispatchToProps = dispatch => ({
+  bookmark: (restaurantId, userId) => dispatch(bookmarkRestaurant(restaurantId, userId)),
+  unbookmark: (restaurantId, userId) => dispatch(unbookmarkRestaurant(restaurantId, userId)),
+});
+
+const mapStateToProps = state => ({
+  restaurant: state.restaurants,
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(RestaurantScreen);
+
+RestaurantScreen.propTypes = {
+  restaurant: PropTypes.instanceOf(Object).isRequired,
+};
