@@ -76,16 +76,15 @@ class RestaurantScreen extends React.Component {
   };
 
   handleBookmark = (status) => {
-    const { bookmark, unbookmark, navigation } = this.props;
+    const { bookmark, unbookmark, restaurant } = this.props;
     const { currentUser } = this.state;
-    const PressedItem = navigation.getParam('PressedItem');
 
     if (status === 'bookmark') {
-      bookmark(PressedItem.id, currentUser.id).then(() => {
+      bookmark(restaurant.singleData.id, currentUser.id).then(() => {
         this.setState({ checkedByCurrentUser: true });
       });
     } else if (status === 'unbookmark') {
-      unbookmark(PressedItem.id, currentUser.id).then(() => {
+      unbookmark(restaurant.singleData.id, currentUser.id).then(() => {
         this.setState({ checkedByCurrentUser: false });
       });
     }
@@ -148,4 +147,6 @@ export default connect(
 
 RestaurantScreen.propTypes = {
   restaurant: PropTypes.instanceOf(Object).isRequired,
+  bookmark: PropTypes.func.isRequired,
+  unbookmark: PropTypes.func.isRequired,
 };
