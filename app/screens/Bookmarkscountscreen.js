@@ -5,8 +5,10 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Avatar, Title } from 'react-native-paper';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 import RestaurantCountItem from '../components/Restaurantcountitem';
+import { showRestaurant, unbookmarkRestaurant } from '../actions/restaurant';
 
 const styles = StyleSheet.create({
   container: {
@@ -39,13 +41,21 @@ class BookmarksCountScreen extends React.Component {
     ),
   });
 
-  handlePress = (item) => {};
+  handlePress = (item) => {
+    const { screenProps, unbookmark } = this.props;
+    unbookmark(item.id, screenProps.user.id);
+  };
 
   handlePressItem = (item) => {
     // const { navigation, showRestaurantDetail, restaurant } = this.props;
     // showRestaurantDetail(item.id).then(() => {
     //   navigation.navigate('Item', { PressedItem: restaurant });
     // });
+    const { navigation, showRestaurantDetail } = this.props;
+    showRestaurantDetail(item.id);
+    setTimeout(() => {
+      navigation.navigate('Item');
+    }, 300);
   };
 
   itemKey = item => JSON.stringify(item.id);
@@ -84,8 +94,18 @@ class BookmarksCountScreen extends React.Component {
   }
 }
 
-export default BookmarksCountScreen;
+const mapDispatchToProps = dispatch => ({
+  showRestaurantDetail: id => dispatch(showRestaurant(id)),
+  unbookmark: (restaurantId, userId) => dispatch(unbookmarkRestaurant(restaurantId, userId)),
+});
+
+export default connect(
+  undefined,
+  mapDispatchToProps,
+)(BookmarksCountScreen);
 
 BookmarksCountScreen.propTypes = {
   screenProps: PropTypes.instanceOf(Object).isRequired,
+  showRestaurantDetail: PropTypes.func.isRequired,
+  unbookmark: PropTypes.func.isRequired,
 };

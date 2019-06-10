@@ -83,27 +83,24 @@ class RestaurantsCountScreen extends React.Component {
   };
 
   handlePressItem = (item) => {
-    const { pressedItem } = this.state;
-    const { navigation, showRestaurantDetail, restaurant } = this.props;
-    showRestaurantDetail(item.id).then((res) => {
-      console.log(res);
-      this.setState({ pressedItem: restaurant.singleData });
-      navigation.navigate('Item', { PressedItem: pressedItem });
-    });
+    const { navigation, showRestaurantDetail } = this.props;
+    showRestaurantDetail(item.id);
+    setTimeout(() => {
+      navigation.navigate('Item');
+    }, 300);
   };
 
   itemKey = item => JSON.stringify(item.id);
 
   render() {
     const {
-      navigation, screenProps, dialog, restaurant,
+      navigation, screenProps, dialog,
     } = this.props;
     const { showModal, pressedItem } = this.state;
     const name = screenProps.user && Object.keys(screenProps.user).length !== 0
       ? screenProps.user.profile.first_name
       : '';
     const { restaurants } = screenProps.user;
-    console.log(restaurant.singleData);
     return (
       <ScrollView style={styles.container}>
         <View style={styles.titleWrapper}>
@@ -153,7 +150,6 @@ class RestaurantsCountScreen extends React.Component {
 
 const mapStateToProps = state => ({
   dialog: state.dialog,
-  restaurant: state.restaurants,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -175,5 +171,4 @@ RestaurantsCountScreen.propTypes = {
   showRestaurantDetail: PropTypes.func.isRequired,
   errDialog: PropTypes.func.isRequired,
   screenProps: PropTypes.instanceOf(Object).isRequired,
-  restaurant: PropTypes.instanceOf(Object).isRequired,
 };
