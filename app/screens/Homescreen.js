@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Config from 'react-native-config';
 
-import { getRestaurants } from '../actions/restaurant';
+import { getRestaurants, showRestaurant } from '../actions/restaurant';
 import { closeErrDialog } from '../actions/dialog';
 import RestaurantList from '../components/Restaurantlist';
 import ErrorDialog from '../components/ErrorDialog';
@@ -31,10 +31,12 @@ class HomeScreen extends Component {
     getData();
   }
 
-  handleItem = (item) => {
-    console.log(item);
-    const { navigation } = this.props;
-    navigation.navigate('Item', { PressedItem: item });
+  handleItem = (id) => {
+    const { navigation, showRestaurantDetail } = this.props;
+    showRestaurantDetail(id);
+    setTimeout(() => {
+      navigation.navigate('Item');
+    }, 300);
   };
 
   handleClose = () => {
@@ -44,7 +46,6 @@ class HomeScreen extends Component {
 
   render() {
     const { restaurants, dialog } = this.props;
-    console.log(Config.API);
     return (
       <View testID="homeScreen" style={styles.container}>
         <RestaurantList data={restaurants.data} pressItem={this.handleItem} />
@@ -63,6 +64,7 @@ const mapDispatchToProps = dispatch => ({
   errDialog: () => {
     dispatch(closeErrDialog());
   },
+  showRestaurantDetail: restaurantId => dispatch(showRestaurant(restaurantId)),
 });
 
 const mapStateToProps = state => ({
@@ -79,4 +81,5 @@ HomeScreen.propTypes = {
   getData: PropTypes.func.isRequired,
   restaurants: PropTypes.instanceOf(Object).isRequired,
   dialog: PropTypes.instanceOf(Object).isRequired,
+  showRestaurantDetail: PropTypes.func.isRequired,
 };

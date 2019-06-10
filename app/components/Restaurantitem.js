@@ -38,9 +38,9 @@ export default class RestaurantItem extends Component {
     this.handlePress = this.handlePress.bind(this);
   }
 
-  handlePress = (item) => {
+  handlePress = (id) => {
     const { pressItem } = this.props;
-    pressItem(item);
+    pressItem(id);
   };
 
   render() {
@@ -49,7 +49,7 @@ export default class RestaurantItem extends Component {
     console.log(item);
     return (
       <Card elevation={30} style={styles.card}>
-        <TouchableOpacity onPress={() => this.handlePress(item)}>
+        <TouchableOpacity onPress={() => this.handlePress(item.id)}>
         <Card.Title style={styles.content} titleStyle={styles.contenTitle} title={`${item.name} \u{003E}`}  right={(props) => <Chip icon="collections-bookmark" >{item.bookmarking_user.length}</Chip>} />
           {/* <Card.Content style={styles.content}>
             <Text style={styles.contenTitle} testID="restaurantTitle">

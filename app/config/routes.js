@@ -66,21 +66,21 @@ const DetailTab = createMaterialTopTabNavigator(
   },
 );
 
-DetailTab.navigationOptions = ({ navigation }) => {
-  const item = navigation.getParam('PressedItem');
-  const headerTitle = item.name;
+// DetailTab.navigationOptions = ({ navigation }) => {
+//   const item = navigation.getParam('PressedItem');
+//   const headerTitle = item.name;
 
-  return {
-    headerTitle,
-    headerStyle: {
-      backgroundColor: '#009165',
-    },
-    headerBackTitleStyle: {
-      color: 'black',
-    },
-    headerTintColor: 'black',
-  };
-};
+//   return {
+//     headerTitle,
+//     headerStyle: {
+//       backgroundColor: '#009165',
+//     },
+//     headerBackTitleStyle: {
+//       color: 'black',
+//     },
+//     headerTintColor: 'black',
+//   };
+// };
 
 const TabNavigator = createBottomTabNavigator(
   {

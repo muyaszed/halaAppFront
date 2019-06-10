@@ -3,6 +3,7 @@ import {
   View, Text, StyleSheet, Dimensions,
 } from 'react-native';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
+import { NavigationEvents } from 'react-navigation';
 import openMap from 'react-native-open-maps';
 import LaunchNavigator from 'react-native-launch-navigator';
 import { connect } from 'react-redux';
@@ -25,12 +26,20 @@ class MapScreen extends React.Component {
     tabBarTestID: 'mapTab',
   };
 
+  state = {
+    restaurant: {},
+  };
+
+  loadScreen() {
+    const { singleRestaurant } = this.props;
+    this.setState({
+      restaurant: singleRestaurant.singleData,
+    });
+  }
+
   render() {
-    const { navigation, singleRestaurant } = this.props;
-    let restaurant = navigation.getParam('PressedItem');
-    if (Object.keys(restaurant).length === 0) {
-      restaurant = singleRestaurant.singleData;
-    }
+    const { singleRestaurant } = this.props;
+    const restaurant = singleRestaurant.singleData;
     const { height, width } = Dimensions.get('window');
     const LATITUDE = restaurant.latitude; // Korea Town, New York, NY 10001
     const LONGITUDE = restaurant.longitude; // Korea Town, New York, NY 10001
@@ -38,6 +47,7 @@ class MapScreen extends React.Component {
     const LONGITUDE_DELTA = LATITUDE_DELTA * (width / height);
     return (
       <View style={styles.container}>
+        {/* <NavigationEvents onDidFocus={() => this.loadScreen()} /> */}
         <Text>This is Map</Text>
         {/* <MapView style={styles.map} provider={PROVIDER_GOOGLE} /> */}
         <MapView

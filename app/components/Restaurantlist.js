@@ -17,9 +17,9 @@ const styles = StyleSheet.create({
 });
 
 export default class RestaurantList extends Component {
-  handlePressItem = (item) => {
+  handlePressItem = (id) => {
     const { pressItem } = this.props;
-    pressItem(item);
+    pressItem(id);
   };
 
   itemKey = item => JSON.stringify(item.id);

@@ -6,7 +6,9 @@ import { FAB, Portal } from 'react-native-paper';
 import { NavigationEvents } from 'react-navigation';
 
 import ReviewList from '../components/Reviewlist';
-import { getReviews, postReview, editReview, deleteReview } from '../actions/review';
+import {
+  getReviews, postReview, editReview, deleteReview,
+} from '../actions/review';
 import { closeErrDialog } from '../actions/dialog';
 import ErrorDialog from '../components/ErrorDialog';
 import ReviewModal from '../components/ReviewModal';
@@ -27,18 +29,6 @@ class ReviewScreen extends React.Component {
     fabVisible: false,
   };
 
-  async componentDidMount() {
-    const user = await AsyncStorage.getItem('currentUser');
-    this.setState({ currentUser: JSON.parse(user) });
-    const { navigation, getRestReviews, restaurant } = this.props;
-    let singleRestaurant = navigation.getParam('PressedItem');
-    if (Object.keys(restaurant).length === 0) {
-      singleRestaurant = restaurant.singleData;
-    }
-    console.log(singleRestaurant);
-    getRestReviews(singleRestaurant.id);
-  }
-
   showModal = () => this.setState({ modalVisible: true });
 
   showEditModal = () => this.setState({ modalEdit: true });
@@ -52,7 +42,6 @@ class ReviewScreen extends React.Component {
     const data = {
       comment,
     };
-    console.log(restaurantId, data);
     postUserComment(data, restaurantId);
     this.setState({ modalVisible: false, comment: '' });
   };
@@ -61,13 +50,12 @@ class ReviewScreen extends React.Component {
     const { comment, reviewId } = this.state;
     const { navigation, editUserComment } = this.props;
     const restaurantId = navigation.getParam('PressedItem').id;
-    console.log(reviewId);
     const data = {
       comment,
     };
-   
+
     editUserComment(data, restaurantId, reviewId);
-    this.setState({ modalEdit: false, comment:'' });
+    this.setState({ modalEdit: false, comment: '' });
   };
 
   handleClose = () => {
@@ -76,7 +64,6 @@ class ReviewScreen extends React.Component {
   };
 
   handleEdit = (item) => {
-    console.log(item.id);
     this.setState({ comment: item.comment, reviewId: item.id });
     this.showEditModal();
   };
@@ -86,11 +73,20 @@ class ReviewScreen extends React.Component {
     const { reviewId } = this.state;
     const restaurantId = navigation.getParam('PressedItem').id;
     deleteUserComment(restaurantId, reviewId);
-    this.setState({ deleteConfirm: false, modalEdit: false })
+    this.setState({ deleteConfirm: false, modalEdit: false });
+  };
+
+  async loadScreen() {
+    const user = await AsyncStorage.getItem('currentUser');
+    const { getRestReviews, restaurant } = this.props;
+    this.setState({
+      currentUser: JSON.parse(user),
+      fabVisible: true,
+    });
+    getRestReviews(restaurant.singleData.id);
   }
 
   render() {
-    console.log('inside review');
     const { reviews, dialog } = this.props;
     const {
       modalVisible, modalEdit, btnOpen, currentUser, deleteConfirm, fabVisible,
@@ -98,7 +94,7 @@ class ReviewScreen extends React.Component {
     return (
       <View testID="reviewScreen" style={{ flex: 1, justifyContent: 'space-evenly' }}>
         <NavigationEvents
-          onWillFocus={() => this.setState({ fabVisible: true })}
+          onWillFocus={() => this.loadScreen()}
           onWillBlur={() => this.setState({ fabVisible: false })}
         />
         {reviews.data.length > 0 ? (
@@ -124,29 +120,26 @@ class ReviewScreen extends React.Component {
           />
         </Portal>
         <ReviewModal
-            visible={modalEdit}
-            onDismiss={this.hideModal}
-            value={this.state.comment}
-            onChangeText={edit => this.setState({ comment: edit })}
-            onPress={this.editComment}
-            onCancel={this.hideModal}
-            btnLabel="Edit"
-            edit={true}
-            onDelete={() => this.setState({deleteConfirm: true})}
-          />
-
+          visible={modalEdit}
+          onDismiss={this.hideModal}
+          value={this.state.comment}
+          onChangeText={edit => this.setState({ comment: edit })}
+          onPress={this.editComment}
+          onCancel={this.hideModal}
+          btnLabel="Edit"
+          edit
+          onDelete={() => this.setState({ deleteConfirm: true })}
+        />
 
         <ReviewModal
-            visible={modalVisible}
-            onDismiss={this.hideModal}
-            value={this.state.comment}
-            onChangeText={comment => this.setState({ comment })}
-            onPress={this.submitComment}
-            onCancel={this.hideModal}
-            btnLabel="Comment"
-          />
-
-          
+          visible={modalVisible}
+          onDismiss={this.hideModal}
+          value={this.state.comment}
+          onChangeText={comment => this.setState({ comment })}
+          onPress={this.submitComment}
+          onCancel={this.hideModal}
+          btnLabel="Comment"
+        />
 
         <ErrorDialog
           errMessage={dialog.error}
@@ -154,10 +147,10 @@ class ReviewScreen extends React.Component {
           onClose={this.handleClose}
         />
         <ErrorDialog
-          errMessage='Do you really want to delete this comment?'
+          errMessage="Do you really want to delete this comment?"
           errFlag={deleteConfirm}
           onDelete={this.handleDelete}
-          deleteReview={true}
+          deleteReview
         />
       </View>
     );

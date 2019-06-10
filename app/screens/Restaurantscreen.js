@@ -42,45 +42,38 @@ const styles = StyleSheet.create({
 });
 
 class RestaurantScreen extends React.Component {
-  static navigationOptions = {
-    tabBarTestID: 'detailTab',
+  static navigationOptions = ({ navigation }) => {
+    // const item = navigation.getParam('PressedItem');
+    const headerTitle = 'My ttile';
+
+    return {
+      headerTitle,
+      tabBarTestID: 'detailTab',
+      headerStyle: {
+        backgroundColor: '#009165',
+      },
+      headerBackTitleStyle: {
+        color: 'black',
+      },
+      headerTintColor: 'black',
+    };
   };
 
   state = {
     currentUser: {},
     checkedByCurrentUser: false,
-    item: {},
   };
 
-  checkCurrentUser = () => {
-    const { currentUser, item } = this.state;
-    console.log(item);
+  checkCurrentUser = (item) => {
+    const { currentUser } = this.state;
     const bookmarks = item.bookmarking_user;
-    console.log('rs', currentUser);
-    const check = bookmarks.filter(bookmarks => bookmarks.id === currentUser.id);
-    console.log('arr', check.length);
+    const check = bookmarks.filter(bookmark => bookmark.id === currentUser.id);
     if (check.length > 0) {
-      console.log('im true');
       this.setState({ checkedByCurrentUser: true });
     } else {
-      console.log('im false');
       this.setState({ checkedByCurrentUser: false });
     }
   };
-
-  async componentDidMount() {
-    console.log('CDM');
-    const { navigation, restaurant } = this.props;
-    const user = await AsyncStorage.getItem('currentUser');
-    const PressedItem = navigation.getParam('PressedItem');
-    console.log('Press', PressedItem);
-    if (Object.keys(PressedItem).length === 0) {
-      this.setState({ currentUser: JSON.parse(user), item: restaurant.singleData });
-    } else {
-      this.setState({ currentUser: JSON.parse(user), item: PressedItem });
-    }
-    this.checkCurrentUser();
-  }
 
   handleBookmark = (status) => {
     const { bookmark, unbookmark, navigation } = this.props;
@@ -98,16 +91,24 @@ class RestaurantScreen extends React.Component {
     }
   };
 
+  async loadScreen() {
+    const { restaurant } = this.props;
+    const user = await AsyncStorage.getItem('currentUser');
+    this.setState({
+      currentUser: JSON.parse(user),
+    });
+    this.checkCurrentUser(restaurant.singleData);
+  }
+
   render() {
-    const { navigation } = this.props;
-    const { item } = this.state;
-    const PressedItem = item;
+    const { navigation, restaurant } = this.props;
+    const PressedItem = restaurant.singleData;
     const { checkedByCurrentUser } = this.state;
     const coverImage = PressedItem.cover_uri || 'https://robohash.org/cafe?set=set1';
 
     return (
       <View testID="restaurantScreen" style={styles.container}>
-        <NavigationEvents onDidFocus={() => this.checkCurrentUser()} />
+        <NavigationEvents onDidFocus={() => this.loadScreen()} />
         <View>
           <BookmarkButton
             checkedBy={checkedByCurrentUser}
