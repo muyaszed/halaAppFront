@@ -10,6 +10,7 @@ import { NavigationEvents } from 'react-navigation';
 import PropTypes from 'prop-types';
 
 import BookmarkButton from '../components/BookmarkButton';
+import CheckinButton from '../components/CheckinButton';
 import { bookmarkRestaurant, unbookmarkRestaurant } from '../actions/restaurant';
 
 const styles = StyleSheet.create({
@@ -39,6 +40,10 @@ const styles = StyleSheet.create({
     marginRight: 10,
     height: 2,
   },
+  topButton: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+  },
 });
 
 class RestaurantScreen extends React.Component {
@@ -62,6 +67,58 @@ class RestaurantScreen extends React.Component {
   state = {
     currentUser: {},
     checkedByCurrentUser: false,
+    allowCheckin: false,
+  };
+
+  deg2rad = (deg) => {
+    return deg * (Math.PI / 180);
+  }
+
+  calculateDistance = (lat1, lon1, lat2, lon2) => {
+    if (lat1 === lat2 && lon1 === lon2) {
+      return 0;
+    }
+    const R = 6371; // Radius of the earth in km
+    const dLat = this.deg2rad(lat2-lat1);  // deg2rad below
+    const dLon = this.deg2rad(lon2-lon1); 
+    const a = 
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(this.deg2rad(lat1)) * Math.cos(this.deg2rad(lat2)) * 
+      Math.sin(dLon / 2) * Math.sin(dLon / 2); 
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    const dist = R * c; // Distance in km
+    return dist;
+  };
+
+  checkUserDistance = () => {
+    const { restaurant } = this.props;
+    const options = {
+      enableHighAccuracy: false,
+      timeout: 200000,
+      maximumAge: 1000,
+    };
+    const getPosition = function(options){
+      return new Promise(function(resolve, reject){
+        navigator.geolocation.getCurrentPosition(resolve, reject, options);
+      });
+    }
+   
+    getPosition(options).then((position) => {
+      const userDistance = this.calculateDistance(
+        position.coords.latitude,
+        position.coords.longitude,
+        restaurant.singleData.latitude,
+        restaurant.singleData.longitude,
+        'k',
+      );
+      if ( userDistance <= 0.1 ) {
+        this.setState({ allowCheckin: true });
+      } else {
+        this.setState({ allowCheckin: false });
+      }
+    }).catch((err) => {
+      console.log(err);
+    });
   };
 
   checkCurrentUser = (item) => {
@@ -73,6 +130,7 @@ class RestaurantScreen extends React.Component {
     } else {
       this.setState({ checkedByCurrentUser: false });
     }
+    this.checkUserDistance();
   };
 
   handleBookmark = (status) => {
@@ -102,16 +160,20 @@ class RestaurantScreen extends React.Component {
   render() {
     const { navigation, restaurant } = this.props;
     const PressedItem = restaurant.singleData;
-    const { checkedByCurrentUser } = this.state;
+    const { checkedByCurrentUser, allowCheckin } = this.state;
     const coverImage = PressedItem.cover_uri || 'https://robohash.org/cafe?set=set1';
 
     return (
       <View testID="restaurantScreen" style={styles.container}>
         <NavigationEvents onDidFocus={() => this.loadScreen()} />
-        <View>
+        <View style={styles.topButton}>
           <BookmarkButton
             checkedBy={checkedByCurrentUser}
             handleBookmark={status => this.handleBookmark(status)}
+          />
+          <CheckinButton
+            handleBookmark={status => this.handleBookmark(status)}
+            disabled={!allowCheckin}
           />
         </View>
         <View style={styles.header}>
