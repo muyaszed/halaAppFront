@@ -81,11 +81,12 @@ class ProfileStatsScreen extends React.Component {
     const reviewsQty = user && Object.keys(user).length !== 0 ? user.reviews.length : 0;
     const restaurantsQty = user && Object.keys(user).length !== 0 ? user.restaurants.length : 0;
     const bookmarked = user && Object.keys(user).length !== 0 ? user.bookmarked_restaurant.length : 0;
+    const checkedIns = user && Object.keys(user).length !== 0 ? user.checkinlist.length : 0;
     console.log('the user', user);
     return (
       // <View>
       // {/* <NavigationEvents onWillFocus={payload => console.log('will focus', payload)} /> */}
-      <StatsNavigator navigation={navigation} screenProps={{ user, restaurantsQty, reviewsQty, bookmarked }} />
+      <StatsNavigator navigation={navigation} screenProps={{ user, restaurantsQty, reviewsQty, bookmarked, checkedIns }} />
       // <CountStack navigation={navigation} screenProps={{ restaurantsQty, reviewsQty }} />
       // {/* <OtherStatsStack navigation={navigation} /> */}
       // </View>

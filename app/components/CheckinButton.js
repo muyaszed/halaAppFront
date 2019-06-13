@@ -4,7 +4,10 @@ import PropTypes from 'prop-types';
 import { Button } from 'react-native-paper';
 
 class CheckinButton extends Component {
-  handlePress = () => {};
+  handlePress = () => {
+    const { handleCheckin } = this.props;
+    handleCheckin();
+  };
 
   render() {
     const { disabled } = this.props;
@@ -28,4 +31,5 @@ export default CheckinButton;
 
 CheckinButton.propTypes = {
   disabled: PropTypes.bool.isRequired,
+  handleCheckin: PropTypes.func.isRequired,
 };

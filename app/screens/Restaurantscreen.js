@@ -12,6 +12,7 @@ import PropTypes from 'prop-types';
 import BookmarkButton from '../components/BookmarkButton';
 import CheckinButton from '../components/CheckinButton';
 import { bookmarkRestaurant, unbookmarkRestaurant } from '../actions/restaurant';
+import { checkinRestaurant } from '../actions/checkin';
 
 const styles = StyleSheet.create({
   card: {
@@ -148,6 +149,13 @@ class RestaurantScreen extends React.Component {
     }
   };
 
+  handleCheckin = () => {
+    const { checkin, restaurant } = this.props;
+    const { currentUser } = this.state;
+    checkin(restaurant.singleData.id, currentUser.id);
+    this.setState({ allowCheckin: false });
+  };
+
   async loadScreen() {
     const { restaurant } = this.props;
     const user = await AsyncStorage.getItem('currentUser');
@@ -172,7 +180,7 @@ class RestaurantScreen extends React.Component {
             handleBookmark={status => this.handleBookmark(status)}
           />
           <CheckinButton
-            handleBookmark={status => this.handleBookmark(status)}
+            handleCheckin={() => this.handleCheckin()}
             disabled={!allowCheckin}
           />
         </View>
@@ -196,6 +204,7 @@ class RestaurantScreen extends React.Component {
 const mapDispatchToProps = dispatch => ({
   bookmark: (restaurantId, userId) => dispatch(bookmarkRestaurant(restaurantId, userId)),
   unbookmark: (restaurantId, userId) => dispatch(unbookmarkRestaurant(restaurantId, userId)),
+  checkin: (restaurantId, userId) => dispatch(checkinRestaurant(restaurantId, userId)),
 });
 
 const mapStateToProps = state => ({
@@ -211,4 +220,5 @@ RestaurantScreen.propTypes = {
   restaurant: PropTypes.instanceOf(Object).isRequired,
   bookmark: PropTypes.func.isRequired,
   unbookmark: PropTypes.func.isRequired,
+  checkin: PropTypes.func.isRequired,
 };

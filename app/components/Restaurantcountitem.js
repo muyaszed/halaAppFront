@@ -14,9 +14,9 @@ const styles = StyleSheet.create({
     position: 'relative',
     top: 5,
   },
-  content: {},
-  contenTitle: {},
-  background: {},
+  checkinTime: {
+    paddingTop: 10,
+  },
 });
 
 export default class RestaurantCountItem extends Component {
@@ -31,7 +31,7 @@ export default class RestaurantCountItem extends Component {
   };
 
   render() {
-    const { item, navigation, icon } = this.props;
+    const { item, type, icon, time } = this.props;
     const coverImage = item.cover_uri || 'https://robohash.org/cafe?set=set1';
     console.log(item);
     return (
@@ -43,7 +43,11 @@ export default class RestaurantCountItem extends Component {
             <Image style={{ width: 50, height: 40 }} source={{ uri: coverImage }} />
           </TouchableOpacity>
         )}
-        right={props => (
+        right={props => (type === 'checkin' ? (
+          <Text style={styles.checkinTime}>
+            {time}
+          </Text>
+        ) : (
           <Icon
             name={icon}
             size={30}
@@ -51,7 +55,8 @@ export default class RestaurantCountItem extends Component {
             style={styles.editIcon}
             onPress={() => this.handleOnPress(item)}
           />
-        )}
+        ))
+        }
       />
     );
   }
@@ -59,7 +64,17 @@ export default class RestaurantCountItem extends Component {
 
 RestaurantCountItem.propTypes = {
   item: PropTypes.instanceOf(Object).isRequired,
-  handlePress: PropTypes.func.isRequired,
-  handlePressItem: PropTypes.func.isRequired,
-  icon: PropTypes.string.isRequired,
+  handlePress: PropTypes.func,
+  handlePressItem: PropTypes.func,
+  icon: PropTypes.string,
+  type: PropTypes.string,
+  time: PropTypes.string,
+};
+
+RestaurantCountItem.defaultProps = {
+  handlePress: () => {},
+  handlePressItem: () => {},
+  icon: undefined,
+  type: undefined,
+  time: undefined,
 };

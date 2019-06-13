@@ -144,6 +144,23 @@ export default {
       }
     }),
 
+    checkin: (token, restaurantId, userId) => fetch(`http://localhost:3000/restaurants/${restaurantId}/${userId}/checkin_restaurant`, {
+      method: 'POST',
+      mode: 'cors',
+      headers: {
+        Accept: 'application/vnd.halaldir.v1+json',
+        'Content-Type': 'application/json',
+        Authorization: token,
+      },
+    }).then((res) => {
+      if (!res.ok) {
+        return res.json().then((err) => {
+          console.log(err);
+          throw err;
+        });
+      }
+    }),
+
     authentication: credentials => fetch('http://localhost:3000/auth/login', {
       method: 'POST',
       mode: 'cors',

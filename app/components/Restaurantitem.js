@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Card, Title, Chip } from 'react-native-paper';
 import PropTypes from 'prop-types';
 
@@ -30,6 +30,12 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 15,
     height: 150,
   },
+  statusButton: {
+    flexDirection: 'row',
+  },
+  statusChip: {
+    marginLeft: 5,
+  },
 });
 
 export default class RestaurantItem extends Component {
@@ -50,7 +56,21 @@ export default class RestaurantItem extends Component {
     return (
       <Card elevation={30} style={styles.card}>
         <TouchableOpacity onPress={() => this.handlePress(item.id)}>
-        <Card.Title style={styles.content} titleStyle={styles.contenTitle} title={`${item.name} \u{003E}`}  right={(props) => <Chip icon="collections-bookmark" >{item.bookmarking_user.length}</Chip>} />
+          <Card.Title
+            style={styles.content}
+            titleStyle={styles.contenTitle}
+            title={`${item.name} \u{003E}`}
+            right={props => (
+              <View style={styles.statusButton}>
+                <Chip style={styles.statusChip} icon="collections-bookmark">
+                  {item.bookmarking_user.length}
+                </Chip>
+                <Chip style={styles.statusChip} icon="check">
+                  {item.checking_ins.length}
+                </Chip>
+              </View>
+            )}
+          />
           {/* <Card.Content style={styles.content}>
             <Text style={styles.contenTitle} testID="restaurantTitle">
               {`${item.name} \u{003E}`}
