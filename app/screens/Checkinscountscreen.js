@@ -65,7 +65,7 @@ class CheckinsCountScreen extends React.Component {
           data={checkinlist}
           keyExtractor={this.itemKey}
           renderItem={({ item }) => (
-            <RestaurantCountItem item={item.detail} type="checkin" time={item.time} />
+            <RestaurantCountItem item={item.detail} type="checkin" date={item.date} />
           )}
         />
       </ScrollView>

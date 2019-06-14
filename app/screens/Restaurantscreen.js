@@ -91,6 +91,16 @@ class RestaurantScreen extends React.Component {
     return dist;
   };
 
+  checkTiming = () => {
+    const { currentUser } = this.state;
+    const { restaurant } = this.props;
+    console.log('currentUser', currentUser);
+    const existingCheckedinRest = currentUser.checkinlist.filter(item => item.detail.id === restaurant.singleData.id);
+    const latestCheckedinRest = existingCheckedinRest.reduce((prev, current) => ((prev.time > current.time) ? prev : current));
+    const timeDifferent = (new Date().getTime() / 1000) - latestCheckedinRest.time;
+    return timeDifferent > 3600;
+  }
+
   checkUserDistance = () => {
     const { restaurant } = this.props;
     const options = {
@@ -112,7 +122,10 @@ class RestaurantScreen extends React.Component {
         restaurant.singleData.longitude,
         'k',
       );
-      if ( userDistance <= 0.1 ) {
+
+      const checkinTiming = this.checkTiming();
+
+      if ( userDistance <= 0.1 && checkinTiming) {
         this.setState({ allowCheckin: true });
       } else {
         this.setState({ allowCheckin: false });

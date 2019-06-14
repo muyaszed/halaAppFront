@@ -31,7 +31,7 @@ export default class RestaurantCountItem extends Component {
   };
 
   render() {
-    const { item, type, icon, time } = this.props;
+    const { item, type, icon, date } = this.props;
     const coverImage = item.cover_uri || 'https://robohash.org/cafe?set=set1';
     console.log(item);
     return (
@@ -45,7 +45,7 @@ export default class RestaurantCountItem extends Component {
         )}
         right={props => (type === 'checkin' ? (
           <Text style={styles.checkinTime}>
-            {time}
+            {date}
           </Text>
         ) : (
           <Icon
@@ -68,7 +68,7 @@ RestaurantCountItem.propTypes = {
   handlePressItem: PropTypes.func,
   icon: PropTypes.string,
   type: PropTypes.string,
-  time: PropTypes.string,
+  date: PropTypes.string,
 };
 
 RestaurantCountItem.defaultProps = {
@@ -76,5 +76,5 @@ RestaurantCountItem.defaultProps = {
   handlePressItem: () => {},
   icon: undefined,
   type: undefined,
-  time: undefined,
+  date: undefined,
 };
