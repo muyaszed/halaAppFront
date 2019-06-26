@@ -9,7 +9,7 @@
     "lint:fix": "eslint . --fix",
     "prettier": "prettier --write '**/*.js'",
     "format-code": "npm run prettier && npm run lint:fix",
-    "postinstall": "./node_modules/react-native-maps/enable-google-maps 'ios/**'"
+    "postinstall": "./node_modules/react-native-maps/enable-google-maps 'ios/Frameworks/GoogleMaps/**'"
   },
   "dependencies": {
     "acorn-jsx": "^5.0.1",
@@ -25,7 +25,7 @@
     "react-native-image-picker": "^0.28.0",
     "react-native-keyboard-aware-scroll-view": "^0.8.0",
     "react-native-launch-navigator": "^1.0.5",
-    "react-native-maps": "^0.23.0",
+    "react-native-maps": "^0.24.2",
     "react-native-open-maps": "^0.3.3",
     "react-native-paper": "^2.11.0",
     "react-native-pure-jwt": "^1.6.0",
