@@ -1,8 +1,9 @@
 import fetch from 'cross-fetch';
+import Config from 'react-native-config';
 
 export default {
   get: {
-    restaurants: token => fetch('http://localhost:3000/restaurants', {
+    restaurants: token => fetch(`${Config.API_ADDRESS_DEV}/restaurants`, {
       method: 'GET',
       mode: 'cors',
       headers: {
@@ -20,7 +21,7 @@ export default {
       }
       return res.json();
     }),
-    restaurant: (token, restaurantId) => fetch(`http://localhost:3000/restaurants/${restaurantId}`, {
+    restaurant: (token, restaurantId) => fetch(`${Config.API_ADDRESS_DEV}/restaurants/${restaurantId}`, {
       method: 'GET',
       mode: 'cors',
       headers: {
@@ -38,7 +39,7 @@ export default {
       
       return res.json();
     }),
-    reviews: (token, id) => fetch(`http://localhost:3000/restaurants/${id}/reviews`, {
+    reviews: (token, id) => fetch(`${Config.API_ADDRESS_DEV}/restaurants/${id}/reviews`, {
       method: 'GET',
       mode: 'cors',
       headers: {
@@ -54,7 +55,7 @@ export default {
       }
       return res.json();
     }),
-    user: (token, id) => fetch(`http://localhost:3000/users/${id}`, {
+    user: (token, id) => fetch(`${Config.API_ADDRESS_DEV}/users/${id}`, {
       method: 'GET',
       mode: 'cors',
       headers: {
@@ -73,7 +74,7 @@ export default {
   },
 
   post: {
-    user: credentials => fetch('http://localhost:3000/signup', {
+    user: credentials => fetch(`${Config.API_ADDRESS_DEV}/signup`, {
       method: 'POST',
       mode: 'cors',
       cache: 'no-cache',
@@ -90,7 +91,7 @@ export default {
       }
       return res.json();
     }),
-    restaurant: (data, token) => fetch('http://localhost:3000/restaurants', {
+    restaurant: (data, token) => fetch(`${Config.API_ADDRESS_DEV}/restaurants`, {
       method: 'POST',
       mode: 'cors',
       cache: 'no-cache',
@@ -110,7 +111,7 @@ export default {
       }
     }),
 
-    bookmark: (token, restaurantId, userId) => fetch(`http://localhost:3000/restaurants/${restaurantId}/${userId}/bookmark_restaurant`, {
+    bookmark: (token, restaurantId, userId) => fetch(`${Config.API_ADDRESS_DEV}/restaurants/${restaurantId}/${userId}/bookmark_restaurant`, {
       method: 'POST',
       mode: 'cors',
       headers: {
@@ -127,7 +128,7 @@ export default {
       }
     }),
 
-    unbookmark: (token, restaurantId, userId) => fetch(`http://localhost:3000/restaurants/${restaurantId}/${userId}/unbookmark_restaurant`, {
+    unbookmark: (token, restaurantId, userId) => fetch(`${Config.API_ADDRESS_DEV}/restaurants/${restaurantId}/${userId}/unbookmark_restaurant`, {
       method: 'POST',
       mode: 'cors',
       headers: {
@@ -144,7 +145,7 @@ export default {
       }
     }),
 
-    checkin: (token, restaurantId, userId) => fetch(`http://localhost:3000/restaurants/${restaurantId}/${userId}/checkin_restaurant`, {
+    checkin: (token, restaurantId, userId) => fetch(`${Config.API_ADDRESS_DEV}/restaurants/${restaurantId}/${userId}/checkin_restaurant`, {
       method: 'POST',
       mode: 'cors',
       headers: {
@@ -161,7 +162,7 @@ export default {
       }
     }),
 
-    authentication: credentials => fetch('http://localhost:3000/auth/login', {
+    authentication: credentials => fetch(`${Config.API_ADDRESS_DEV}/auth/login`, {
       method: 'POST',
       mode: 'cors',
       cache: 'no-cache',
@@ -179,7 +180,7 @@ export default {
       return res.json();
     }),
 
-    fbAuthentication: token => fetch('http://localhost:3000/auth/fb_login', {
+    fbAuthentication: token => fetch(`${Config.API_ADDRESS_DEV}/auth/fb_login`, {
       method: 'POST',
       mode: 'cors',
       cache: 'no-cache',
@@ -197,7 +198,7 @@ export default {
       return res.json();
     }),
 
-    reviews: (token, comment, id) => fetch(`http://localhost:3000/restaurants/${id}/reviews`, {
+    reviews: (token, comment, id) => fetch(`${Config.API_ADDRESS_DEV}/restaurants/${id}/reviews`, {
       method: 'POST',
       mode: 'cors',
       cache: 'no-cache',
@@ -219,7 +220,7 @@ export default {
     }),
   },
   put: {
-    review: (token, comment, restaurantId, id) => fetch(`http://localhost:3000/restaurants/${restaurantId}/reviews/${id}`, {
+    review: (token, comment, restaurantId, id) => fetch(`${Config.API_ADDRESS_DEV}/restaurants/${restaurantId}/reviews/${id}`, {
       method: 'PUT',
       mode: 'cors',
       cache: 'no-cache',
@@ -239,7 +240,7 @@ export default {
         });
       }
     }),
-    avatar: (token, data, id) => fetch(`http://localhost:3000/profiles/${id}`, {
+    avatar: (token, data, id) => fetch(`${Config.API_ADDRESS_DEV}/profiles/${id}`, {
       method: 'PUT',
       mode: 'cors',
       cache: 'no-cache',
@@ -259,7 +260,7 @@ export default {
         });
       }
     }),
-    profile: (token, data, id) => fetch(`http://localhost:3000/profiles/${id}`, {
+    profile: (token, data, id) => fetch(`${Config.API_ADDRESS_DEV}/profiles/${id}`, {
       method: 'PUT',
       mode: 'cors',
       cache: 'no-cache',
@@ -279,7 +280,7 @@ export default {
         });
       }
     }),
-    restaurant: (data, token, id) => fetch(`http://localhost:3000/restaurants/${id}`, {
+    restaurant: (data, token, id) => fetch(`${Config.API_ADDRESS_DEV}/restaurants/${id}`, {
       method: 'PUT',
       mode: 'cors',
       cache: 'no-cache',
@@ -298,7 +299,7 @@ export default {
         });
       }
     }),
-    user: (data, token, id) => fetch(`http://localhost:3000/users/${id}`, {
+    user: (data, token, id) => fetch(`${Config.API_ADDRESS_DEV}/users/${id}`, {
       method: 'PUT',
       mode: 'cors',
       cache: 'no-cache',
@@ -321,7 +322,7 @@ export default {
   },
 
   delete: {
-    review: (token, restaurantId, id) => fetch(`http://localhost:3000/restaurants/${restaurantId}/reviews/${id}`, {
+    review: (token, restaurantId, id) => fetch(`${Config.API_ADDRESS_DEV}/restaurants/${restaurantId}/reviews/${id}`, {
       method: 'DELETE',
       mode: 'cors',
       cache: 'no-cache',
