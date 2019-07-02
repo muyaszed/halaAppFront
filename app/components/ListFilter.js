@@ -40,14 +40,12 @@ class ListFilter extends Component {
   render() {
     const { distanceStatus, latestStatus, value } = this.state;
     return (
-      <ToggleButton.Group
-        style={styles.ToggleWrapper}
-        onValueChange={v => this.handleChange(v)}
-        value={value}
-      >
-        <ToggleButton icon="pin-drop" value="distance" status={distanceStatus} />
-        <ToggleButton icon="access-time" value="latest" status={latestStatus} />
-      </ToggleButton.Group>
+      <View style={styles.ToggleWrapper}>
+        <ToggleButton.Group onValueChange={v => this.handleChange(v)} value={value}>
+          <ToggleButton icon="pin-drop" value="distance" status={distanceStatus} />
+          <ToggleButton icon="access-time" value="latest" status={latestStatus} />
+        </ToggleButton.Group>
+      </View>
     );
   }
 }

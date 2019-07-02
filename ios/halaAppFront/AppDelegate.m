@@ -11,16 +11,24 @@
 #import <React/RCTRootView.h>
 #import <GoogleMaps/GoogleMaps.h>
 #import <ReactNativeConfig/ReactNativeConfig.h>
+#import <FBSDKCoreKit/FBSDKCoreKit.h>
 
 
 
 @implementation AppDelegate
+
+- (void)applicationDidBecomeActive:(UIApplication *)application {
+  [FBSDKAppEvents activateApp];
+}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
   NSString *apiUrl = [ReactNativeConfig envFor:@"GOOGLE_MAP_API"];
   [GMSServices provideAPIKey:apiUrl];
   NSURL *jsCodeLocation;
+  
+  [[FBSDKApplicationDelegate sharedInstance] application:application
+                           didFinishLaunchingWithOptions:launchOptions];
 
   #ifdef DEBUG
     jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
@@ -44,4 +52,16 @@
   
 }
 
+- (BOOL)application:(UIApplication *)application
+            openURL:(NSURL *)url
+            options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
+  
+  BOOL handled = [[FBSDKApplicationDelegate sharedInstance] application:application
+                                                                openURL:url
+                                                      sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey]
+                                                             annotation:options[UIApplicationOpenURLOptionsAnnotationKey]
+                  ];
+  // Add any custom logic here.
+  return handled;
+}
 @end

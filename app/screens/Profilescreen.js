@@ -16,6 +16,8 @@ import PropTypes from 'prop-types';
 import { createMaterialTopTabNavigator } from 'react-navigation';
 import ImagePicker from 'react-native-image-picker';
 import Icon from 'react-native-vector-icons/Entypo';
+import { LoginManager } from 'react-native-fbsdk';
+
 import { unAuthUser } from '../actions/authentication';
 import { getUser } from '../actions/user';
 import { editAvatar } from '../actions/profile';
@@ -24,6 +26,7 @@ import ProfileStatsScreen from './ProfileStatsScreen';
 import { closeErrDialog } from '../actions/dialog';
 import ErrorDialog from '../components/ErrorDialog';
 import { imageToFormData } from '../config/helpers';
+
 
 const styles = StyleSheet.create({
   container: {
@@ -106,12 +109,17 @@ class ProfileScreen extends Component {
   async componentDidMount() {
     const { getUserInfo } = this.props;
     const user = await AsyncStorage.getItem('currentUser');
-    console.log('user-id', JSON.parse(user).id);
-    getUserInfo(JSON.parse(user).id);
+    
+    if (user) {
+      const userId = JSON.parse(user).id || JSON.parse(user).user_id;
+      getUserInfo(userId);
+    }
+    
   }
 
   handlePress = async () => {
     const { unAuth } = this.props;
+    LoginManager.logOut();
     unAuth();
   };
 

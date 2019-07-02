@@ -3,15 +3,16 @@ import { View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import PropsTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/Entypo';
+import { LoginManager, AccessToken } from 'react-native-fbsdk';
 
-import { authUser } from '../actions/authentication';
+import { authUser, authFbUser } from '../actions/authentication';
 import { closeErrDialog } from '../actions/dialog';
 import SignInForm from '../components/Signinform';
 import ErrorDialog from '../components/ErrorDialog';
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1, 
+    flex: 1,
     justifyContent: 'center',
     paddingTop: 100,
     paddingLeft: 20,
@@ -19,8 +20,8 @@ const styles = StyleSheet.create({
   },
   logo: {
     alignItems: 'center',
-  }
-})
+  },
+});
 
 class SignInScreen extends Component {
   static navigationOptions = {
@@ -32,6 +33,33 @@ class SignInScreen extends Component {
     getAuth(credentials);
   };
 
+  fbLogin = () => {
+    const { getFbAuth } = this.props;
+    LoginManager.logInWithPermissions(['email']).then(
+      (result) => {
+        if (result.isCancelled) {
+          console.log('Login cancelled');
+        } else {
+          console.log('Login success: ', result.grantedPermissions.toString());
+          AccessToken.getCurrentAccessToken().then((data) => {
+            console.log('Token', data.accessToken.toString());
+            const token = {
+              facebook_access_token: data.accessToken.toString(),
+            };
+            getFbAuth(token);
+          });
+        }
+      },
+      (error) => {
+        console.log('Login error: ', error);
+      },
+    );
+  };
+
+  handleFbAuth = () => {
+    this.fbLogin();
+  };
+
   handleClose = () => {
     const { errDialog } = this.props;
     errDialog();
@@ -40,7 +68,7 @@ class SignInScreen extends Component {
   render() {
     const { auth, dialog } = this.props;
     return (
-      <View testId="signinScreen" style={ styles.container }>
+      <View testId="signinScreen" style={styles.container}>
         <View style={styles.logo}>
           <Icon name="bowl" size={80} color="#21c393" />
         </View>
@@ -49,9 +77,8 @@ class SignInScreen extends Component {
           errFlag={dialog.errorFlag}
           onClose={this.handleClose}
         />
-        
-        <SignInForm onAuth={this.handleAuth} />
-        
+
+        <SignInForm onAuth={this.handleAuth} onFbAuth={this.handleFbAuth} />
       </View>
     );
   }
@@ -60,6 +87,9 @@ class SignInScreen extends Component {
 const mapDispatchToProps = dispatch => ({
   getAuth: (credentials) => {
     dispatch(authUser(credentials));
+  },
+  getFbAuth: (token) => {
+    dispatch(authFbUser(token));
   },
   errDialog: () => {
     dispatch(closeErrDialog());
@@ -78,6 +108,7 @@ export default connect(
 
 SignInScreen.propTypes = {
   getAuth: PropsTypes.func.isRequired,
+  getFbAuth: PropsTypes.func.isRequired,
   errDialog: PropsTypes.func.isRequired,
   auth: PropsTypes.instanceOf(Object).isRequired,
   dialog: PropsTypes.instanceOf(Object).isRequired,

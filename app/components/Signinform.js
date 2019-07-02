@@ -7,8 +7,8 @@ import PropTypes from 'prop-types';
 const styles = StyleSheet.create({
   button: {
     marginTop: 20,
-  }
-})
+  },
+});
 
 export default class SignInForm extends Component {
   constructor(props) {
@@ -19,19 +19,24 @@ export default class SignInForm extends Component {
     };
   }
 
-  handlePress = () => {
+  handlePress = (e, status) => {
     const { email, password } = this.state;
-    const { onAuth } = this.props;
-    const credentials = {
-      email,
-      password,
-    };
-    console.log(credentials);
-    onAuth(credentials);
-    this.setState({
-      email: '',
-      password: '',
-    });
+    const { onAuth, onFbAuth } = this.props;
+
+    if (status === 'facebook') {
+      onFbAuth();
+    } else {
+      const credentials = {
+        email,
+        password,
+      };
+      console.log(credentials);
+      onAuth(credentials);
+      this.setState({
+        email: '',
+        password: '',
+      });
+    }
   };
 
   render() {
@@ -58,9 +63,41 @@ export default class SignInForm extends Component {
           onChangeText={passwordInput => this.setState({ password: passwordInput })}
         />
 
-        <Button testID="signinButton" mode="contained" onPress={this.handlePress} style={styles.button}>
+        <Button
+          testID="signinButton"
+          mode="contained"
+          onPress={e => this.handlePress(e, 'normal')}
+          style={styles.button}
+        >
           Sign in
         </Button>
+        <Button
+          testID="fbSigninButton"
+          mode="contained"
+          onPress={e => this.handlePress(e, 'facebook')}
+          style={styles.button}
+        >
+          Sign in with Facebook
+        </Button>
+
+        {/* <LoginButton
+          onLoginFinished={
+            (error, result) => {
+              if (error) {
+
+              }else if (result.isCancelled) {
+
+              }else {
+                AccessToken.getCurrentAccessToken().then(
+                  (data) => {
+                    console.log(data.accessToken.toString());
+                  }
+                )
+              }
+            }
+          }
+          onLogoutFinished={() => console.log("logout")}
+        /> */}
       </View>
     );
   }
@@ -68,4 +105,5 @@ export default class SignInForm extends Component {
 
 SignInForm.propTypes = {
   onAuth: PropTypes.func.isRequired,
+  onFbAuth: PropTypes.func.isRequired,
 };

@@ -1,11 +1,17 @@
 import React, { Component } from 'react';
-import { View, StyleSheet } from 'react-native';
+import {
+  View, StyleSheet, AsyncStorage, Text,
+} from 'react-native';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { NavigationEvents } from 'react-navigation';
+import {
+  Button, Dialog, Portal, TextInput, HelperText,
+} from 'react-native-paper';
 import Config from 'react-native-config';
 
 import { getRestaurants, showRestaurant } from '../actions/restaurant';
+import { putUser } from '../actions/user';
 import { filterByDistance, filterByLatest } from '../actions/filterRestaurant';
 import { closeErrDialog } from '../actions/dialog';
 import RestaurantList from '../components/Restaurantlist';
@@ -29,8 +35,16 @@ class HomeScreen extends Component {
     },
   };
 
+  state = {
+    askPassword: false,
+    password: '',
+    passwordRepeat: '',
+    comparePassword: false,
+    user: null,
+  };
+
   componentDidMount() {
-    this.getList();
+    this.onScreenLoad();
   }
 
   handleItem = (id) => {
@@ -69,12 +83,43 @@ class HomeScreen extends Component {
     }
   };
 
+  checkUserPassword = async () => {
+    const user = JSON.parse(await AsyncStorage.getItem('currentUser'));
+    this.setState({ user });
+    console.log('World');
+    console.log('user', user);
+    if (!user.password_digest) {
+      this.setState({
+        askPassword: true,
+      });
+    }
+  };
+
+  onScreenLoad = () => {
+    this.checkUserPassword();
+    this.getList();
+  };
+
+  handleUpdatePassword = () => {
+    const { password, user } = this.state;
+    const { updateUserPassword } = this.props;
+    const data = {
+      password,
+    };
+    updateUserPassword(data, user.id);
+    this.setState({ askPassword: false });
+  }
+
   render() {
     const { restaurants, dialog, list } = this.props;
-    console.log('list', list);
+    const {
+      askPassword, password, passwordRepeat, comparePassword, user,
+    } = this.state;
+
+    console.log('Hello', user);
     return (
       <View testID="homeScreen" style={styles.container}>
-        <NavigationEvents onDidFocus={() => this.getList()} />
+        <NavigationEvents onDidFocus={() => this.onScreenLoad()} />
         <ListFilter handleStatus={this.handleStatus} />
         <RestaurantList data={list.filteredData} pressItem={this.handleItem} />
         <ErrorDialog
@@ -82,6 +127,56 @@ class HomeScreen extends Component {
           errFlag={dialog.errorFlag}
           onClose={this.handleClose}
         />
+        {
+          <Portal>
+            <Dialog
+              visible={askPassword}
+              dismissable={!askPassword}
+              onDismiss={() => this.setState({ askPassword: false })}
+            >
+              <Dialog.Content>
+                <Text>
+                  {`${
+                    user
+                      ? `Attention! ${user.profile.first_name ? user.profile.first_name : 'User'}`
+                      : 'Hello User'
+                  }, 
+We notice that you have not setup your authentication password. It is  advisable to do it so right now.
+Thank you
+
+`}
+                </Text>
+                <TextInput
+                  mode="outlined"
+                  testID="passwordInput"
+                  label="Password"
+                  secureTextEntry
+                  value={password}
+                  onChangeText={passwordInput => this.setState({ password: passwordInput })}
+                />
+                <TextInput
+                  mode="outlined"
+                  testID="passwordRepeatInput"
+                  label="Confirm Password"
+                  secureTextEntry
+                  value={passwordRepeat}
+                  onChangeText={passwordInput => this.setState({
+                    passwordRepeat: passwordInput,
+                    comparePassword: !(password === passwordInput),
+                  })
+                  }
+                />
+                <HelperText type="error" visible={comparePassword}>
+                  Password is not equal. Please type in again.
+                </HelperText>
+              </Dialog.Content>
+              <Dialog.Actions>
+                <Button onPress={() => this.setState({ askPassword: false })}>Cancel</Button>
+                <Button onPress={() => this.handleUpdatePassword()}>Update</Button>
+              </Dialog.Actions>
+            </Dialog>
+          </Portal>
+        }
       </View>
     );
   }
@@ -95,6 +190,7 @@ const mapDispatchToProps = dispatch => ({
   showRestaurantDetail: restaurantId => dispatch(showRestaurant(restaurantId)),
   filterDataByDistance: list => dispatch(filterByDistance(list)),
   filterDataByLatest: list => dispatch(filterByLatest(list)),
+  updateUserPassword: (data, id) => dispatch(putUser(data, id)),
 });
 
 const mapStateToProps = state => ({
@@ -116,4 +212,5 @@ HomeScreen.propTypes = {
   showRestaurantDetail: PropTypes.func.isRequired,
   filterDataByDistance: PropTypes.func.isRequired,
   filterDataByLatest: PropTypes.func.isRequired,
+  updateUserPassword: PropTypes.func.isRequired,
 };

@@ -7,6 +7,9 @@ import {
   SIGNING_IN,
   SIGN_IN_SUCCESS,
   SIGN_IN_FAILURE,
+  FB_AUTHENTICATING,
+  FB_AUTHENTICATION_SUCCESS,
+  FB_AUTHENTICATION_FAILURE,
 } from './types';
 
 import Api from '../api';
@@ -45,7 +48,6 @@ export const authUser = credentials => (dispatch) => {
     .catch((error) => {
       dispatch(authenticationFailure(error));
       dispatch(openErrDialog(error));
-      
     });
 };
 
@@ -83,5 +85,34 @@ export const signUpUser = credentials => (dispatch) => {
       dispatch(signInFailure(error));
       dispatch(openErrDialog(error));
       // NavigationService.navigate('AuthLoading');
+    });
+};
+
+const authenticatingFbUser = () => ({
+  type: FB_AUTHENTICATING,
+});
+
+const fbAuthenticationSuccess = () => ({
+  type: FB_AUTHENTICATION_SUCCESS,
+});
+
+const fbAuthenticationFailure = error => ({
+  type: FB_AUTHENTICATION_FAILURE,
+  error,
+});
+
+export const authFbUser = token => (dispatch) => {
+  dispatch(authenticatingFbUser());
+  Api.post
+    .fbAuthentication(token)
+    .then(async (resJson) => {
+      await setItemToAsyncStore('userToken', resJson.auth_token);
+      await setItemToAsyncStore('currentUser', JSON.stringify(resJson.user));
+      dispatch(fbAuthenticationSuccess());
+      NavigationService.navigate('AuthLoading');
+    })
+    .catch((error) => {
+      dispatch(fbAuthenticationFailure(error));
+      dispatch(openErrDialog(error));
     });
 };
