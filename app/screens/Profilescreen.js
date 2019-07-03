@@ -104,6 +104,7 @@ class ProfileScreen extends Component {
 
   state = {
     avatarLoading: false,
+    useFbAvatar: false,
   };
 
   async componentDidMount() {
@@ -159,13 +160,19 @@ class ProfileScreen extends Component {
 
   hideAvatarLoading = () => this.setState({ avatarLoading: false });
 
+  fbAvatar = (status) => {
+    console.log(status);
+    this.setState({ useFbAvatar: status });
+  }
+
   render() {
     const { navigation, user, dialog } = this.props;
-    const { avatarLoading } = this.state;
+    const { avatarLoading, useFbAvatar } = this.state;
     const avatar = user && Object.keys(user).length !== 0 ? user.profile.avatar_uri : '';
     const avatarUri = avatar || 'https://robohash.org/cafe?set=set1';
     const profileId = user && Object.keys(user).length !== 0 ? user.profile.id : '';
     const userId = user && Object.keys(user).length !== 0 ? user.id : '';
+    const fbAvatar = user && Object.keys(user).length !== 0 ? user.facebook_auth.fb_avatar : null;
 
     return (
       <View testID="profileScreen" style={styles.container}>
@@ -190,7 +197,7 @@ class ProfileScreen extends Component {
         />
         <View style={styles.backgroundAvatar}>
           <View style={styles.avatarBackLayer} />
-          <Avatar.Image style={styles.avatar} size={204} source={{ uri: avatarUri }} />
+          <Avatar.Image style={styles.avatar} size={204} source={{ uri: useFbAvatar ? fbAvatar : avatarUri }} />
           <TouchableOpacity
             onPress={() => this.handleEditAvatar(userId, profileId)}
             style={styles.editAvatarBtnTouch}
@@ -202,7 +209,7 @@ class ProfileScreen extends Component {
             </View>
           </TouchableOpacity>
         </View>
-        <ProfileNavigator navigation={navigation} />
+        <ProfileNavigator screenProps={{test: 'Hello World', fbAvatar: s => this.fbAvatar(s) }} navigation={navigation} />
         <View>
           <Button
             testID="logoutButton"
