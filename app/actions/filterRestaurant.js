@@ -23,7 +23,6 @@ const filterRestaurantFailure = error => ({
 
 export const filterByDistance = list => (dispatch) => {
   dispatch(filteringRestaurants());
-  console.log(list);
 
   getPosition()
     .then((position) => {
@@ -38,9 +37,9 @@ export const filterByDistance = list => (dispatch) => {
         item.distance = Math.round(distance);
         updatedList.push(item);
       });
-      console.log('updatedList', updatedList);
+
       const filteredList = updatedList.sort((a, b) => a.distance - b.distance);
-      console.log('filteredList', filteredList);
+
       dispatch(filterRestaurantSuccess(filteredList));
     })
     .catch((error) => {
@@ -50,7 +49,6 @@ export const filterByDistance = list => (dispatch) => {
 
 export const filterByLatest = list => (dispatch) => {
   dispatch(filteringRestaurants());
-  console.log(list);
 
   getPosition()
     .then((position) => {
@@ -65,9 +63,9 @@ export const filterByLatest = list => (dispatch) => {
         item.distance = Math.round(distance);
         updatedList.push(item);
       });
-      console.log('updatedList', updatedList);
+
       const filteredList = updatedList.sort((a, b) => b.updated_at - a.updated_at);
-      console.log('filteredList', filteredList);
+
       dispatch(filterRestaurantSuccess(filteredList));
     })
     .catch((error) => {

@@ -158,7 +158,7 @@ export default class EditRestaurantForm extends Component {
 
   hideModal = () => {
     const { start, end } = this.state;
-    console.log(end);
+    
     this.setState({
       showCategoryModal: false,
       showCuisineModal: false,

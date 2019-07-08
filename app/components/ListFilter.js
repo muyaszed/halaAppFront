@@ -19,7 +19,7 @@ class ListFilter extends Component {
 
   handleChange = (value) => {
     const { handleStatus } = this.props;
-    console.log(value);
+    
     this.setState({ value });
     if (value === 'distance') {
       this.setState({

@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
 
 class ReviewsCountScreen extends React.Component {
   static navigationOptions = ({ screenProps }) => {
-    console.log(screenProps);
+    
     return {
       tabBarLabel: screenProps.reviewsQty.toString(),
       tabBarIcon: ({ tintColor }) => (

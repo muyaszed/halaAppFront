@@ -22,7 +22,7 @@ export default class SignInForm extends Component {
       email,
       password,
     };
-    console.log(credentials);
+    
     onSignUp(credentials);
     this.setState({
       email: '',
@@ -35,7 +35,7 @@ export default class SignInForm extends Component {
     const {
       email, password, passwordRepeat, comparePassword,
     } = this.state;
-    console.log(comparePassword);
+    
     return (
       <View style={{ flex: 1 }}>
         <TextInput

@@ -6,7 +6,7 @@ import {
 
 class ErrorDialog extends Component {
   handlePress = () => {
-    console.log('insied dialog handle press');
+    
     const { onClose } = this.props;
     onClose();
   };

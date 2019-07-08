@@ -27,7 +27,7 @@ export default class ReviewCountItem extends Component {
 
   render() {
     const { item, navigation } = this.props;
-    console.log(item);
+
     return (
       <List.Item
         style={styles.list}

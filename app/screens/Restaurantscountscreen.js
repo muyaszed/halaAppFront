@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
 
 class RestaurantsCountScreen extends React.Component {
   static navigationOptions = ({ screenProps }) => {
-    console.log(screenProps);
+    
     return {
       tabBarLabel: screenProps.restaurantsQty.toString(),
       tabBarIcon: ({ tintColor }) => (
@@ -70,7 +70,7 @@ class RestaurantsCountScreen extends React.Component {
     const { editRestaurantData } = this.props;
     const { pressedItem } = this.state;
     editRestaurantData(item, pressedItem.id, userId).then((res) => {
-      console.log(res);
+      
       if (!res) {
         this.hideModal();
       }

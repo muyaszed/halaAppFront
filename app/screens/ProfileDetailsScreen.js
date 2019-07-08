@@ -107,7 +107,7 @@ class ProfileDetailsScreen extends React.Component {
     const {
       editModalVisible, userFirstName, userLastName, useFbAvatar,
     } = this.state;
-    console.log(screenProps.test);
+    
     const firstName = user && Object.keys(user).length !== 0 ? user.profile.first_name : '';
     const lastName = user && Object.keys(user).length !== 0 ? user.profile.last_name : '';
     const profileId = user && Object.keys(user).length !== 0 ? user.profile.id : '';
@@ -133,22 +133,6 @@ class ProfileDetailsScreen extends React.Component {
               />
             )}
           />
-          {/* <TouchableOpacity
-            style={styles.editDetailBtnTouch}
-            onPress={() => this.setState({
-              editModalVisible: true,
-              userFirstName: firstName,
-              userLastName: lastName,
-            })
-            }
-          >
-            <View style={styles.editDetailBtn}>
-
-              <Text>
-                <Icon name="edit" size={25} color="#900" />
-              </Text>
-            </View>
-          </TouchableOpacity> */}
 
           <Card.Content style={styles.content}>
             <Text>First Name</Text>

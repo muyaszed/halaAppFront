@@ -30,7 +30,7 @@ export default class SignInForm extends Component {
         email,
         password,
       };
-      console.log(credentials);
+
       onAuth(credentials);
       this.setState({
         email: '',
@@ -79,25 +79,6 @@ export default class SignInForm extends Component {
         >
           Sign in with Facebook
         </Button>
-
-        {/* <LoginButton
-          onLoginFinished={
-            (error, result) => {
-              if (error) {
-
-              }else if (result.isCancelled) {
-
-              }else {
-                AccessToken.getCurrentAccessToken().then(
-                  (data) => {
-                    console.log(data.accessToken.toString());
-                  }
-                )
-              }
-            }
-          }
-          onLogoutFinished={() => console.log("logout")}
-        /> */}
       </View>
     );
   }

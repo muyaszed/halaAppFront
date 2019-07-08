@@ -12,10 +12,10 @@ export default {
         Authorization: token,
       },
     }).then((res) => {
-      console.log(res);
+      
       if (!res.ok) {
         return res.json().then((err) => {
-          console.log(err);
+          
           throw new Error(err.message);
         });
       }
@@ -32,7 +32,7 @@ export default {
     }).then((res) => {
       if (!res.ok) {
         return res.json().then((err) => {
-          console.log(err);
+          
           throw new Error(err.message);
         });
       }
@@ -105,7 +105,7 @@ export default {
       if (!res.ok) {
         
         return res.json().then((err) => {
-          console.log(err);
+          
           throw err;
         });
       }
@@ -122,7 +122,7 @@ export default {
     }).then((res) => {
       if (!res.ok) {
         return res.json().then((err) => {
-          console.log(err);
+          
           throw err;
         });
       }
@@ -139,7 +139,7 @@ export default {
     }).then((res) => {
       if (!res.ok) {
         return res.json().then((err) => {
-          console.log(err);
+          
           throw err;
         });
       }
@@ -156,7 +156,7 @@ export default {
     }).then((res) => {
       if (!res.ok) {
         return res.json().then((err) => {
-          console.log(err);
+          
           throw err;
         });
       }
@@ -170,10 +170,10 @@ export default {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(credentials),
     }).then((res) => {
-      console.log('imidiate res', res);
+      
       if (!res.ok) {
         return res.json().then((err) => {
-          console.log(err);
+          
           throw new Error(err.message);
         });
       }
@@ -188,10 +188,10 @@ export default {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(token),
     }).then((res) => {
-      console.log('imidiate res', res);
+      
       if (!res.ok) {
         return res.json().then((err) => {
-          console.log(err);
+          
           throw new Error(err.message);
         });
       }
@@ -210,10 +210,10 @@ export default {
       },
       body: JSON.stringify(comment),
     }).then((res) => {
-      console.log('Check ok', res);
+      
       if (!res.ok) {
         return res.json().then((err) => {
-          console.log(err);
+          
           throw new Error(err.message);
         });
       }
@@ -232,10 +232,10 @@ export default {
       },
       body: JSON.stringify(comment),
     }).then((res) => {
-      console.log('Check ok', res);
+      
       if (!res.ok) {
         return res.json().then((err) => {
-          console.log(err);
+          
           throw new Error(err.message);
         });
       }
@@ -252,10 +252,10 @@ export default {
       },
       body: data,
     }).then((res) => {
-      console.log('Check ok', res);
+      
       if (!res.ok) {
         return res.json().then((err) => {
-          console.log(err);
+          
           throw new Error(err.message);
         });
       }
@@ -272,10 +272,10 @@ export default {
       },
       body: JSON.stringify(data),
     }).then((res) => {
-      console.log('Check ok', res);
+      
       if (!res.ok) {
         return res.json().then((err) => {
-          console.log(err);
+          
           throw new Error(err.message);
         });
       }
@@ -291,10 +291,10 @@ export default {
       },
       body: data,
     }).then((res) => {
-      console.log('Check ok', res);
+      
       if (!res.ok) {
         return res.json().then((err) => {
-          console.log(err);
+          
           throw new Error(err.message);
         });
       }
@@ -311,10 +311,10 @@ export default {
       },
       body: JSON.stringify(data),
     }).then((res) => {
-      console.log('Check ok', res);
+      
       if (!res.ok) {
         return res.json().then((err) => {
-          console.log(err);
+          
           throw new Error(err.message);
         });
       }
@@ -333,10 +333,10 @@ export default {
         Authorization: token,
       },
     }).then((res) => {
-      console.log('Check ok', res);
+      
       if (!res.ok) {
         return res.json().then((err) => {
-          console.log(err);
+          
           throw new Error(err.message);
         });
       }

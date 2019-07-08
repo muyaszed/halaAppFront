@@ -58,7 +58,7 @@ const gettingRestaurant = () => ({
 });
 
 const getRestrauntSucces = (data) => {
-  console.log(data);
+  
   return {
     type: GET_RESTAURANT_SUCCESS,
     data,
@@ -82,7 +82,7 @@ export const showRestaurant = restaurantId => async (dispatch) => {
   return Api.get
     .restaurant(token, restaurantId)
     .then((resJson) => {
-      console.log('Hello', resJson);
+      
       dispatch(getRestrauntSucces(resJson));
     })
     .catch((error) => {
@@ -107,7 +107,7 @@ const addingRestaurantFailure = error => ({
 export const addRestaurant = restaurantData => async (dispatch) => {
   dispatch(addingRestaurant());
   const token = await getToken();
-  console.log(restaurantData);
+  
   return Api.post
     .restaurant(restaurantData, token)
     .then(() => {
@@ -116,7 +116,7 @@ export const addRestaurant = restaurantData => async (dispatch) => {
       NavigationService.navigate('Home');
     })
     .catch((error) => {
-      console.log(error);
+      
       dispatch(addingRestaurantFailure(error));
       dispatch(openErrDialog(error));
       return { error };

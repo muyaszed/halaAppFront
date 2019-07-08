@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
 
 class CheckinsCountScreen extends React.Component {
   static navigationOptions = ({ screenProps }) => {
-    console.log(screenProps);
+    
     return {
       tabBarLabel: screenProps.checkedIns.toString(),
       tabBarIcon: ({ tintColor }) => (

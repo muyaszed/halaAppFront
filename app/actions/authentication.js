@@ -39,7 +39,7 @@ export const authUser = credentials => (dispatch) => {
   Api.post
     .authentication(credentials)
     .then(async (resJson) => {
-      console.log(resJson.user);
+      
       await setItemToAsyncStore('userToken', resJson.auth_token);
       await setItemToAsyncStore('currentUser', JSON.stringify(resJson.user));
       dispatch(authenticationSuccess());

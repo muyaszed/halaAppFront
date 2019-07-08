@@ -30,13 +30,13 @@ class AuthLoadingScreen extends Component {
   componentDidMount() {
     const { navigation, dialog, signOut } = this.props;
     this.focusListener = navigation.addListener('didFocus', async () => {
-      console.log("here first");
+      
       const userToken = await AsyncStorage.getItem('userToken');
-      console.log(userToken);
+      
       if (userToken) {
         const payload  = jwt.decode(userToken);
         const { exp } = payload.claimsSet;
-        console.log(Date.now()/1000 > exp);
+        
         if ( Date.now()/1000 > exp ) {
           signOut()
           navigation.navigate('Auth');

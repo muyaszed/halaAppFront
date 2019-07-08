@@ -6,13 +6,13 @@ import { Button } from 'react-native-paper';
 class BookmarkButton extends Component {
   handlePress = (e, status) => {
     const { handleBookmark } = this.props;
-    console.log('status in bookmark button', status);
+
     handleBookmark(status);
   };
 
   render() {
     const { checkedBy } = this.props;
-    console.log('checkedBycurrentUser', checkedBy);
+
     return (
       <View testID="buttonWrapper">
         {checkedBy ? (

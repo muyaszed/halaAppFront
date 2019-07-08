@@ -73,12 +73,12 @@ class HomeScreen extends Component {
   filterList = (status) => {
     const { restaurants, filterDataByDistance, filterDataByLatest } = this.props;
     if (status === 'distance') {
-      console.log('get list distance');
+      
       filterDataByDistance(restaurants.data);
     }
 
     if (status === 'latest') {
-      console.log('get list latest');
+      
       filterDataByLatest(restaurants.data);
     }
   };
@@ -86,8 +86,8 @@ class HomeScreen extends Component {
   checkUserPassword = async () => {
     const user = JSON.parse(await AsyncStorage.getItem('currentUser'));
     this.setState({ user });
-    console.log('World');
-    console.log('user', user);
+    
+    
     if (!user.password_digest) {
       this.setState({
         askPassword: true,
@@ -116,7 +116,7 @@ class HomeScreen extends Component {
       askPassword, password, passwordRepeat, comparePassword, user,
     } = this.state;
 
-    console.log('Hello', user);
+    
     return (
       <View testID="homeScreen" style={styles.container}>
         <NavigationEvents onDidFocus={() => this.onScreenLoad()} />

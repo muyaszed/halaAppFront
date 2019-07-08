@@ -105,9 +105,9 @@ export default class NewRestaurantForm extends Component {
 
     onAdd(form).then((res) => {
       const { navigation } = this.props;
-      console.log('Im here', res);
+      
       if (!res) {
-        console.log('Im in');
+        
         this.setState({
           name: '',
           address: '',
@@ -174,7 +174,7 @@ export default class NewRestaurantForm extends Component {
       <KeyboardAwareScrollView style={styles.container} extraScrollHeight={220}>
         <NavigationEvents
           onDidFocus={() => {
-            console.log('didFocus', navigation.getParam('PrevScreen'));
+            
             const item = navigation.getParam('pressedItem');
             
               if (navigation.getParam('PrevScreen') === 'Category') {

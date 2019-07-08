@@ -33,7 +33,7 @@ export default class RestaurantCountItem extends Component {
   render() {
     const { item, type, icon, date } = this.props;
     const coverImage = item.cover_uri || 'https://robohash.org/cafe?set=set1';
-    console.log(item);
+    
     return (
       <List.Item
         style={styles.list}

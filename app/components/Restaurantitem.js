@@ -52,7 +52,7 @@ export default class RestaurantItem extends Component {
   render() {
     const { item } = this.props;
     const coverImage = item.cover_uri || 'https://robohash.org/cafe?set=set1';
-    console.log(item);
+
     return (
       <Card elevation={30} style={styles.card}>
         <TouchableOpacity onPress={() => this.handlePress(item.id)}>

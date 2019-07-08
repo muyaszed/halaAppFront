@@ -135,8 +135,8 @@ class ProfileScreen extends Component {
     };
 
     ImagePicker.showImagePicker(options, (response) => {
-      console.log('Response = ', response);
-      console.log(id);
+      
+      
       if (response.didCancel) {
         console.log('User cancelled image picker');
         
@@ -161,7 +161,7 @@ class ProfileScreen extends Component {
   hideAvatarLoading = () => this.setState({ avatarLoading: false });
 
   fbAvatar = (status) => {
-    console.log(status);
+    
     this.setState({ useFbAvatar: status });
   }
 

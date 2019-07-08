@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
 class AddScreen extends Component {
   static navigationOptions = ({ navigation }) => {
     const prevScreen = navigation.getParam('prevScreen');
-    console.log(prevScreen);
+    
     return {
       tabBarTestID: prevScreen === 'RestaurantsCount' ? 'editRestaurant' : 'addTab',
       tabBarLabel: '',

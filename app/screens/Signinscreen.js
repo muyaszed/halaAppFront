@@ -40,9 +40,7 @@ class SignInScreen extends Component {
         if (result.isCancelled) {
           console.log('Login cancelled');
         } else {
-          console.log('Login success: ', result.grantedPermissions.toString());
           AccessToken.getCurrentAccessToken().then((data) => {
-            console.log('Token', data.accessToken.toString());
             const token = {
               facebook_access_token: data.accessToken.toString(),
             };

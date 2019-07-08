@@ -14,7 +14,7 @@ class CategoryScreen extends React.Component {
   render() {
     const { navigation } = this.props;
     const prevScreen = navigation.getParam('PrevScreen');
-    console.log(prevScreen);
+
     return (
       <FlatList
         data={[

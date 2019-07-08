@@ -38,7 +38,7 @@ export const getReviews = id => async (dispatch) => {
   Api.get
     .reviews(token, id)
     .then((resJson) => {
-      console.log(resJson);
+      
       dispatch(getReviewSuccess(resJson));
     })
     .catch((err) => {
@@ -65,11 +65,11 @@ const getUserId = async () => {
 };
 
 export const postReview = (comment, id) => async (dispatch) => {
-  console.log(comment, id);
+  
   dispatch(postingReview());
   const token = await getToken();
   const userId = await getUserId();
-  console.log('user id', userId);
+  
   Api.post
     .reviews(token, comment, id)
     .then(() => {
@@ -78,7 +78,7 @@ export const postReview = (comment, id) => async (dispatch) => {
       dispatch(getUser(userId));
     })
     .catch((err) => {
-      console.log(err);
+      
       dispatch(postReviewFailure(err));
       dispatch(openErrDialog(err));
     });
@@ -100,7 +100,7 @@ const editReviewFailure = error => ({
 export const editReview = (comment, restaurantId, id, userId) => async (dispatch) => {
   dispatch(editingReview());
   const token = await getToken();
-  console.log(id);
+  
   Api.put
     .review(token, comment, restaurantId, id)
     .then(() => {
@@ -109,7 +109,7 @@ export const editReview = (comment, restaurantId, id, userId) => async (dispatch
       dispatch(getUser(userId));
     })
     .catch((err) => {
-      console.log(err);
+      
       dispatch(editReviewFailure(err));
       dispatch(openErrDialog(err));
     });
